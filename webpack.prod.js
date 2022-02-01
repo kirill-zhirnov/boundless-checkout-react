@@ -13,6 +13,12 @@ module.exports = {
 			type: 'commonjs2',
 		},
 	},
+	externals: [
+		{
+			react: 'react',
+			'react-dom': 'react-dom'
+		}
+	],
 	module: {
 		rules: [
 			{

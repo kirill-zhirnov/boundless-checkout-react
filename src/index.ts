@@ -1,3 +1,3 @@
-import BoundlessCheckout from './components/BoundlessCheckout';
+import BoundlessCheckout from './BoundlessCheckout';
 
 export {BoundlessCheckout};
