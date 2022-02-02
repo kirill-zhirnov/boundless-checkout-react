@@ -8,8 +8,8 @@ export const store = configureStore({
 	middleware: (getDefaultMiddleware) =>
 		getDefaultMiddleware({
 			serializableCheck: {
-				ignoredActionPaths: ['payload.onHide', 'payload.api'],
-				ignoredPaths: ['app.onHide', 'app.api'],
+				ignoredActionPaths: ['payload.onHide', 'payload.api', 'payload.logo'],
+				ignoredPaths: ['app.onHide', 'app.api', 'app.logo'],
 			},
 		})
 });

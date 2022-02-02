@@ -16,6 +16,7 @@ module.exports = {
 	externals: [
 		{
 			react: 'react',
+			'react/jsx-runtime': 'react/jsx-runtime',
 			'react-dom': 'react-dom'
 		}
 	],

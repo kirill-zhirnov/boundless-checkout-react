@@ -1,0 +1,27 @@
+.bdl-footer {
+	background: #fff;
+	margin: 50px 0 0;
+	padding: 0;
+
+	&__hr {
+		background: #333;
+		height: 15px;
+		margin: 0;
+	}
+
+	&__links {
+		text-align: center;
+	}
+
+	&__link {
+		color: $checkout-link-color;
+		display: inline-block;
+		font-size: $checkout-font-size-small;
+		margin: 0 0.3rem;
+		text-decoration: none;
+
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+}

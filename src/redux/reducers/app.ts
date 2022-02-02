@@ -1,6 +1,7 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {BoundlessClient} from 'boundless-api-client';
 import {ICartItem, IOrder, ICheckoutPageSettings} from 'boundless-api-client';
+import {ReactNode} from 'react';
 
 const initialState: IAppState = {
 	isInited: false,
@@ -12,16 +13,18 @@ const appSlice = createSlice({
 	initialState,
 	reducers: {
 		setBasicProps(state, action: PayloadAction<Required<Pick<IAppState, 'onHide' | 'cartId' | 'api'>> & {
-			basename?: string
+			basename?: string,
+			logo?: string|ReactNode
 		}>) {
-			const {onHide, cartId, basename, api} = action.payload;
+			const {onHide, cartId, basename, api, logo} = action.payload;
 
 			return {
 				...state,
 				onHide,
 				cartId,
 				basename,
-				api
+				api,
+				logo
 			};
 		},
 		showCheckout(state) {
@@ -61,5 +64,6 @@ export interface IAppState {
 	isInited: boolean,
 	items?: ICartItem[],
 	order?: IOrder,
-	settings?: ICheckoutPageSettings
+	settings?: ICheckoutPageSettings,
+	logo?: string|ReactNode
 }

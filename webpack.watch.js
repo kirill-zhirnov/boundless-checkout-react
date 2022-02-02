@@ -16,6 +16,7 @@ module.exports = {
 	externals: [
 		{
 			react: 'react',
+			'react/jsx-runtime': 'react/jsx-runtime',
 			'react-dom': 'react-dom'
 		}
 	],
@@ -45,6 +46,13 @@ module.exports = {
 					{
 						loader: 'sass-loader'
 					},
+				],
+			},
+			{
+				test: /\.css$/,
+				use: [
+					{loader: 'style-loader'},
+					{loader: 'css-loader'}
 				],
 			},
 		]

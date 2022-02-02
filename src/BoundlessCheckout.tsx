@@ -1,4 +1,4 @@
-import React, {Component, createRef, useEffect} from 'react';
+import React, {Component, createRef, ReactNode, useEffect} from 'react';
 import ReactDOM from 'react-dom';
 import clsx from 'clsx';
 import {disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks} from 'body-scroll-lock';
@@ -11,6 +11,11 @@ import {makeCheckoutVisible} from './redux/actions/checkout';
 import {BoundlessClient} from 'boundless-api-client';
 import {BrowserRouter, useLocation, useNavigate} from 'react-router-dom';
 import {useAppSelector} from './hooks/redux';
+
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
 
 export default class BoundlessCheckout extends Component<IBoundlessCheckoutProps, {}> {
 	private el: HTMLDivElement;
@@ -25,12 +30,13 @@ export default class BoundlessCheckout extends Component<IBoundlessCheckoutProps
 	componentDidMount() {
 		document.body.appendChild(this.el);
 
-		const {onHide, cartId, basename, api, show} = this.props;
+		const {onHide, cartId, basename, api, logo} = this.props;
 		store.dispatch(setBasicProps({
 			onHide,
 			cartId,
 			basename,
-			api
+			api,
+			logo
 		}));
 		this.syncShowProp();
 	}
@@ -69,11 +75,13 @@ export default class BoundlessCheckout extends Component<IBoundlessCheckoutProps
 			<div className={clsx('bdl-checkout', {'bdl-checkout_show': show})}
 					 ref={this.rootElRef}
 			>
-				<Provider store={store}>
-					<BrowserRouter basename={basename}>
-						<WrappedApp />
-					</BrowserRouter>
-				</Provider>
+				<React.StrictMode>
+					<Provider store={store}>
+						<BrowserRouter basename={basename}>
+							<WrappedApp />
+						</BrowserRouter>
+					</Provider>
+				</React.StrictMode>
 			</div>,
 			this.el
 		);
@@ -84,8 +92,9 @@ interface IBoundlessCheckoutProps {
 	cartId: string,
 	show: boolean,
 	onHide: () => void,
+	api: BoundlessClient,
 	basename?: string,
-	api: BoundlessClient
+	logo?: string|ReactNode
 }
 
 const WrappedApp = () => {
@@ -99,7 +108,7 @@ const WrappedApp = () => {
 				navigate('/', {replace: true});
 			}
 		}
-	}, [show]);
+	}, [show]);//eslint-disable-line
 
 	return show ? <CheckoutApp /> : null;
 };

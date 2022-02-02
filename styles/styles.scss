@@ -1,15 +1,8 @@
-.bdl-checkout {
-	position: absolute;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	left: 0;
-	background: #fff;
-	color: #000;
-	display: none;
-	overflow-y: auto;
+@import 'variables';
 
-	&_show {
-		display: block;
-	}
-}
+@import 'mixins/breakpoints';
+
+@import 'components/root';
+@import 'components/header';
+@import 'components/footer';
+@import 'components/checkoutLayout';

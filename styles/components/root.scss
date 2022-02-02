@@ -1,0 +1,21 @@
+@use 'sass:math';
+
+.bdl-checkout {
+	background: #fff;
+	bottom: 0;
+	color: #000;
+	display: none;
+
+	font-family: Roboto, sans-serif;
+	font-size: 16px;
+	left: 0;
+	line-height: math.div(24, 16);
+	overflow-y: auto;
+	position: absolute;
+	right: 0;
+	top: 0;
+
+	&_show {
+		display: block;
+	}
+}

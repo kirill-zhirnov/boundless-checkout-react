@@ -1,6 +1,6 @@
 import React from 'react';
 import {Navigate, Route, Routes} from 'react-router-dom';
-import ContactInfo from './pages/ContactInfo';
+import ContactInfoPage from './pages/ContactInfoPage';
 import ShippingAddress from './pages/ShippingAddress';
 import {useAppSelector} from './hooks/redux';
 import Loading from './components/Loading';
@@ -19,13 +19,7 @@ export default function CheckoutApp() {
 
 	return (
 		<Routes>
-			<Route path="/info" element={
-				<div>
-					<ContactInfo/>
-					<br/><br/>
-					<button onClick={onCloseClicked}>Close</button>
-				</div>
-			}/>
+			<Route path="/info" element={<ContactInfoPage/>}/>
 			<Route path="/shipping-address" element={<div>
 				<ShippingAddress/>
 				<br/><br/>

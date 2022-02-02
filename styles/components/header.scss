@@ -1,0 +1,88 @@
+.bdl-header {
+	&__body {
+		align-items: center;
+		border-bottom: 2px solid #f2f2f2;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: flex-start;
+		min-height: 100px;
+		position: relative;
+	}
+
+	&__to-cart {
+		color: $checkout-muted-color;
+		font-size: $checkout-font-size-small;
+		margin: 0.3rem 1rem 0.3rem 0;
+		position: relative;
+		text-decoration: none;
+
+		@include media-breakpoint-up(md) {
+			left: 0;
+			position: absolute;
+			top: 50%;
+			//background: green;
+			transform: translate(0, -50%);
+		}
+
+		&::after {
+			background: #777;
+			bottom: -1px;
+			content: '';
+			height: 1px;
+			left: 50%;
+			position: absolute;
+			transition: all 0.35s ease-in-out;
+			width: 0;
+		}
+
+		&:hover {
+			&::after {
+				left: 0;
+				width: 100%;
+			}
+		}
+
+		.MuiSvgIcon-root {
+			height: 1rem;
+			margin-top: -1px;
+			vertical-align: middle;
+			width: 1rem;
+		}
+	}
+
+	&__logo-wrapper {
+		flex-basis: 100%;
+		margin: 1rem;
+		text-align: center;
+
+		@include media-breakpoint-up(md) {
+			flex-basis: initial;
+			margin-left: auto;
+			margin-right: auto;
+		}
+	}
+
+	&__logo {
+		color: #000;
+		display: inline-block;
+		text-decoration: none;
+	}
+
+	&__text-logo {
+		display: inline-block;
+		font-size: 2rem;
+		font-weight: 500;
+		margin: 0;
+		padding: 0;
+	}
+
+	&__img-logo {
+		display: inline-block;
+		height: auto;
+		max-width: 180px;
+
+		@include media-breakpoint-up(x-sm) {
+			max-width: 300px;
+		}
+	}
+}
