@@ -4,9 +4,12 @@ import ContactInfoPage from './pages/ContactInfoPage';
 import ShippingAddress from './pages/ShippingAddress';
 import {useAppSelector} from './hooks/redux';
 import Loading from './components/Loading';
+import useLoadingLine from './hooks/loadingLine';
 
 export default function CheckoutApp() {
 	const {onHide, isInited} = useAppSelector((state) => state.app);
+	useLoadingLine();
+
 	const onCloseClicked = () => {
 		if (onHide) {
 			onHide();
