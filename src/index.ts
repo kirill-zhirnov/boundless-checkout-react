@@ -1,3 +1,5 @@
-import BoundlessCheckout from './BoundlessCheckout';
+// import BoundlessCheckout from './BoundlessCheckout';
+import SimpleBtn from './SimpleBtn';
 
-export {BoundlessCheckout};
+export {SimpleBtn};
+// export {BoundlessCheckout};

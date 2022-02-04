@@ -6,19 +6,38 @@ module.exports = {
 	resolve: {
 		extensions: ['.tsx', '.ts', '.js', '.json']
 	},
+	// output: {
+	// 	filename: 'index.js',
+	// 	path: path.resolve(__dirname, 'dist'),
+	// 	library: {
+	// 		type: 'commonjs2',
+	// 	},
+	// },
 	output: {
-		filename: 'index.js',
 		path: path.resolve(__dirname, 'dist'),
-		library: {
-			type: 'commonjs2',
-		},
+		library: 'BoundlessCheckout',
+		filename: 'index.js',
+		libraryTarget: 'umd',
+		// this to support both browser and Node.
+		// https://github.com/riversun/making-library-with-webpack#1-4publish-an-export-default-class-with-the-setting-library-name--class-name
+		globalObject: 'this',
 	},
+	// externals: [
+	// 	{
+	// 		react: 'react',
+	// 		'react/jsx-runtime': 'react/jsx-runtime',
+	// 		'react-dom': 'react-dom'
+	// 	}
+	// ],
 	externals: [
 		{
-			react: 'react',
-			'react/jsx-runtime': 'react/jsx-runtime',
-			'react-dom': 'react-dom'
-		}
+			react: {
+				root: 'React',
+				amd: 'react',
+				commonjs: 'react',
+				commonjs2: 'react',
+			},
+		},
 	],
 	module: {
 		rules: [

@@ -13,13 +13,13 @@
     "lint": "npx eslint --ext .ts --ext .tsx ./src/ && npx stylelint ./styles"
   },
   "private": false,
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "files": [
     "dist"
   ],
   "peerDependencies": {
-    "react": "^17.0.0",
+		"react": "^16 || ^17",
     "react-dom": "^17.0.0"
   },
   "devDependencies": {
