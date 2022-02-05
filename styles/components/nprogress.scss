@@ -1,0 +1,9 @@
+#nprogress {
+	.bar {
+		z-index: $z-index-nprogress !important;
+	}
+
+	.spinner {
+		z-index: $z-index-nprogress !important;
+	}
+}

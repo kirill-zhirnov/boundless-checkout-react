@@ -1,6 +1,6 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {BoundlessClient} from 'boundless-api-client';
-import {ICartItem, IOrder, ICheckoutPageSettings} from 'boundless-api-client';
+import {ICartItem, IOrder, ICheckoutPageSettings, ICheckoutStepper, TCheckoutStep, ICustomer} from 'boundless-api-client';
 import {ReactNode} from 'react';
 
 const initialState: IAppState = {
@@ -37,21 +37,44 @@ const appSlice = createSlice({
 				isInited: false
 			};
 		},
-		setCheckoutData(state, action: PayloadAction<Required<Pick<IAppState, 'items' | 'order' | 'settings'>>>) {
-			const {items, order, settings} = action.payload;
+		setCheckoutData(state, action: PayloadAction<Required<Pick<IAppState, 'items' | 'order' | 'settings' | 'stepper'>>>) {
+			const {items, order, settings, stepper} = action.payload;
 
 			return {
 				...state,
 				items,
 				order,
 				settings,
+				stepper,
 				isInited: true
+			};
+		},
+		addFilledStep(state, action: PayloadAction<{step: TCheckoutStep}>) {
+			const {step} = action.payload;
+			const stepper = {...state.stepper!};
+
+			if (!stepper.filledSteps.includes(step)) {
+				stepper.filledSteps.push(step);
+			}
+
+			return {
+				...state,
+				stepper
+			};
+		},
+		setCustomer(state, action: PayloadAction<ICustomer>) {
+			const customer = action.payload;
+			const order = {...state.order!, customer};
+
+			return {
+				...state,
+				order
 			};
 		}
 	}
 });
 
-export const {setBasicProps, showCheckout, hideCheckout, setCheckoutData} = appSlice.actions;
+export const {setBasicProps, showCheckout, hideCheckout, setCheckoutData, addFilledStep, setCustomer} = appSlice.actions;
 
 export default appSlice.reducer;
 
@@ -65,5 +88,6 @@ export interface IAppState {
 	items?: ICartItem[],
 	order?: IOrder,
 	settings?: ICheckoutPageSettings,
-	logo?: string|ReactNode
+	logo?: string|ReactNode,
+	stepper?: ICheckoutStepper
 }

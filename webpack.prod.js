@@ -6,13 +6,6 @@ module.exports = {
 	resolve: {
 		extensions: ['.tsx', '.ts', '.js', '.json']
 	},
-	// output: {
-	// 	filename: 'index.js',
-	// 	path: path.resolve(__dirname, 'dist'),
-	// 	library: {
-	// 		type: 'commonjs2',
-	// 	},
-	// },
 	output: {
 		path: path.resolve(__dirname, 'dist'),
 		library: 'BoundlessCheckout',
@@ -29,16 +22,11 @@ module.exports = {
 	// 		'react-dom': 'react-dom'
 	// 	}
 	// ],
-	externals: [
-		{
-			react: {
-				root: 'React',
-				amd: 'react',
-				commonjs: 'react',
-				commonjs2: 'react',
-			},
-		},
-	],
+	externals: {
+		react: 'react',
+		'react/jsx-runtime': 'react/jsx-runtime',
+		'react-dom': 'react-dom'
+	},
 	module: {
 		rules: [
 			{

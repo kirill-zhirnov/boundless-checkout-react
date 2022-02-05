@@ -1,7 +1,7 @@
 import React from 'react';
 import {Form, Formik, FormikHelpers} from 'formik';
 import {useAppDispatch, useAppSelector} from '../hooks/redux';
-import {ICheckoutSettingsContactFields, IOrder} from 'boundless-api-client';
+import {ICheckoutSettingsContactFields, IOrder, ICheckoutStepper, TCheckoutStep} from 'boundless-api-client';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
@@ -10,9 +10,13 @@ import {addPromise} from '../redux/actions/xhr';
 import ExtraErrors from './ExtraErrors';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
+import LocalShippingIcon from '@mui/icons-material/LocalShipping';
+import PaymentIcon from '@mui/icons-material/Payment';
+import {addFilledStep, setCustomer} from '../redux/reducers/app';
+import {useNavigate} from 'react-router-dom';
 
 export default function ContactInformationForm() {
-	const {settings, order} = useAppSelector(state => state.app);
+	const {settings, order, stepper} = useAppSelector(state => state.app);
 	const {accountPolicy, contactFields} = settings!;
 	const fieldsList = getFieldsList(contactFields);
 	const smGridCell = fieldsList.length ? 12 / fieldsList.length : 12;
@@ -67,11 +71,9 @@ export default function ContactInformationForm() {
 									xs={12}
 									style={{'textAlign': 'right'}}
 						>
-							<Button variant="contained"
-											type={'submit'}
-											size="large"
-											disabled={formikProps.isSubmitting}
-							>Continue to shipping</Button>
+							<NextStepBtn stepper={stepper!}
+													 isSubmitting={formikProps.isSubmitting}
+							/>
 						</Grid>
 					</Grid>
 				</Form>
@@ -80,9 +82,32 @@ export default function ContactInformationForm() {
 	);
 }
 
+const NextStepBtn = ({stepper, isSubmitting}: {stepper: ICheckoutStepper, isSubmitting: boolean}) => {
+	if (stepper.steps.includes(TCheckoutStep.shippingAddress)) {
+		return (
+			<Button variant="contained"
+							type={'submit'}
+							size="large"
+							disabled={isSubmitting}
+							startIcon={<LocalShippingIcon />}
+			>Continue to shipping</Button>
+		);
+	}
+
+	return (
+		<Button variant="contained"
+						type={'submit'}
+						size="large"
+						disabled={isSubmitting}
+						startIcon={<PaymentIcon />}
+		>Continue to payment</Button>
+	);
+};
+
 const useSaveContactInfo = () => {
-	const {api, order} = useAppSelector(state => state.app);
+	const {api, order, stepper} = useAppSelector(state => state.app);
 	const dispatch = useAppDispatch();
+	const navigate = useNavigate();
 
 	const order_id = order!.id;
 	const onSubmit = (values: IContactInformationFormValues, {setSubmitting, setErrors}: FormikHelpers<IContactInformationFormValues>) => {
@@ -93,7 +118,13 @@ const useSaveContactInfo = () => {
 			...rest,
 			receive_marketing_info: receive_marketing_info ? '1' : undefined
 		})
-			.then((data) => console.log('success', data))
+			.then(({customer}) => {
+				dispatch(setCustomer(customer));
+				dispatch(addFilledStep({step: TCheckoutStep.contactInfo}));
+
+				const nextUrl = (stepper!.steps.includes(TCheckoutStep.shippingAddress)) ? '/shipping-address' : '/payment';
+				navigate(nextUrl, {replace: true});
+			})
 			.catch(({response: {data}}) => setErrors(apiErrors2Formik(data)))
 			.finally(() => setSubmitting(false))
 		;

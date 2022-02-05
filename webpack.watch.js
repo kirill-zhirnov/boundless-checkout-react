@@ -6,14 +6,6 @@ module.exports = {
 	resolve: {
 		extensions: ['.tsx', '.ts', '.js', '.json']
 	},
-	// output: {
-	// 	filename: 'index.js',
-	// 	path: path.resolve(__dirname, 'dist'),
-	// 	library: {
-	// 		type: 'commonjs2',
-	// 	},
-	// },
-
 	output: {
 		path: path.resolve(__dirname, 'dist'),
 		library: 'BoundlessCheckout',
@@ -24,21 +16,11 @@ module.exports = {
 		globalObject: 'this',
 	},
 
-	// externals: {
-	// 	react: 'react',
-	// 	'react/jsx-runtime': 'react/jsx-runtime',
-	// 	'react-dom': 'react-dom'
-	// },
-	externals: [
-		{
-			react: {
-				root: 'React',
-				amd: 'react',
-				commonjs: 'react',
-				commonjs2: 'react',
-			},
-		},
-	],
+	externals: {
+		react: 'react',
+		'react/jsx-runtime': 'react/jsx-runtime',
+		'react-dom': 'react-dom'
+	},
 	module: {
 		rules: [
 			{
@@ -74,6 +56,10 @@ module.exports = {
 					{loader: 'css-loader'}
 				],
 			},
+			/*{
+				test: /\.(png|jpe?g|gif|svg|eot|otf|woff|woff2|ttf)$/,
+				type: 'asset'
+			},*/
 		]
 	}
 };

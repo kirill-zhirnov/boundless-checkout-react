@@ -8,6 +8,7 @@ export const makeCheckoutVisible = (): AppThunk => async (dispatch, getState) =>
 
 	try {
 		const data = await api!.checkout.init(cartId!);
+		console.log('data:', data);
 		dispatch(setCheckoutData(data));
 	} catch (e) {
 		console.error(e);
