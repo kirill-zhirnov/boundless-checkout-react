@@ -1,0 +1,15 @@
+.bdl-contact-form {
+	margin: 0 auto;
+
+	&.two-fields {
+		max-width: 600px;
+	}
+
+	&.one-field {
+		max-width: 450px;
+	}
+
+	&__has-account {
+		color: #737373;
+	}
+}

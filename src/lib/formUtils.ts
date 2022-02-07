@@ -56,7 +56,9 @@ export function checkAttrs<V extends FormikValues>(field: string, formikProps: F
 	return out;
 }
 
-export function apiErrors2Formik(errors: {field: string; message: string}[]) {
+export type TApiErrors = {field: string; message: string}[];
+
+export function apiErrors2Formik(errors: TApiErrors) {
 	const out: {[field: string]: string} = {};
 
 	if (Array.isArray(errors)) {

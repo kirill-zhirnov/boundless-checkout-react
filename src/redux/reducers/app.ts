@@ -1,6 +1,13 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {BoundlessClient} from 'boundless-api-client';
-import {ICartItem, IOrder, ICheckoutPageSettings, ICheckoutStepper, TCheckoutStep, ICustomer} from 'boundless-api-client';
+import {
+	ICartItem,
+	IOrder,
+	ICheckoutPageSettings,
+	ICheckoutStepper,
+	TCheckoutStep,
+	ICustomer,
+	BoundlessClient
+} from 'boundless-api-client';
 import {ReactNode} from 'react';
 
 const initialState: IAppState = {
@@ -62,7 +69,7 @@ const appSlice = createSlice({
 				stepper
 			};
 		},
-		setCustomer(state, action: PayloadAction<ICustomer>) {
+		setOrdersCustomer(state, action: PayloadAction<ICustomer>) {
 			const customer = action.payload;
 			const order = {...state.order!, customer};
 
@@ -74,7 +81,14 @@ const appSlice = createSlice({
 	}
 });
 
-export const {setBasicProps, showCheckout, hideCheckout, setCheckoutData, addFilledStep, setCustomer} = appSlice.actions;
+export const {
+	setBasicProps,
+	showCheckout,
+	hideCheckout,
+	setCheckoutData,
+	addFilledStep,
+	setOrdersCustomer
+} = appSlice.actions;
 
 export default appSlice.reducer;
 
