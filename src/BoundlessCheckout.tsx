@@ -105,11 +105,16 @@ const WrappedApp = () => {
 	const show = useAppSelector((state) => state.app.show);
 
 	useEffect(() => {
+		/*
+		Это не работает - если я нахожусь на /payment и делаю refresh, то перекинет на info (или current step),
+		что неверно. Возможно, нужно на закрытии делать navigateTo(/checkout) (или этот кусок вынести в sample).
+		Те явно когда пользователь кликнул close - тогда меняем url.
+
 		if (!show) {
 			if (location.pathname !== '/') {
 				navigate('/', {replace: true});
 			}
-		}
+		}*/
 	}, [show]);//eslint-disable-line
 
 	return show ? <CheckoutApp /> : null;

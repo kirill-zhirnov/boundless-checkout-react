@@ -58,25 +58,15 @@ const appSlice = createSlice({
 		},
 		addFilledStep(state, action: PayloadAction<{step: TCheckoutStep}>) {
 			const {step} = action.payload;
-			const stepper = {...state.stepper!};
+			const stepper = state.stepper!;
 
 			if (!stepper.filledSteps.includes(step)) {
 				stepper.filledSteps.push(step);
 			}
-
-			return {
-				...state,
-				stepper
-			};
 		},
 		setOrdersCustomer(state, action: PayloadAction<ICustomer>) {
 			const customer = action.payload;
-			const order = {...state.order!, customer};
-
-			return {
-				...state,
-				order
-			};
+			state.order!.customer = customer;
 		}
 	}
 });

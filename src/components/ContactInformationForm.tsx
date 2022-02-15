@@ -45,7 +45,7 @@ export function ContactFormView({setViewMode}: { setViewMode: (mode: TViewMode) 
 	const smGridCell = fieldsList.length ? 12 / fieldsList.length : 12;
 	const {onSubmit} = useSaveContactInfo();
 	const presentedFields = fieldsList.map(({type}) => type);
-	if (!order!.customer) {
+	if (!order!.customer && !loggedInCustomer) {
 		presentedFields.push('receive_marketing_info');
 	}
 
@@ -170,7 +170,9 @@ const useSaveContactInfo = () => {
 					const nextUrl = (stepper!.steps.includes(TCheckoutStep.shippingAddress)) ? '/shipping-address' : '/payment';
 					navigate(nextUrl, {replace: true});
 				})
-				.catch(({response: {data}}) => {
+				.catch((err) => {
+					// console.log('err:', err);
+					const {response: {data}} = err;
 					setErrors(apiErrors2Formik(data));
 				})
 				.finally(() => setSubmitting(false))

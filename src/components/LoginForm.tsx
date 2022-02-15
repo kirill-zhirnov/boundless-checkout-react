@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Form, Formik, FormikHelpers} from 'formik';
 import {ContactFormView, TViewMode} from './ContactInformationForm';
 import {useAppDispatch, useAppSelector} from '../hooks/redux';
@@ -33,7 +33,7 @@ export default function LoginForm() {
 export function LoginFormView({setViewMode}: {setViewMode: (mode: TViewMode) => void}) {
 	const {settings} = useAppSelector(state => state.app);
 	const {accountPolicy} = settings!;
-	const {onSubmit} = useSaveLoginForm();
+	const {onSubmit} = useSaveLoginForm(setViewMode);
 
 	return (
 		<Formik initialValues={{email: '', password: ''}} onSubmit={onSubmit}>
@@ -90,13 +90,16 @@ export function LoginFormView({setViewMode}: {setViewMode: (mode: TViewMode) => 
 	);
 }
 
-const useSaveLoginForm = () => {
+const useSaveLoginForm = (setViewMode: (mode: TViewMode) => void) => {
 	const {api} = useAppSelector(state => state.app);
 	const dispatch = useAppDispatch();
 
 	const onSubmit = (values: ILoginFormValues, {setSubmitting, setErrors}: FormikHelpers<ILoginFormValues>) => {
 		const promise = api!.customer.login(values.email, values.password)
-			.then(({customer, authToken}) => dispatch(setLoggedInCustomer(customer, authToken)))
+			.then(({customer, authToken}) => {
+				dispatch(setLoggedInCustomer(customer, authToken));
+				setViewMode(TViewMode.contact);
+			})
 			.catch(({response: {data}}) => setErrors(apiErrors2Formik(data)))
 			.finally(() => setSubmitting(false))
 		;
