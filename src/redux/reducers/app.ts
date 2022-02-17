@@ -19,15 +19,17 @@ const appSlice = createSlice({
 	name: 'app',
 	initialState,
 	reducers: {
-		setBasicProps(state, action: PayloadAction<Required<Pick<IAppState, 'onHide' | 'cartId' | 'api'>> & {
+		setBasicProps(state, action: PayloadAction<Required<Pick<IAppState, 'onHide' | 'api' | 'onThankYouPage'>> & {
 			basename?: string,
-			logo?: string|ReactNode
+			logo?: string|ReactNode,
+			cartId?: string
 		}>) {
-			const {onHide, cartId, basename, api, logo} = action.payload;
+			const {onHide, onThankYouPage, cartId, basename, api, logo} = action.payload;
 
 			return {
 				...state,
 				onHide,
+				onThankYouPage,
 				cartId,
 				basename,
 				api,
@@ -82,9 +84,12 @@ export const {
 
 export default appSlice.reducer;
 
+export type TOnThankYouPage = ({orderId, error}: {orderId: string, error?: string}) => void;
+
 export interface IAppState {
 	basename?: string,
 	onHide?: () => void,
+	onThankYouPage?: TOnThankYouPage,
 	cartId?: string,
 	api?: BoundlessClient,
 	show: boolean,

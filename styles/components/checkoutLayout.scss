@@ -6,6 +6,12 @@
 
 	&__main {
 		flex-grow: 1;
+
+		&-v-center {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+		}
 	}
 
 	&__container {
