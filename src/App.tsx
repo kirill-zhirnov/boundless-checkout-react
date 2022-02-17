@@ -52,4 +52,4 @@ export const getPathByStep = (step: TCheckoutStep) => {
 		case TCheckoutStep.thankYou:
 			return '/thank-you';
 	}
-}
+};
