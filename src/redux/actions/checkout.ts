@@ -1,11 +1,9 @@
 import {AppThunk} from '../store';
-import {showCheckout, setCheckoutData} from '../reducers/app';
+import {setCheckoutData} from '../reducers/app';
 import {setLoggedInCustomer, userCookieName} from './user';
 import Cookie from 'js-cookie';
 
-export const makeCheckoutVisible = (): AppThunk => async (dispatch, getState) => {
-	dispatch(showCheckout());
-
+export const initCheckoutByCart = (): AppThunk => async (dispatch, getState) => {
 	const {api, cartId} = getState().app;
 
 	try {

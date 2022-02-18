@@ -6,8 +6,7 @@ import '../styles/styles.scss';
 import CheckoutApp from './App';
 import {Provider} from 'react-redux';
 import {store} from './redux/store';
-import {setBasicProps, hideCheckout} from './redux/reducers/app';
-import {makeCheckoutVisible} from './redux/actions/checkout';
+import {setBasicProps, hideCheckout, showCheckout, TOnThankYouPage} from './redux/reducers/app';
 import {BoundlessClient} from 'boundless-api-client';
 import {BrowserRouter, useLocation, useNavigate} from 'react-router-dom';
 import {useAppSelector} from './hooks/redux';
@@ -32,9 +31,10 @@ export default class BoundlessCheckout extends Component<IBoundlessCheckoutProps
 	componentDidMount() {
 		document.body.appendChild(this.el);
 
-		const {onHide, cartId, basename, api, logo} = this.props;
+		const {onHide, onThankYouPage, cartId, basename, api, logo} = this.props;
 		store.dispatch(setBasicProps({
 			onHide,
+			onThankYouPage,
 			cartId,
 			basename,
 			api,
@@ -45,7 +45,7 @@ export default class BoundlessCheckout extends Component<IBoundlessCheckoutProps
 
 	syncShowProp() {
 		if (this.props.show) {
-			store.dispatch(makeCheckoutVisible());
+			store.dispatch(showCheckout());
 		} else {
 			store.dispatch(hideCheckout());
 		}
@@ -91,17 +91,18 @@ export default class BoundlessCheckout extends Component<IBoundlessCheckoutProps
 }
 
 interface IBoundlessCheckoutProps {
-	cartId: string,
+	cartId?: string,
 	show: boolean,
 	onHide: () => void,
+	onThankYouPage: TOnThankYouPage,
 	api: BoundlessClient,
 	basename?: string,
 	logo?: string|ReactNode
 }
 
 const WrappedApp = () => {
-	const location = useLocation();
-	const navigate = useNavigate();
+	// const location = useLocation();
+	// const navigate = useNavigate();
 	const show = useAppSelector((state) => state.app.show);
 
 	useEffect(() => {
