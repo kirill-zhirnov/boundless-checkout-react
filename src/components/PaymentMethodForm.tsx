@@ -11,22 +11,33 @@ import Button from '@mui/material/Button';
 import PaymentIcon from '@mui/icons-material/Payment';
 import Box from '@mui/material/Box';
 import {useAppDispatch, useAppSelector} from '../hooks/redux';
-import {apiErrors2Formik} from '../lib/formUtils';
+import {apiErrors2Formik, checkAttrs} from '../lib/formUtils';
 import {addPromise} from '../redux/actions/xhr';
 import ExtraErrors from './ExtraErrors';
 import {TCheckoutStep, TPaymentGatewayAlias} from 'boundless-api-client';
+import Checkbox from '@mui/material/Checkbox';
+import {IVWCountry} from 'boundless-api-client';
+import AddressFieldset, {IAddressFields} from './AddressFieldset';
 
-export default function PaymentMethodForm({paymentMethods}: {paymentMethods: IPaymentMethod[]}) {
+export default function PaymentMethodForm({paymentMethods, countries}: {paymentMethods: IPaymentMethod[], countries: IVWCountry[]}) {
 	const {onSubmit} = useSavePaymentMethod();
 
 	return (
-		<Formik initialValues={{payment_method_id: -1}} onSubmit={onSubmit}>
+		<Formik initialValues={{payment_method_id: -1, payment_address_the_same: true}} onSubmit={onSubmit}>
 			{(formikProps) => (
 				<Form className={'bdl-payment-form'}>
 					{Object.keys(formikProps.errors).length > 0 &&
 					<ExtraErrors presentedFields={['payment_method_id']} errors={formikProps.errors}/>}
 					<Typography variant="h5" mb={2}>Payment method</Typography>
 					<PaymentMethods formikProps={formikProps} paymentMethods={paymentMethods} />
+					<Box mb={2}>
+						<FormControlLabel control={<Checkbox {...checkAttrs('payment_address_the_same', formikProps)} />}
+															label="Payment address is the same as shipping address"
+						/>
+					</Box>
+					{!formikProps.values.payment_address_the_same && <BillingAddress countries={countries}
+																																					 formikProps={formikProps}
+					/>}
 					<Button variant="contained"
 									startIcon={<PaymentIcon />}
 									type={'submit'}
@@ -39,6 +50,17 @@ export default function PaymentMethodForm({paymentMethods}: {paymentMethods: IPa
 		</Formik>
 	);
 }
+
+const BillingAddress = ({formikProps, countries}: {formikProps: FormikProps<IPaymentMethodFormValues>, countries: IVWCountry[]}) => {
+	return (
+		<Box mb={2}>
+			<Typography variant="h6" mb={2}>Billing address</Typography>
+			<AddressFieldset countries={countries}
+											 formikProps={formikProps as unknown as FormikProps<IAddressFields>}
+			/>
+		</Box>
+	);
+};
 
 const PaymentMethods = ({formikProps, paymentMethods}: {formikProps: FormikProps<IPaymentMethodFormValues>, paymentMethods: IPaymentMethod[]}) => {
 	return (
@@ -88,9 +110,11 @@ const useSavePaymentMethod = () => {
 
 	const order_id = order!.id;
 	const onSubmit = (values: IPaymentMethodFormValues, {setSubmitting, setErrors}: FormikHelpers<IPaymentMethodFormValues>) => {
+		const {payment_address_the_same, ...restValues} = values;
 		const promise = api!.checkout.setPaymentMethod({
 				order_id,
-				...values
+				...restValues,
+				payment_address_the_same: payment_address_the_same ? '1' : ''
 			})
 				.then(({redirectTo, url, error}) => {
 					if (redirectTo == 'url') {
@@ -117,6 +141,16 @@ const useSavePaymentMethod = () => {
 
 export interface IPaymentMethodFormValues {
 	payment_method_id: number;
+	payment_address_the_same?: boolean;
+	first_name?: string;
+	last_name?: string;
+	company?: string;
+	address_line_1?: string;
+	address_line_2?: string;
+	city?: string;
+	state?: string;
+	country_id?: number;
+	zip?: string;
 }
 
 const getBtnTitleByPaymentMethod = (paymentMethods: IPaymentMethod[], paymentMethodId: number) => {

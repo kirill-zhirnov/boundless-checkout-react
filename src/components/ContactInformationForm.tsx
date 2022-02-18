@@ -107,8 +107,7 @@ export function ContactFormView({setViewMode}: { setViewMode: (mode: TViewMode) 
 									xs={12}
 						>
 							<FormControlLabel control={
-								<Checkbox {...checkAttrs('receive_marketing_info', formikProps)}
-								/>
+								<Checkbox {...checkAttrs('receive_marketing_info', formikProps)} />
 							} label="Email me with news and offers"/>
 						</Grid>
 						}
