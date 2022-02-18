@@ -17,7 +17,7 @@ export default function CartDiscount({discounts, setDiscounts}: CartDiscountProp
 
 	const handleRm = (e: React.MouseEvent) => {
 		e.preventDefault();
-		if (!api || !orderId || submitting) return;
+		if (!window.confirm('Are you sure?') || !api || !orderId || submitting) return;
 
 		setSubmitting(true);
 
