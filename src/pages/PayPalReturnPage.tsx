@@ -13,7 +13,7 @@ export default function PayPalReturnPage({isCancelPage}: {isCancelPage: boolean}
 
 
 	useEffect(() => {
-		const id = searchParams.get('id');
+		const id = searchParams.get('token');
 		if (id) {
 			api!.checkout.paypalCapture(id)
 				.then(({result, order}) => {
@@ -35,7 +35,7 @@ export default function PayPalReturnPage({isCancelPage}: {isCancelPage: boolean}
 			setError(defaultError);
 		}
 
-	}, [searchParams]);
+	}, [searchParams]);//eslint-disable-line
 
 	if (error) {
 		return <ErrorPage error={error} />;

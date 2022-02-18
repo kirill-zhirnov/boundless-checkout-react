@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import {useEffect} from 'react';
 import NProgress from 'nprogress';
 import {useAppDispatch, useAppSelector} from './redux';
 import {RootState} from '../redux/store';
@@ -25,5 +25,5 @@ export default function useLoadingLine() {
 
 	useEffect(() => {
 		checkBgPromises();
-	}, [promises]);
+	}, [promises]);//eslint-disable-line
 }

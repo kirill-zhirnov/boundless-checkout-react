@@ -2,15 +2,10 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import CheckoutLayout from '../layout/CheckoutLayout';
 import useInitCheckoutByCart from '../hooks/initCheckout';
-import ErrorPage from './ErrorPage';
 import Loading from '../components/Loading';
 
 export default function ShippingAddressPage() {
-	const {isInited, error} = useInitCheckoutByCart();
-
-	if (error) {
-		return <ErrorPage error={error} />;
-	}
+	const {isInited} = useInitCheckoutByCart();
 
 	if (!isInited) {
 		return <Loading />;

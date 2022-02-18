@@ -8,7 +8,7 @@ import {Provider} from 'react-redux';
 import {store} from './redux/store';
 import {setBasicProps, hideCheckout, showCheckout, TOnThankYouPage} from './redux/reducers/app';
 import {BoundlessClient} from 'boundless-api-client';
-import {BrowserRouter, useLocation, useNavigate} from 'react-router-dom';
+import {BrowserRouter} from 'react-router-dom';
 import {useAppSelector} from './hooks/redux';
 
 import 'nprogress/nprogress.css';

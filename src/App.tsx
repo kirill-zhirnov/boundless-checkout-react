@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {Navigate, Route, Routes} from 'react-router-dom';
 import ContactInfoPage from './pages/ContactInfoPage';
 import ShippingAddressPage from './pages/ShippingAddressPage';
@@ -7,20 +7,15 @@ import useLoadingLine from './hooks/loadingLine';
 import PaymentPage from './pages/PaymentPage';
 import {TCheckoutStep} from 'boundless-api-client';
 import PayPalReturnPage from './pages/PayPalReturnPage';
+import ErrorPage from './pages/ErrorPage';
 
 export default function CheckoutApp() {
-	const {isInited, stepper} = useAppSelector((state) => state.app);
+	const {globalError} = useAppSelector((state) => state.app);
 	useLoadingLine();
 
-	useEffect(() => {
-		if (isInited) {
-			//need redirect if url not presented or navigate in '*' route?
-
-			// switch () {
-			//
-			// }
-		}
-	}, [stepper?.currentStep, isInited]);
+	if (globalError) {
+		return <ErrorPage error={globalError} />;
+	}
 
 	return (
 		<Routes>
@@ -45,7 +40,5 @@ export const getPathByStep = (step: TCheckoutStep) => {
 			return '/shipping-method';
 		case TCheckoutStep.paymentMethod:
 			return '/payment';
-		case TCheckoutStep.thankYou:
-			return '/thank-you';
 	}
 };
