@@ -17,6 +17,7 @@ export default function Cart() {
 	const order = useAppSelector((state: RootState) => state.app.order);
 
 	const total = useMemo(() => calcCartTotal(cartItems, order), [cartItems, order]);
+	// console.log('Order - ', order);
 
 	return (
 		<div className='bdl-cart'>
