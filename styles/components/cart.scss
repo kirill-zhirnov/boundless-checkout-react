@@ -1,6 +1,7 @@
 .bdl-cart {
 	background: #f5f5f5;
 	border-bottom: 1px solid #ddd;
+	border-left: none;
 	border-top: 1px solid #ddd;
 	margin-bottom: 20px;
 	margin-left: -15px;
@@ -10,11 +11,13 @@
 
 	@include media-breakpoint-up(sm) {
 		background: unset;
-		border: none;
+		border-bottom: none;
+		border-left: 1px solid #f2f2f2;
+		border-top: none;
 		margin-left: 0;
 		margin-right: 0;
 		min-height: unset;
-		padding: 0;
+		padding: 0 0 0 15px;
 	}
 
 	&__short {
@@ -60,11 +63,56 @@
 	}
 
 	&__discount {
+		margin-top: 10px;
 		margin-bottom: 25px;
 	}
 
+	&__discount-list {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	&__discount-item {
+		align-items: center;
+		background-color: #fafafa;
+		border: 1px solid #eee;
+		border-radius: 5px;
+		display: flex;
+		padding: 5px 10px;
+
+		font-size: 14px;
+		justify-content: space-between;
+	}
+
+	&__discount-rm-link {
+		text-align: end;
+		text-decoration: none;
+		color: $checkout-link-color;
+		&:active {
+			color: $checkout-link-color;
+		}
+
+		&:hover {
+			text-decoration: underline;
+		}
+		&.disabled {
+			color: #777;
+			cursor: not-allowed;
+		}
+	}
+
 	&__footer {
+		display: none;
 		margin-bottom: 25px;
+
+		&.open {
+			display: block;
+		}
+
+		@include media-breakpoint-up(sm) {
+			display: block;
+		}
 	}
 
 	&__footer-row {
@@ -109,7 +157,9 @@
 	}
 
 	&__img {
+		flex-shrink: 0;
 		margin-right: 10px;
+
 		img {
 			display: block;
 			height: auto;
@@ -117,6 +167,18 @@
 
 			@include media-breakpoint-up(sm) {
 				width: 60px;
+			}
+		}
+
+		&.no-image {
+			background-size: 25px;
+			width: 40px;
+			height: 40px;
+
+			@include media-breakpoint-up(sm) {
+				background-size: 40px;
+				width: 60px;
+				height: 60px;
 			}
 		}
 	}

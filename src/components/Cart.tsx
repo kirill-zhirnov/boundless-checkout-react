@@ -4,20 +4,25 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import clsx from 'clsx';
 import CartItems from './cart/CartItems';
-import {Button, FormControl, Input, InputAdornment, InputLabel} from '@mui/material';
 import {useAppSelector} from '../hooks/redux';
 import {RootState} from '../redux/store';
 import {formatMoney} from '../lib/formatter';
 import {calcCartTotal} from '../lib/calculator';
 import CartFooter from './cart/CartFooter';
+import CartDiscount from './cart/CartDiscount';
 
 export default function Cart() {
-	const [fullOpened, setFullOpened] = useState(false);
 	const cartItems = useAppSelector((state: RootState) => state.app.items);
 	const order = useAppSelector((state: RootState) => state.app.order);
+	const [fullOpened, setFullOpened] = useState(false);
+	const [discounts, setDiscounts] = useState(order?.discounts || []);
 
-	const total = useMemo(() => calcCartTotal(cartItems, order), [cartItems, order]);
-	// console.log('Order - ', order);
+	const total = useMemo(() => calcCartTotal(cartItems, order, discounts), [cartItems, order, discounts]);
+
+	const toggleCollapse = (e: React.MouseEvent) => {
+		e.preventDefault();
+		setFullOpened(prev => !prev);
+	};
 
 	return (
 		<div className='bdl-cart'>
@@ -25,7 +30,7 @@ export default function Cart() {
 				<a
 					href="#"
 					className="bdl-cart__show-summary"
-					onClick={() => setFullOpened(prev => !prev)}
+					onClick={toggleCollapse}
 				>
 					<ShoppingCartIcon sx={{fontSize: 16}} />
 					{fullOpened
@@ -45,27 +50,8 @@ export default function Cart() {
 			<div className={clsx('bdl-cart__full', {open: fullOpened})}>
 				<CartItems />
 			</div>
-			<form className='bdl-cart__discount'>
-				<FormControl fullWidth>
-					<InputLabel htmlFor="discount-code-input">Discount code</InputLabel>
-					<Input
-						id="discount-code-input"
-						type={'text'}
-						// value={''}
-						// onChange={() => { }}
-						endAdornment={
-							<InputAdornment position="end">
-								<Button
-									// onClick={() => { }}
-								>
-									Apply
-								</Button>
-							</InputAdornment>
-						}
-					/>
-				</FormControl>
-			</form>
-			{order && <CartFooter order={order} total={total} />}
+			<CartDiscount discounts={discounts} setDiscounts={setDiscounts} />
+			<CartFooter order={order} total={total} open={fullOpened} />
 		</div >
 	);
 }

@@ -46,8 +46,8 @@ const appSlice = createSlice({
 				isInited: false
 			};
 		},
-		setCheckoutData(state, action: PayloadAction<Required<Pick<IAppState, 'items' | 'order' | 'settings' | 'stepper'>>>) {
-			const {items, order, settings, stepper} = action.payload;
+		setCheckoutData(state, action: PayloadAction<Required<Pick<IAppState, 'items' | 'order' | 'settings' | 'stepper' | 'hasCouponCampaigns' | 'needShipping'>>>) {
+			const {items, order, settings, stepper, hasCouponCampaigns, needShipping} = action.payload;
 
 			return {
 				...state,
@@ -55,7 +55,9 @@ const appSlice = createSlice({
 				order,
 				settings,
 				stepper,
-				isInited: true
+				isInited: true,
+				hasCouponCampaigns,
+				needShipping
 			};
 		},
 		addFilledStep(state, action: PayloadAction<{step: TCheckoutStep}>) {
@@ -98,5 +100,7 @@ export interface IAppState {
 	order?: IOrder,
 	settings?: ICheckoutPageSettings,
 	logo?: string|ReactNode,
-	stepper?: ICheckoutStepper
+	stepper?: ICheckoutStepper,
+	hasCouponCampaigns?: boolean,
+	needShipping?: boolean,
 }

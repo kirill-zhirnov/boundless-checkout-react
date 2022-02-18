@@ -15,7 +15,7 @@ export default function CheckoutLayout({children}: {children: ReactNode | ReactN
 						<Grid item md={9} sm={8} xs={12} order={{xs: 2, sm: 1}}>
 							{children}
 						</Grid>
-						<Grid className='bdl-checkout-layout__basket-col' item md={3} sm={4} xs={12} order={{xs: 1, sm: 2}}>
+						<Grid item md={3} sm={4} xs={12} order={{xs: 1, sm: 2}}>
 							<Cart />
 						</Grid>
 					</Grid>

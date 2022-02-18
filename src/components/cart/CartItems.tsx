@@ -3,6 +3,7 @@ import {useAppSelector} from '../../hooks/redux';
 import {formatMoney} from '../../lib/formatter';
 import {getProductImg} from '../../lib/images';
 import {RootState} from '../../redux/store';
+import currency from 'currency.js';
 
 export default function CartItems() {
 	const api = useAppSelector((state: RootState) => state.app.api);
@@ -18,7 +19,7 @@ export default function CartItems() {
 						? <div className='bdl-cart-item__img'>
 							<img {...getProductImg(api!, item.vwItem.image, 200)} />
 						</div>
-						: <div className="no-image" />}
+						: <div className='bdl-cart-item__img no-image' />}
 					<div className='bdl-cart-item__desc'>
 						<h5 className='bdl-cart-item__title'>
 							{item.vwItem.product.title}
@@ -28,7 +29,7 @@ export default function CartItems() {
 							{formatMoney(item.itemPrice.final_price)} x {item.qty} pcs
 						</div>
 						<div className='bdl-cart-item__total'>
-							{formatMoney(parseInt(item.itemPrice.final_price || '') * item.qty)}
+							{formatMoney(currency(item.itemPrice.final_price || '').multiply(item.qty).format())}
 						</div>
 					</div>
 				</li>
