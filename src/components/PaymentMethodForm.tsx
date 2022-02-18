@@ -1,23 +1,20 @@
 import React from 'react';
 import {IPaymentMethod} from 'boundless-api-client';
 import Typography from '@mui/material/Typography';
-import {Form, Formik, FormikHelpers} from 'formik';
+import {Form, Formik, FormikHelpers, FormikProps} from 'formik';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
 import FormHelperText from '@mui/material/FormHelperText';
 import Button from '@mui/material/Button';
 import PaymentIcon from '@mui/icons-material/Payment';
 import Box from '@mui/material/Box';
 import {useAppDispatch, useAppSelector} from '../hooks/redux';
-import {useNavigate} from 'react-router-dom';
-import {addFilledStep, setOrdersCustomer} from '../redux/reducers/app';
 import {apiErrors2Formik} from '../lib/formUtils';
 import {addPromise} from '../redux/actions/xhr';
-import {getPathByStep} from '../App';
 import ExtraErrors from './ExtraErrors';
+import {TCheckoutStep, TPaymentGatewayAlias} from 'boundless-api-client';
 
 export default function PaymentMethodForm({paymentMethods}: {paymentMethods: IPaymentMethod[]}) {
 	const {onSubmit} = useSavePaymentMethod();
@@ -29,27 +26,13 @@ export default function PaymentMethodForm({paymentMethods}: {paymentMethods: IPa
 					{Object.keys(formikProps.errors).length > 0 &&
 					<ExtraErrors presentedFields={['payment_method_id']} errors={formikProps.errors}/>}
 					<Typography variant="h5" mb={2}>Payment method</Typography>
-					<Box mb={2}>
-						<FormControl variant="standard"
-												 error={Boolean('payment_method_id' in formikProps.errors)}
-						>
-							<RadioGroup name="payment_method_id"
-													onChange={formikProps.handleChange}
-							>
-								{paymentMethods.map(({payment_method_id, title}) => <FormControlLabel value={payment_method_id}
-																																											control={<Radio required={true} />}
-																																											label={title}
-																																											key={payment_method_id} />)}
-							</RadioGroup>
-							{'payment_method_id' in formikProps.errors && <FormHelperText>{formikProps.errors.payment_method_id}</FormHelperText>}
-						</FormControl>
-					</Box>
+					<PaymentMethods formikProps={formikProps} paymentMethods={paymentMethods} />
 					<Button variant="contained"
 									startIcon={<PaymentIcon />}
 									type={'submit'}
 									disabled={formikProps.isSubmitting}
 					>
-						Pay now
+						{getBtnTitleByPaymentMethod(paymentMethods, formikProps.values.payment_method_id)}
 					</Button>
 				</Form>
 			)}
@@ -57,10 +40,51 @@ export default function PaymentMethodForm({paymentMethods}: {paymentMethods: IPa
 	);
 }
 
+const PaymentMethods = ({formikProps, paymentMethods}: {formikProps: FormikProps<IPaymentMethodFormValues>, paymentMethods: IPaymentMethod[]}) => {
+	return (
+		<Box mb={2}>
+			<FormControl variant="standard"
+									 error={Boolean('payment_method_id' in formikProps.errors)}
+			>
+				<RadioGroup name="payment_method_id"
+										onChange={formikProps.handleChange}
+				>
+					{paymentMethods.map(({payment_method_id, title, gateway_alias}) => {
+						switch (gateway_alias) {
+							case TPaymentGatewayAlias.paypal:
+								return (
+									<React.Fragment key={payment_method_id}>
+										<FormControlLabel value={payment_method_id}
+																			control={<Radio required={true} />}
+																			label={
+																				<span className={'payment-method__label'}>
+																				<span className={'payment-method__icon payment-method__icon-paypal'}/>{title}
+																			</span>
+																			}
+																			 />
+										{formikProps.values.payment_method_id == payment_method_id &&
+										<Typography className={'text-muted'} mb={1}>After clicking "Pay now", you will be redirected to PayPal to complete your purchase securely.</Typography>}
+									</React.Fragment>
+								);
+							default:
+								return (
+									<FormControlLabel value={payment_method_id}
+																		control={<Radio required={true} />}
+																		label={title}
+																		key={payment_method_id} />
+								);
+						}
+					})}
+				</RadioGroup>
+				{'payment_method_id' in formikProps.errors && <FormHelperText>{formikProps.errors.payment_method_id}</FormHelperText>}
+			</FormControl>
+		</Box>
+	);
+};
+
 const useSavePaymentMethod = () => {
-	const {api, order} = useAppSelector(state => state.app);
+	const {api, order, onThankYouPage} = useAppSelector(state => state.app);
 	const dispatch = useAppDispatch();
-	const navigate = useNavigate();
 
 	const order_id = order!.id;
 	const onSubmit = (values: IPaymentMethodFormValues, {setSubmitting, setErrors}: FormikHelpers<IPaymentMethodFormValues>) => {
@@ -68,11 +92,13 @@ const useSavePaymentMethod = () => {
 				order_id,
 				...values
 			})
-				.then(({redirectTo}) => {
+				.then(({redirectTo, url, error}) => {
 					if (redirectTo == 'url') {
-						console.log('redirect me to:');
+						window.location.href = url!;
+					} else if (redirectTo === TCheckoutStep.thankYou) {
+						onThankYouPage!({orderId: order_id, error});
 					} else {
-						navigate(getPathByStep(redirectTo), {replace: true});
+						console.error('Unknown redirect:', redirectTo);
 					}
 				})
 				.catch(({response: {data}}) => {
@@ -92,3 +118,16 @@ const useSavePaymentMethod = () => {
 export interface IPaymentMethodFormValues {
 	payment_method_id: number;
 }
+
+const getBtnTitleByPaymentMethod = (paymentMethods: IPaymentMethod[], paymentMethodId: number) => {
+	const paymentMethod = paymentMethods.find(({payment_method_id}) => payment_method_id == paymentMethodId);
+
+	if (paymentMethod) {
+		switch (paymentMethod.gateway_alias) {
+			case TPaymentGatewayAlias.paypal:
+				return 'Pay now';
+		}
+	}
+
+	return 'Complete order';
+};

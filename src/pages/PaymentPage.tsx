@@ -5,11 +5,10 @@ import {addPromise} from '../redux/actions/xhr';
 import {ICheckoutPaymentPageData} from 'boundless-api-client';
 import PaymentMethodForm from '../components/PaymentMethodForm';
 import useInitCheckoutByCart from '../hooks/initCheckout';
-import ErrorPage from './ErrorPage';
 import Loading from '../components/Loading';
 
 export default function PaymentPage() {
-	const {isInited, error} = useInitCheckoutByCart();
+	const {isInited} = useInitCheckoutByCart();
 	const [paymentPage, setPaymentPage] = useState<null|ICheckoutPaymentPageData>(null);
 	const {api, order} = useAppSelector(state => state.app);
 	const dispatch = useAppDispatch();
@@ -21,11 +20,7 @@ export default function PaymentPage() {
 			;
 			dispatch(addPromise(promise));
 		}
-	}, [api, order]);
-
-	if (error) {
-		return <ErrorPage error={error} />;
-	}
+	}, [api, order]);//eslint-disable-line
 
 	if (!isInited || !paymentPage) {
 		return <Loading />;

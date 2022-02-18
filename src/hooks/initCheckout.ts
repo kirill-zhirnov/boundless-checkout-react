@@ -1,11 +1,11 @@
-import {useEffect, useState} from 'react';
+import {useEffect} from 'react';
 import {useAppSelector} from './redux';
 import {useAppDispatch} from './redux';
 import {initCheckoutByCart} from '../redux/actions/checkout';
+import {setGlobalError} from '../redux/reducers/app';
 
 export default function useInitCheckoutByCart() {
 	const {isInited, cartId} = useAppSelector((state) => state.app);
-	const [error, setError] = useState<null|string>(null);
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
@@ -14,12 +14,11 @@ export default function useInitCheckoutByCart() {
 				dispatch(initCheckoutByCart());
 			}
 		} else {
-			setError('Cart ID is not passed to the Checkout component.');
+			dispatch(setGlobalError('Cart ID is not passed to the Checkout component.'));
 		}
-	}, [cartId]);
+	}, [cartId]);//eslint-disable-line
 
 	return {
-		isInited,
-		error
+		isInited
 	};
 }

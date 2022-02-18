@@ -12,7 +12,8 @@ import {ReactNode} from 'react';
 
 const initialState: IAppState = {
 	isInited: false,
-	show: false
+	show: false,
+	globalError: null
 };
 
 const appSlice = createSlice({
@@ -43,7 +44,8 @@ const appSlice = createSlice({
 			return {
 				...state,
 				show: false,
-				isInited: false
+				isInited: false,
+				globalError: null
 			};
 		},
 		setCheckoutData(state, action: PayloadAction<Required<Pick<IAppState, 'items' | 'order' | 'settings' | 'stepper' | 'hasCouponCampaigns' | 'needShipping'>>>) {
@@ -71,6 +73,9 @@ const appSlice = createSlice({
 		setOrdersCustomer(state, action: PayloadAction<ICustomer>) {
 			const customer = action.payload;
 			state.order!.customer = customer;
+		},
+		setGlobalError(state, action: PayloadAction<string|null>) {
+			state.globalError = action.payload;
 		}
 	}
 });
@@ -81,7 +86,8 @@ export const {
 	hideCheckout,
 	setCheckoutData,
 	addFilledStep,
-	setOrdersCustomer
+	setOrdersCustomer,
+	setGlobalError
 } = appSlice.actions;
 
 export default appSlice.reducer;
@@ -89,13 +95,14 @@ export default appSlice.reducer;
 export type TOnThankYouPage = ({orderId, error}: {orderId: string, error?: string}) => void;
 
 export interface IAppState {
+	show: boolean,
+	isInited: boolean,
+	globalError: string|null,
 	basename?: string,
 	onHide?: () => void,
 	onThankYouPage?: TOnThankYouPage,
 	cartId?: string,
 	api?: BoundlessClient,
-	show: boolean,
-	isInited: boolean,
 	items?: ICartItem[],
 	order?: IOrder,
 	settings?: ICheckoutPageSettings,
