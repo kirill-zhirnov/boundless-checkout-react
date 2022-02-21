@@ -5,7 +5,6 @@ import {FormikProps} from 'formik';
 import TextField from '@mui/material/TextField';
 import {fieldAttrs} from '../lib/formUtils';
 import {useAppSelector} from '../hooks/redux';
-import MenuItem from '@mui/material/MenuItem';
 
 interface IProps {
 	countries: IVWCountry[],
@@ -100,6 +99,7 @@ export default function AddressFieldset({formikProps, countries, showPhone}: IPr
 									 }}
 									 {...fieldAttrs('country_id', formikProps)}
 				>
+					<option>Select country</option>
 					{countries.map(({country_id, title}) =>
 						<option key={country_id} value={country_id}>{title}</option>
 					)}

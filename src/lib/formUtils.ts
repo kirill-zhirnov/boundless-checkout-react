@@ -25,7 +25,7 @@ export function fieldAttrs<V extends FormikValues>(field: string, formikProps: F
 		onChange: handleChange
 	};
 
-	if (field in values) {
+	if (field in values && values[field] !== null) {
 		out.value = values[field];
 	}
 
