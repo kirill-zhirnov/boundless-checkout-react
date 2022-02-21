@@ -30,6 +30,7 @@ export default function PaymentPage() {
 		<CheckoutLayout>
 			<PaymentMethodForm paymentMethods={paymentPage.paymentMethods}
 												 countries={paymentPage.countries}
+												 requiredBillingAddress={paymentPage.requiredBillingAddress}
 			/>
 		</CheckoutLayout>
 	);
