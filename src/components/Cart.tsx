@@ -9,7 +9,7 @@ import {RootState} from '../redux/store';
 import {formatMoney} from '../lib/formatter';
 import {calcCartTotal} from '../lib/calculator';
 import CartFooter from './cart/CartFooter';
-import CartDiscount from './cart/CartDiscount';
+import CartDiscountForm from './cart/CartDiscountForm';
 
 export default function Cart() {
 	const cartItems = useAppSelector((state: RootState) => state.app.items);
@@ -18,6 +18,8 @@ export default function Cart() {
 	const [discounts, setDiscounts] = useState(order?.discounts || []);
 
 	const total = useMemo(() => calcCartTotal(cartItems, order, discounts), [cartItems, order, discounts]);
+	const hasCouponCampaigns = useAppSelector((state: RootState) => state.app.hasCouponCampaigns);
+	const hasDisounts = discounts?.length > 0;
 
 	const toggleCollapse = (e: React.MouseEvent) => {
 		e.preventDefault();
@@ -50,8 +52,10 @@ export default function Cart() {
 			<div className={clsx('bdl-cart__full', {open: fullOpened})}>
 				<CartItems />
 			</div>
-			<CartDiscount discounts={discounts} setDiscounts={setDiscounts} />
-			<CartFooter order={order} total={total} open={fullOpened} />
+			{hasCouponCampaigns && !hasDisounts && <div className='bdl-cart__discount'>
+				<CartDiscountForm setDiscounts={setDiscounts} />
+			</div>}
+			<CartFooter order={order} total={total} open={fullOpened} discounts={discounts} setDiscounts={setDiscounts} />
 		</div >
 	);
 }

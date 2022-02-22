@@ -135,6 +135,19 @@
 
 	&__footer-value {
 		font-weight: normal;
+		white-space: nowrap;
+	}
+
+	&__footer-rm {
+		text-align: end;
+	}
+
+	&__footer-rm-link {
+		color: #777;
+		text-decoration: none;
+		&:hover {
+			text-decoration: underline;
+		}
 	}
 }
 
