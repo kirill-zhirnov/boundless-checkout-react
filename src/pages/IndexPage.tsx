@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import {useEffect} from 'react';
 import useInitCheckoutByCart from '../hooks/initCheckout';
 import {useAppSelector} from '../hooks/redux';
 import {getPathByStep} from '../App';
@@ -17,7 +17,7 @@ export default function IndexPage() {
 				navigate(urlPath, {replace: true});
 			}
 		}
-	}, [isInited, stepper]);
+	}, [isInited, stepper]); //eslint-disable-line
 
 	return null;
 }
