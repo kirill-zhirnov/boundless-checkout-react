@@ -6,7 +6,7 @@ import '../styles/styles.scss';
 import CheckoutApp from './App';
 import {Provider} from 'react-redux';
 import {store} from './redux/store';
-import {setBasicProps, hideCheckout, showCheckout, TOnThankYouPage} from './redux/reducers/app';
+import {setBasicProps, hideCheckout, showCheckout, TOnThankYouPage, TOnCheckoutInited} from './redux/reducers/app';
 import {BoundlessClient} from 'boundless-api-client';
 import {BrowserRouter} from 'react-router-dom';
 import {useAppSelector} from './hooks/redux';
@@ -31,14 +31,15 @@ export default class BoundlessCheckout extends Component<IBoundlessCheckoutProps
 	componentDidMount() {
 		document.body.appendChild(this.el);
 
-		const {onHide, onThankYouPage, cartId, basename, api, logo} = this.props;
+		const {onHide, onThankYouPage, cartId, basename, api, logo, onCheckoutInited} = this.props;
 		store.dispatch(setBasicProps({
 			onHide,
 			onThankYouPage,
 			cartId,
 			basename,
 			api,
-			logo
+			logo,
+			onCheckoutInited
 		}));
 		this.syncShowProp();
 	}
@@ -97,7 +98,8 @@ interface IBoundlessCheckoutProps {
 	onThankYouPage: TOnThankYouPage,
 	api: BoundlessClient,
 	basename?: string,
-	logo?: string|ReactNode
+	logo?: string|ReactNode,
+	onCheckoutInited?: TOnCheckoutInited
 }
 
 const WrappedApp = () => {

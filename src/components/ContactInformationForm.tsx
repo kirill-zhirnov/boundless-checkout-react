@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Form, Formik, FormikHelpers} from 'formik';
 import {useAppDispatch, useAppSelector} from '../hooks/redux';
 import {
@@ -39,6 +39,10 @@ export default function ContactInformationForm() {
 export function ContactFormView({setViewMode}: { setViewMode: (mode: TViewMode) => void }) {
 	const {settings, order, stepper} = useAppSelector(state => state.app);
 	const {loggedInCustomer} = useAppSelector(state => state.user);
+
+	useEffect(() => {
+		document.title = 'Checkout: contact information';
+	}, []);
 
 	const {accountPolicy, contactFields} = settings!;
 	const fieldsList = getFieldsList(contactFields);
@@ -107,8 +111,7 @@ export function ContactFormView({setViewMode}: { setViewMode: (mode: TViewMode) 
 									xs={12}
 						>
 							<FormControlLabel control={
-								<Checkbox {...checkAttrs('receive_marketing_info', formikProps)}
-								/>
+								<Checkbox {...checkAttrs('receive_marketing_info', formikProps)} />
 							} label="Email me with news and offers"/>
 						</Grid>
 						}

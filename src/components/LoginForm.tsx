@@ -18,6 +18,7 @@ export default function LoginForm() {
 	const {loggedInCustomer} = useAppSelector(state => state.user);
 
 	useEffect(() => {
+		document.title = 'Checkout: login';
 		if (loggedInCustomer) {
 			setViewMode(TViewMode.contact);
 		}
