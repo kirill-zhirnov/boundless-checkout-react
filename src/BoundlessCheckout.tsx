@@ -10,26 +10,25 @@ import {setBasicProps, hideCheckout, showCheckout, TOnThankYouPage, TOnCheckoutI
 import {BoundlessClient} from 'boundless-api-client';
 import {BrowserRouter} from 'react-router-dom';
 import {useAppSelector} from './hooks/redux';
-
+import NoSsr from '@mui/material/NoSsr';
 import 'nprogress/nprogress.css';
 
-// import '@fontsource/roboto/300.css';
-// import '@fontsource/roboto/400.css';
-// import '@fontsource/roboto/500.css';
-// import '@fontsource/roboto/700.css';
-
 export default class BoundlessCheckout extends Component<IBoundlessCheckoutProps, {}> {
-	private el: HTMLDivElement;
+	private el: HTMLDivElement|null;
 	private rootElRef: React.RefObject<HTMLDivElement>;
 
 	constructor(props: IBoundlessCheckoutProps) {
 		super(props);
-		this.el = document.createElement('div');
+
+		this.el = (typeof window !== undefined && window.document)
+			? document.createElement('div')
+			: null
+		;
 		this.rootElRef = createRef();
 	}
 
 	componentDidMount() {
-		document.body.appendChild(this.el);
+		document.body.appendChild(this.el!);
 
 		const {onHide, onThankYouPage, cartId, basename, api, logo, onCheckoutInited} = this.props;
 		store.dispatch(setBasicProps({
@@ -68,11 +67,15 @@ export default class BoundlessCheckout extends Component<IBoundlessCheckoutProps
 
 	componentWillUnmount() {
 		clearAllBodyScrollLocks();
-		document.body.removeChild(this.el);
+		document.body.removeChild(this.el!);
 	}
 
 	render() {
 		const {show, basename} = this.props;
+
+		if (!this.el) {
+			return null;
+		}
 
 		return ReactDOM.createPortal(
 			<div className={clsx('bdl-checkout', {'bdl-checkout_show': show})}

@@ -2,7 +2,7 @@ const path = require('path');
 
 module.exports = {
 	entry: './src/index.ts',
-	mode: 'production',
+	mode: 'development',
 	resolve: {
 		extensions: ['.tsx', '.ts', '.js', '.json']
 	},
@@ -15,17 +15,12 @@ module.exports = {
 		// https://github.com/riversun/making-library-with-webpack#1-4publish-an-export-default-class-with-the-setting-library-name--class-name
 		globalObject: 'this',
 	},
-	// externals: [
-	// 	{
-	// 		react: 'react',
-	// 		'react/jsx-runtime': 'react/jsx-runtime',
-	// 		'react-dom': 'react-dom'
-	// 	}
-	// ],
+	// target: ['web', 'node'],
 	externals: {
-		react: 'react',
-		'react/jsx-runtime': 'react/jsx-runtime',
-		'react-dom': 'react-dom'
+		react: 'commonjs2 react',
+		'react/jsx-runtime': 'commonjs2 react/jsx-runtime',
+		'react-dom': 'commonjs2 react-dom',
+		'boundless-api-client': 'commonjs2 boundless-api-client'
 	},
 	module: {
 		rules: [
@@ -59,6 +54,13 @@ module.exports = {
 					{
 						loader: 'sass-loader'
 					},
+				],
+			},
+			{
+				test: /\.css$/,
+				use: [
+					{loader: 'style-loader'},
+					{loader: 'css-loader'}
 				],
 			},
 		]
