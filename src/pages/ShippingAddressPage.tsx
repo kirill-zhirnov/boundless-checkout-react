@@ -11,6 +11,7 @@ import {Button, FormControl, FormControlLabel, Radio, RadioGroup, Typography} fr
 import AddressFieldset, {IAddressFields} from '../components/AddressFieldset';
 import {Box} from '@mui/system';
 import {apiErrors2Formik} from '../lib/formUtils';
+import currency from 'currency.js';
 
 export default function ShippingAddressPage() {
 	const {isInited} = useInitCheckoutByCart();
@@ -39,8 +40,7 @@ export default function ShippingAddressPage() {
 				return api.checkout.setShippingAddress({order_id: order?.id, ...restValues});
 			})
 			.then(() => {
-				const redirectUrl = isPickUpDelivery(selectedDelivery) ? '/payment' : '/shipping-method';
-				navigate(redirectUrl);
+				navigate('/payment');
 			})
 			.catch(({response: {data}}) => {
 				setErrors(apiErrors2Formik(data));
@@ -88,7 +88,7 @@ export default function ShippingAddressPage() {
 											key={delivery.delivery_id}
 											value={delivery.delivery_id}
 											control={<Radio size='small' required />}
-											label={delivery.title}
+											label={getDeliveryTitle(delivery)}
 										/>
 									))}
 								</RadioGroup>
@@ -108,7 +108,7 @@ export default function ShippingAddressPage() {
 								type={'submit'}
 								disabled={formikProps.isSubmitting || !selectedDelivery}
 							>
-								{isPickUpDelivery(selectedDelivery) ? 'Continue to payment' : 'Continue to shipping'}
+								Continue to payment
 							</Button>
 						</Box>
 					</Form>
@@ -173,6 +173,19 @@ const getFormInitialValues = (order?: IOrder | null, storedAddress?: IAddress | 
 	}
 
 	return initialValues;
+};
+
+const getDeliveryTitle = (delivery: IDelivery) => {
+	const price = delivery.shipping_config?.price;
+
+	return (
+		<>
+			{delivery.title}
+			<small className='bdl-shipping-form__price'>
+				{price ? currency(price).format() : 'Free'} {/* FIXME formatMoney */}
+			</small>
+		</>
+	);
 };
 
 
