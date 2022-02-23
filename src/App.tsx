@@ -3,7 +3,6 @@ import {Route, Routes} from 'react-router-dom';
 import ContactInfoPage from './pages/ContactInfoPage';
 import ShippingAddressPage from './pages/ShippingAddressPage';
 import {useAppSelector} from './hooks/redux';
-import useLoadingLine from './hooks/loadingLine';
 import PaymentPage from './pages/PaymentPage';
 import {TCheckoutStep} from 'boundless-api-client';
 import PayPalReturnPage from './pages/PayPalReturnPage';
@@ -12,7 +11,6 @@ import IndexPage from './pages/IndexPage';
 
 export default function CheckoutApp() {
 	const {globalError} = useAppSelector((state) => state.app);
-	useLoadingLine();
 
 	if (globalError) {
 		return <ErrorPage error={globalError} />;
