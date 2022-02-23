@@ -1,36 +1,32 @@
-import React from 'react';
-import {IDetailedOrder} from 'boundless-api-client';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
+import React, {useEffect, useState} from 'react';
+import {BoundlessClient, IDetailedOrder} from 'boundless-api-client';
 import Paper from '@mui/material/Paper';
+import OrderItems from './components/orderInfo/OrderItems';
 
-export default function BoundlessOrderInfo({order}: {order: IDetailedOrder}) {
+export const ApiContext = React.createContext<BoundlessClient|null>(null);
+
+export default function BoundlessOrderInfo({api, orderId}: BoundlessOrderInfoProps) {
+	const [order, setOrder] = useState<IDetailedOrder | null>(null);
+
+	useEffect(() => {
+		api.customerOrder.getOrder(orderId).then((data) => setOrder(data));
+	}, [api, orderId]);
+
+	if (!order) return <div>Loading...</div>;
+
+	console.log(order);
 	return (
-		<TableContainer component={Paper}>
-			<Table>
-				<TableHead>
-					<TableRow>
-						<TableCell></TableCell>
-						<TableCell>Price</TableCell>
-						<TableCell>Qty</TableCell>
-						<TableCell>Total</TableCell>
-					</TableRow>
-				</TableHead>
-				<TableBody>
-					{order.items.map((item) =>
-						<TableRow key={item.item_id}>
-							<TableCell>{item.vwItem.product.title}</TableCell>
-							<TableCell></TableCell>
-							<TableCell></TableCell>
-							<TableCell></TableCell>
-						</TableRow>
-					)}
-				</TableBody>
-			</Table>
-		</TableContainer>
+		<ApiContext.Provider value={api}>
+			<div style={{backgroundColor: '#fafafa', padding: 20}}>
+				<Paper className='bdl-order-summary'>
+					<OrderItems order={order} />
+				</Paper>
+			</div>
+		</ApiContext.Provider>
 	);
+}
+
+interface BoundlessOrderInfoProps {
+	orderId: string;
+	api: BoundlessClient;
 }
