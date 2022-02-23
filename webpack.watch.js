@@ -31,7 +31,9 @@ module.exports = {
 					{
 						loader: 'ts-loader',
 						options: {
-							compilerOptions: require('./tsconfig.json').compilerOptions
+							compilerOptions: Object.assign(require('./tsconfig.json').compilerOptions, {
+								declarationDir: path.resolve(__dirname, 'dist')
+							})
 						},
 					}
 				]

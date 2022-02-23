@@ -4,6 +4,8 @@ import css from 'rollup-plugin-import-css';
 import packageJson from './package.json';
 import {nodeResolve} from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
+import {babel} from '@rollup/plugin-babel';
+import {terser} from 'rollup-plugin-terser';
 
 export default {
 	external: ['react', 'react-dom', 'boundless-api-client'],
@@ -14,10 +16,14 @@ export default {
 		}),
 		commonjs(),
 		typescript({tsconfig: './tsconfig.json'}),
+		babel({
+			babelHelpers: 'bundled',
+			exclude: 'node_modules/**',
+		}),
 		scss(),
-		css()
+		css(),
+		terser()
 	],
-	// output: {}
 	output: [
 		{
 			file: packageJson.main,
