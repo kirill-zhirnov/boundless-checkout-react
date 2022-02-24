@@ -1,12 +1,11 @@
 import React, {useContext, useState} from 'react';
 import {Button} from '@mui/material';
 import PaymentIcon from '@mui/icons-material/Payment';
-import {ApiContext, ErrorContext} from '../BoundlessOrderInfo';
+import {ApiContext} from '../BoundlessOrderInfo';
 import {useNavigate} from 'react-router-dom';
 
-export default function PayButton({orderId}: {orderId: string}) {
+export default function PayButton({orderId, onError}: {orderId: string, onError?: (err: any) => void}) {
 	const api = useContext(ApiContext);
-	const onError = useContext(ErrorContext);
 	const navigate = useNavigate();
 	const [submitting, setSubmitting] = useState(false);
 
