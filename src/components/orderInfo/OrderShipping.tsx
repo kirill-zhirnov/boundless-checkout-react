@@ -39,7 +39,7 @@ const ShippingAddress = ({address}: {address: IAddress}) => {
 	const cityCountry = [
 		address.city,
 		address.state,
-		address.country_id,
+		address.vwCountry?.title,
 		address.zip,
 	].filter(el => el).join(', ');
 

@@ -2,11 +2,9 @@ import React, {useContext, useState} from 'react';
 import {Button} from '@mui/material';
 import PaymentIcon from '@mui/icons-material/Payment';
 import {ApiContext} from '../BoundlessOrderInfo';
-import {useNavigate} from 'react-router-dom';
 
 export default function PayButton({orderId, onError}: {orderId: string, onError?: (err: any) => void}) {
 	const api = useContext(ApiContext);
-	const navigate = useNavigate();
 	const [submitting, setSubmitting] = useState(false);
 
 	const handlePayClick = () => {
@@ -16,7 +14,7 @@ export default function PayButton({orderId, onError}: {orderId: string, onError?
 		api.customerOrder.makePaymentLink({order_id: orderId})
 			.then(({url}) => {
 				console.log('Payment url', url);
-				navigate(url);
+				window.location.href = url;
 			})
 			.catch(err => {
 				console.error(err);
