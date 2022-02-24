@@ -10,7 +10,7 @@ import {setBasicProps, hideCheckout, showCheckout, TOnThankYouPage, TOnCheckoutI
 import {BoundlessClient} from 'boundless-api-client';
 import {BrowserRouter} from 'react-router-dom';
 import {useAppSelector} from './hooks/redux';
-import NoSsr from '@mui/material/NoSsr';
+// import NoSsr from '@mui/material/NoSsr';
 import 'nprogress/nprogress.css';
 
 export default class BoundlessCheckout extends Component<IBoundlessCheckoutProps, {}> {
