@@ -13,7 +13,6 @@ export default function PayButton({orderId, onError}: {orderId: string, onError?
 		setSubmitting(true);
 		api.customerOrder.makePaymentLink({order_id: orderId})
 			.then(({url}) => {
-				console.log('Payment url', url);
 				window.location.href = url;
 			})
 			.catch(err => {
