@@ -1,0 +1,18 @@
+.bdl-loading-line {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+
+	&__linear {
+		&_finished {
+			opacity: 0;
+		}
+	}
+
+	&__circular {
+		position: absolute;
+		right: 10px;
+		top: 10px;
+	}
+}
