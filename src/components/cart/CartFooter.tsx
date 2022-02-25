@@ -44,7 +44,7 @@ export default function CartFooter({total, open}: CartFooterProps) {
 
 	return (
 		<div className={clsx('bdl-cart__footer', {open})}>
-			{hasShipping || hasDiscount && <div className='bdl-cart__footer-row'>
+			{(hasShipping || hasDiscount) && <div className='bdl-cart__footer-row'>
 				<h5 className='bdl-cart__footer-title'>Subtotal:
 					<span className='bdl-cart__footer-value'> {formatMoney(total?.subtotal_price || 0)}</span>
 				</h5>
