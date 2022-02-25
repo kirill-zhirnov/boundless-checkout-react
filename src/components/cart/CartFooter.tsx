@@ -1,4 +1,4 @@
-import {IOrder, IOrderDiscount, TDiscountType} from 'boundless-api-client';
+import {TDiscountType} from 'boundless-api-client';
 import React, {useState} from 'react';
 import {IOrderTotal} from '../../lib/calculator';
 import {formatMoney} from '../../lib/formatter';
@@ -6,31 +6,33 @@ import currency from 'currency.js';
 import clsx from 'clsx';
 import {useAppDispatch, useAppSelector} from '../../hooks/redux';
 import {addPromise} from '../../redux/actions/xhr';
+import {setOrder} from '../../redux/reducers/app';
 
-export default function CartFooter({total, order, open, discounts, setDiscounts}: CartFooterProps) {
+export default function CartFooter({total, open}: CartFooterProps) {
 	const dispatch = useAppDispatch();
 	const api = useAppSelector(state => state.app.api);
-	const orderId = useAppSelector(state => state.app.order?.id);
+	const order = useAppSelector(state => state.app.order);
 	const [submitting, setSubmitting] = useState(false);
 	const hasDiscount = total?.discount_for_order && currency(total?.discount_for_order).value > 0;
 	const hasShipping = order?.service_total_price && currency(order?.service_total_price).value > 0;
 
 	const getDiscountAmount = () => {
-		if (!discounts || !discounts.length) return '';
-		if (discounts[0].discount_type === TDiscountType.percent) return ` (${discounts[0].value}%)`;
+		if (!order?.discounts || !order?.discounts.length) return '';
+		const discount = order.discounts[0];
+		if (discount.discount_type === TDiscountType.percent) return ` (${discount.value}%)`;
 
 		return '';
 	};
 
 	const handleRmDiscount = (e: React.MouseEvent) => {
 		e.preventDefault();
-		if (!window.confirm('Are you sure?') || !api || !orderId || submitting) return;
+		if (!window.confirm('Are you sure?') || !api || !order?.id || submitting) return;
 
 		setSubmitting(true);
 
-		const promise = api.checkout.clearDiscounts(orderId)
-			.then(() => {
-				setDiscounts([]);
+		const promise = api.checkout.clearDiscounts(order.id)
+			.then(({order}) => {
+				if (order) dispatch(setOrder(order));
 			})
 			.catch((err) => console.error(err))
 			.finally(() => setSubmitting(false));
@@ -77,8 +79,5 @@ export default function CartFooter({total, order, open, discounts, setDiscounts}
 
 interface CartFooterProps {
 	total: IOrderTotal | null;
-	order?: IOrder;
 	open: boolean;
-	discounts: IOrderDiscount[],
-	setDiscounts: React.Dispatch<React.SetStateAction<IOrderDiscount[]>>
 }

@@ -15,11 +15,10 @@ export default function Cart() {
 	const cartItems = useAppSelector((state: RootState) => state.app.items);
 	const order = useAppSelector((state: RootState) => state.app.order);
 	const [fullOpened, setFullOpened] = useState(false);
-	const [discounts, setDiscounts] = useState(order?.discounts || []);
 
-	const total = useMemo(() => calcCartTotal(cartItems, order, discounts), [cartItems, order, discounts]);
+	const total = useMemo(() => calcCartTotal(cartItems, order), [cartItems, order]);
 	const hasCouponCampaigns = useAppSelector((state: RootState) => state.app.hasCouponCampaigns);
-	const hasDisounts = discounts?.length > 0;
+	const hasDisounts = order?.discounts && order?.discounts?.length > 0;
 
 	const toggleCollapse = (e: React.MouseEvent) => {
 		e.preventDefault();
@@ -53,9 +52,9 @@ export default function Cart() {
 				<CartItems />
 			</div>
 			{hasCouponCampaigns && !hasDisounts && <div className='bdl-cart__discount'>
-				<CartDiscountForm setDiscounts={setDiscounts} />
+				<CartDiscountForm />
 			</div>}
-			<CartFooter order={order} total={total} open={fullOpened} discounts={discounts} setDiscounts={setDiscounts} />
+			<CartFooter total={total} open={fullOpened} />
 		</div >
 	);
 }

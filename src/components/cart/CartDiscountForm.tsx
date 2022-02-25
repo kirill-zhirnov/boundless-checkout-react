@@ -5,9 +5,9 @@ import {apiErrors2Formik, fieldAttrs} from '../../lib/formUtils';
 import {useAppSelector, useAppDispatch} from '../../hooks/redux';
 import {RootState} from '../../redux/store';
 import {addPromise} from '../../redux/actions/xhr';
-import {IOrderDiscount} from 'boundless-api-client';
+import {setOrder} from '../../redux/reducers/app';
 
-export default function CartDiscountForm({setDiscounts}: CartDiscountsFormProps) {
+export default function CartDiscountForm() {
 	const dispatch = useAppDispatch();
 	const api = useAppSelector((state: RootState) => state.app.api);
 	const orderId = useAppSelector((state: RootState) => state.app.order?.id);
@@ -16,8 +16,8 @@ export default function CartDiscountForm({setDiscounts}: CartDiscountsFormProps)
 		if (!api || !orderId) return;
 
 		const promise = api.checkout.addDiscountCode(orderId, values.code)
-			.then(({discount}) => {
-				if (discount) setDiscounts(prev => [...prev, discount]);
+			.then(({order}) => {
+				if (order) dispatch(setOrder(order));
 			})
 			.catch(({response: {data}}) => setErrors(apiErrors2Formik(data)))
 			.finally(() => setSubmitting(false))
@@ -65,8 +65,4 @@ export default function CartDiscountForm({setDiscounts}: CartDiscountsFormProps)
 
 export interface IDiscountFormValues {
 	code: string;
-}
-
-interface CartDiscountsFormProps {
-	setDiscounts: React.Dispatch<React.SetStateAction<IOrderDiscount[]>>
 }

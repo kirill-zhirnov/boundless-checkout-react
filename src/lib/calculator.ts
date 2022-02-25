@@ -1,7 +1,7 @@
-import {ICartItem, IDetailedOrder, IOrder, IOrderDiscount} from 'boundless-api-client';
+import {ICartItem, IDetailedOrder, IOrder} from 'boundless-api-client';
 import {TotalCalculator} from 'boundless-api-client/totalCalculator';
 
-export const calcCartTotal = (items: ICartItem[] | undefined, order: IOrder | undefined, discounts: IOrderDiscount[]): IOrderTotal | null => {
+export const calcCartTotal = (items: ICartItem[] | undefined, order: IOrder | undefined): IOrderTotal | null => {
 	if (!items || !order) return null;
 	const calculator = new TotalCalculator();
 
@@ -13,8 +13,8 @@ export const calcCartTotal = (items: ICartItem[] | undefined, order: IOrder | un
 		);
 	}
 
-	if (discounts?.length) {
-		calculator.setDiscounts(discounts);
+	if (order.discounts?.length) {
+		calculator.setDiscounts(order.discounts);
 	}
 
 	calculator.setShipping(order.service_total_price ? parseFloat(order.service_total_price) : 0);
