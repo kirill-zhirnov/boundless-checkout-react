@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import CheckoutLayout from '../layout/CheckoutLayout';
 import useInitCheckoutByCart from '../hooks/initCheckout';
@@ -6,60 +6,29 @@ import Loading from '../components/Loading';
 import {useAppDispatch, useAppSelector} from '../hooks/redux';
 import {IAddress, ICheckoutShippingPageData, IDelivery, IOrder, TAddressType, TShippingAlias} from 'boundless-api-client';
 import {addPromise} from '../redux/actions/xhr';
-import {Form, Formik, FormikHandlers, FormikHelpers, FormikProps} from 'formik';
-import {Button, FormControl, FormControlLabel, Radio, RadioGroup, Typography} from '@mui/material';
+import {Form, Formik, FormikHelpers, FormikProps} from 'formik';
+import {Button, Typography} from '@mui/material';
 import AddressFieldset, {IAddressFields} from '../components/AddressFieldset';
 import {Box} from '@mui/system';
 import {apiErrors2Formik} from '../lib/formUtils';
-import currency from 'currency.js';
+import {setOrder} from '../redux/reducers/app';
+import SelectDelivery from '../components/SelectDelivery';
 
 export default function ShippingAddressPage() {
 	const {isInited} = useInitCheckoutByCart();
 	const [shippingPage, setShippingPage] = useState<null | ICheckoutShippingPageData>(null);
 	const {api, order} = useAppSelector(state => state.app);
 	const dispatch = useAppDispatch();
-	const navigate = useNavigate();
 	const [selectedDelivery, setSelectedDelivery] = useState<IDelivery | null>(null);
-
-	const handleSelectDelivery = (onChange: FormikHandlers['handleChange'], e: React.ChangeEvent<HTMLInputElement>) => {
-		if (!e.target.checked || !shippingPage?.options.delivery.length) return;
-
-		const delivery = shippingPage.options.delivery.find(el => el.delivery_id === +e.target.value);
-		if (delivery) setSelectedDelivery(delivery);
-		onChange(e);
-	};
-
-	const onSubmit = (values: IDeliveryFormValues, {setSubmitting, setErrors}: FormikHelpers<IDeliveryFormValues>) => {
-		if (!api || !order) return;
-		const {delivery_id, ...restValues} = values;
-
-		const promise = api.checkout.setDeliveryMethod(order?.id, +delivery_id)
-			.then(() => {
-				if (isPickUpDelivery(selectedDelivery)) return;
-
-				return api.checkout.setShippingAddress({order_id: order?.id, ...restValues});
-			})
-			.then(() => {
-				navigate('/payment');
-			})
-			.catch(({response: {data}}) => {
-				setErrors(apiErrors2Formik(data));
-			})
-			.finally(() => setSubmitting(false))
-			;
-
-		dispatch(addPromise(promise));
-	};
-
-	const initialValues: IDeliveryFormValues = useMemo(() =>
-		getFormInitialValues(order, shippingPage?.shippingAddress)
-		, [shippingPage?.shippingAddress, order]);
+	const {onSubmit} = useSaveDelivery(selectedDelivery);
 
 	useEffect(() => {
-		if (!initialValues.delivery_id || !shippingPage) return;
-		const delivery = shippingPage.options.delivery.find(el => el.delivery_id === initialValues.delivery_id);
+		if (!shippingPage || !order) return;
+		const presetDeliveryId = order?.services?.find(service => service.is_delivery)?.serviceDelivery?.delivery_id;
+
+		const delivery = shippingPage.options.delivery.find(el => el.delivery_id === presetDeliveryId);
 		if (delivery) setSelectedDelivery(delivery);
-	}, [initialValues, shippingPage]);
+	}, [order, shippingPage]);
 
 	useEffect(() => {
 		if (api && order) {
@@ -76,26 +45,20 @@ export default function ShippingAddressPage() {
 
 	return (
 		<CheckoutLayout>
-			<Typography variant="h5" mb={2}>Delivery method</Typography>
-			<Formik initialValues={initialValues} onSubmit={onSubmit}>
+			<Formik initialValues={getFormInitialValues(order, shippingPage?.shippingAddress)} onSubmit={onSubmit}>
 				{(formikProps) => (
 					<Form className={'bdl-shipping-form'}>
+						<Typography variant="h5" mb={2}>Delivery method</Typography>
 						<Box mb={2}>
-							<FormControl component="fieldset" error={Boolean('delivery_id' in formikProps.errors)}>
-								<RadioGroup name='delivery_id' onChange={handleSelectDelivery.bind(null, formikProps.handleChange)} value={formikProps.values.delivery_id}>
-									{shippingPage.options.delivery.map(delivery => (
-										<FormControlLabel
-											key={delivery.delivery_id}
-											value={delivery.delivery_id}
-											control={<Radio size='small' required />}
-											label={getDeliveryTitle(delivery)}
-										/>
-									))}
-								</RadioGroup>
-							</FormControl>
+							<SelectDelivery
+								deliveries={shippingPage.options.delivery}
+								setDelivery={setSelectedDelivery}
+								formikProps={formikProps}
+								selectedDelivery={selectedDelivery}
+							/>
 						</Box>
 						{selectedDelivery && !isPickUpDelivery(selectedDelivery) &&
-							<Box mb={2}>
+							<Box className='bdl-shipping-form__address-form' mb={2}>
 								<Typography variant="h6">Shipping address</Typography>
 								<AddressFieldset
 									formikProps={formikProps as unknown as FormikProps<IAddressFields>}
@@ -114,7 +77,6 @@ export default function ShippingAddressPage() {
 					</Form>
 				)}
 			</Formik>
-			{/* <Link to={'/'}>Go to contact info</Link> */}
 		</CheckoutLayout>
 	);
 }
@@ -126,11 +88,16 @@ const isPickUpDelivery = (delivery: IDelivery | null) => {
 const getFormInitialValues = (order?: IOrder | null, storedAddress?: IAddress | null) => {
 	const initialValues: IDeliveryFormValues = {
 		delivery_id: 0,
+		first_name: '',
 		last_name: '',
+		company: '',
 		city: '',
 		country_id: 0,
 		address_line_1: '',
-		zip: ''
+		address_line_2: '',
+		state: '',
+		zip: '',
+		phone: ''
 	};
 
 	if (order?.customer) {
@@ -145,7 +112,8 @@ const getFormInitialValues = (order?: IOrder | null, storedAddress?: IAddress | 
 				city: shippingAddress.city,
 				state: shippingAddress.state,
 				country_id: shippingAddress.country_id,
-				zip: shippingAddress.zip
+				zip: shippingAddress.zip,
+				phone: shippingAddress.phone
 			});
 		}
 
@@ -168,30 +136,50 @@ const getFormInitialValues = (order?: IOrder | null, storedAddress?: IAddress | 
 			city: storedAddress.city,
 			state: storedAddress.state,
 			country_id: storedAddress.country_id,
-			zip: storedAddress.zip
+			zip: storedAddress.zip,
+			phone: storedAddress.phone
 		});
 	}
 
 	return initialValues;
 };
 
-const getDeliveryTitle = (delivery: IDelivery) => {
-	const price = delivery.shipping_config?.price;
+const useSaveDelivery = (selectedDelivery: IDelivery | null) => {
+	const {api, order} = useAppSelector(state => state.app);
+	const dispatch = useAppDispatch();
+	const navigate = useNavigate();
 
-	return (
-		<>
-			{delivery.title}
-			<small className='bdl-shipping-form__price'>
-				{price ? currency(price).format() : 'Free'} {/* FIXME formatMoney */}
-			</small>
-		</>
-	);
+	const onSubmit = (values: IDeliveryFormValues, {setSubmitting, setErrors}: FormikHelpers<IDeliveryFormValues>) => {
+		if (!api || !order) return;
+		const {delivery_id, ...restValues} = values;
+
+		const promise = api.checkout.setDeliveryMethod(order?.id, +delivery_id)
+			.then(({order}) => {
+				if (order) dispatch(setOrder(order));
+				if (isPickUpDelivery(selectedDelivery)) return;
+
+				return api.checkout.setShippingAddress({order_id: order?.id, ...restValues});
+			})
+			.then(() => {
+				navigate('/payment');
+			})
+			.catch(({response: {data}}) => {
+				setErrors(apiErrors2Formik(data));
+			})
+			.finally(() => setSubmitting(false))
+			;
+
+		dispatch(addPromise(promise));
+	};
+
+	return {
+		onSubmit
+	};
 };
-
 
 export interface IDeliveryFormValues {
 	delivery_id: number;
-	payment_address_the_same?: boolean;
+	// payment_address_the_same?: boolean;
 	first_name?: string;
 	last_name: string;
 	company?: string;
@@ -201,4 +189,5 @@ export interface IDeliveryFormValues {
 	state?: string;
 	country_id: number;
 	zip: string;
+	phone?: string;
 }
