@@ -8,6 +8,14 @@ import {useAppSelector} from '../hooks/redux';
 import StoreMallDirectoryIcon from '@mui/icons-material/StoreMallDirectory';
 
 export default function SelectDelivery({formikProps, deliveries, setDelivery, selectedDelivery}: SelectDeliveryProps) {
+	const api = useAppSelector(state => state.app.api);
+	if (!api) return null;
+
+	const getImgThumb = (img: string) => api!.makeThumb({
+		imgLocalPath: img,
+		maxSize: 50
+	}).getSrc();
+
 	const handleSelectDelivery = (onChange: FormikHandlers['handleChange'], e: React.ChangeEvent<HTMLInputElement>) => {
 		if (!e.target.checked || !deliveries.length) return;
 
@@ -22,13 +30,14 @@ export default function SelectDelivery({formikProps, deliveries, setDelivery, se
 				{deliveries.map(delivery => (
 					<React.Fragment key={delivery.delivery_id}>
 						<FormControlLabel
+							className='bdl-shipping-form__shipping-item'
 							value={delivery.delivery_id}
 							control={<Radio size='small' required />}
-							label={getDeliveryTitle(delivery)}
+							label={getDeliveryTitle(delivery, getImgThumb)}
 						/>
 						{selectedDelivery?.delivery_id === delivery.delivery_id &&
 							<div className='bdl-shipping-form__shipping-details'>
-								<DeliveryDetails delivery={delivery} />
+								{getDeliveryDetails(delivery) && <div dangerouslySetInnerHTML={{__html: getDeliveryDetails(delivery)}} />}
 							</div>}
 					</React.Fragment>
 				))}
@@ -37,43 +46,30 @@ export default function SelectDelivery({formikProps, deliveries, setDelivery, se
 	);
 }
 
-const getDeliveryTitle = (delivery: IDelivery) => {
+const getDeliveryTitle = (delivery: IDelivery, getImgThumb: (img: string) => string) => {
 	const price = delivery.shipping_config?.price;
 
 	return (
-		<>
+		<span className='bdl-shipping-form__shipping-label'>
+			{delivery.shipping?.alias === TShippingAlias.selfPickup
+				? <StoreMallDirectoryIcon className='bdl-shipping-form__shipping-img' fontSize='large' />
+				: delivery.img && <img className='bdl-shipping-form__shipping-img' src={getImgThumb(delivery.img)} />}
 			{delivery.title}
 			<small className='bdl-shipping-form__price'>
 				{price ? currency(price).format() : 'Free'} {/* FIXME formatMoney */}
 			</small>
-		</>
+		</span>
 	);
 };
 
-const DeliveryDetails = ({delivery}: {delivery: IDelivery}) => {
-	const api = useAppSelector(state => state.app.api);
-	if (!api) return null;
+const getDeliveryDetails = (delivery: IDelivery) => {
+	if (delivery.shipping?.alias === TShippingAlias.selfPickup && delivery.shipping_config?.address) {
+		return delivery.shipping_config?.address;
+	}
 
-	const getImgThumb = (img: string) => api!.makeThumb({
-		imgLocalPath: img,
-		maxSize: 50
-	}).getSrc();
+	if (delivery.description) return delivery.description;
 
-	if (delivery.shipping?.alias === TShippingAlias.selfPickup && delivery.shipping_config?.address) return (
-		<>
-			<StoreMallDirectoryIcon className='bdl-shipping-form__shipping-img' fontSize='large'/>
-			<div dangerouslySetInnerHTML={{__html: delivery.shipping_config?.address}} />
-		</>
-	);
-
-	if (delivery.description || delivery.img) return (
-		<>
-			{delivery.img && <img className='bdl-shipping-form__shipping-img' src={getImgThumb(delivery.img)} />}
-			{delivery.description && <div dangerouslySetInnerHTML={{__html: delivery.description}} />}
-		</>
-	);
-
-	return null;
+	return '';
 };
 
 interface SelectDeliveryProps {
