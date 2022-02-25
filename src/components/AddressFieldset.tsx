@@ -129,4 +129,5 @@ export interface IAddressFields {
 	state?: string;
 	country_id?: number;
 	zip?: string;
+	phone?: string;
 }

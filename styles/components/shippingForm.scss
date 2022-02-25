@@ -1,0 +1,36 @@
+.bdl-shipping-form {
+	margin: 0 auto;
+	max-width: 600px;
+
+	&__price {
+		color: #777;
+		margin-left: 8px;
+	}
+
+	&__address-form {
+		background: #f8f9fa;
+		padding: 15px;
+	}
+
+	&__shipping-details {
+		display: flex;
+		padding: 10px 0;
+	}
+
+	&__shipping-item {
+		margin-bottom: 8px;
+	}
+
+	&__shipping-label {
+		align-items: center;
+		display: flex;
+	}
+
+	&__shipping-img {
+		height: auto;
+		margin-right: 12px;
+		max-width: 50px;
+	}
+}
+
+
