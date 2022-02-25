@@ -20,7 +20,7 @@ export default function CheckoutApp() {
 		<Routes>
 			<Route path="/info" element={<ContactInfoPage/>}/>
 			<Route path="/shipping-address" element={<ShippingAddressPage/>} />
-			<Route path="/shipping-method" element={<div>choose shipping method</div>} />
+			{/*<Route path="/shipping-method" element={<div>choose shipping method</div>} />*/}
 			<Route path="/payment" element={<PaymentPage />} />
 			<Route path="/paypal/return" element={<PayPalReturnPage isCancelPage={false}/>} />
 			<Route path="/paypal/cancel" element={<PayPalReturnPage isCancelPage={true}/>} />
@@ -35,8 +35,8 @@ export const getPathByStep = (step: TCheckoutStep) => {
 			return '/info';
 		case TCheckoutStep.shippingAddress:
 			return '/shipping-address';
-		case TCheckoutStep.shippingMethod:
-			return '/shipping-method';
+		// case TCheckoutStep.shippingMethod:
+		// 	return '/shipping-method';
 		case TCheckoutStep.paymentMethod:
 			return '/payment';
 	}
