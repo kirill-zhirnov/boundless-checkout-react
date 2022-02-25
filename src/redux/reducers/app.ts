@@ -76,6 +76,9 @@ const appSlice = createSlice({
 				stepper.filledSteps.push(step);
 			}
 		},
+		setOrder(state, action: PayloadAction<IOrder>) {
+			state.order = action.payload;
+		},
 		setOrdersCustomer(state, action: PayloadAction<ICustomer>) {
 			const customer = action.payload;
 			state.order!.customer = customer;
@@ -94,6 +97,7 @@ export const {
 	addFilledStep,
 	setOrdersCustomer,
 	setGlobalError,
+	setOrder,
 	setCheckoutInited
 } = appSlice.actions;
 

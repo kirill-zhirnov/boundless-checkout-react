@@ -9,13 +9,13 @@ import Alert from '@mui/material/Alert';
  *
  * We need to display errors in any case.
  */
-export default function ExtraErrors({presentedFields, errors}: {presentedFields: string[], errors: FormikErrors<any>}) {
+export default function ExtraErrors({excludedFields, errors}: {excludedFields: string[], errors: FormikErrors<any>}) {
 	const [open, setIsOpen] = useState(true);
 	const [alertText, setAlertText] = useState<null|string>(null);
 
 	useEffect(() => {
 		const errorsList = Object.keys(errors)
-			.filter((key) => !presentedFields.includes(key))
+			.filter((key) => !excludedFields.includes(key))
 			.map((key) => errors[key])
 		;
 
@@ -26,7 +26,7 @@ export default function ExtraErrors({presentedFields, errors}: {presentedFields:
 			setAlertText(null);
 			setIsOpen(false);
 		}
-	}, [presentedFields, errors]);
+	}, [excludedFields, errors]);
 
 	const handleClose = (event?: SyntheticEvent | Event, reason?: string) => {
 		if (reason === 'clickaway') {

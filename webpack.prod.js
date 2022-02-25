@@ -1,31 +1,31 @@
 const path = require('path');
 
 module.exports = {
-	entry: './src/index.ts',
+	entry: ['./src/index.ts', './src/BoundlessCheckout.tsx', './src/BoundlessOrderInfo.tsx'],
 	mode: 'production',
 	resolve: {
 		extensions: ['.tsx', '.ts', '.js', '.json']
 	},
 	output: {
 		path: path.resolve(__dirname, 'dist'),
-		library: 'BoundlessCheckout',
-		filename: 'index.js',
-		libraryTarget: 'umd',
+		library: {
+			name: 'MyLibrary',
+			type: 'commonjs',
+		},
+		filename: '[name].js',
+		libraryTarget: 'commonjs',
 		// this to support both browser and Node.
 		// https://github.com/riversun/making-library-with-webpack#1-4publish-an-export-default-class-with-the-setting-library-name--class-name
 		globalObject: 'this',
+		// chunkFormat: false,
+		// chunkLoading: false
 	},
-	// externals: [
-	// 	{
-	// 		react: 'react',
-	// 		'react/jsx-runtime': 'react/jsx-runtime',
-	// 		'react-dom': 'react-dom'
-	// 	}
-	// ],
+	target: ['web', 'node'],
 	externals: {
-		react: 'react',
-		'react/jsx-runtime': 'react/jsx-runtime',
-		'react-dom': 'react-dom'
+		react: 'commonjs2 react',
+		'react/jsx-runtime': 'commonjs2 react/jsx-runtime',
+		'react-dom': 'commonjs2 react-dom',
+		'boundless-api-client': 'commonjs2 boundless-api-client'
 	},
 	module: {
 		rules: [
@@ -59,6 +59,13 @@ module.exports = {
 					{
 						loader: 'sass-loader'
 					},
+				],
+			},
+			{
+				test: /\.css$/,
+				use: [
+					{loader: 'style-loader'},
+					{loader: 'css-loader'}
 				],
 			},
 		]

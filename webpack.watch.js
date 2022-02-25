@@ -17,9 +17,10 @@ module.exports = {
 	},
 
 	externals: {
-		react: 'react',
-		'react/jsx-runtime': 'react/jsx-runtime',
-		'react-dom': 'react-dom'
+		react: 'commonjs2 react',
+		'react/jsx-runtime': 'commonjs2 react/jsx-runtime',
+		'react-dom': 'commonjs2 react-dom',
+		'boundless-api-client': 'commonjs2 boundless-api-client'
 	},
 	module: {
 		rules: [
@@ -30,7 +31,9 @@ module.exports = {
 					{
 						loader: 'ts-loader',
 						options: {
-							compilerOptions: require('./tsconfig.json').compilerOptions
+							compilerOptions: Object.assign(require('./tsconfig.json').compilerOptions, {
+								declarationDir: path.resolve(__dirname, 'dist')
+							})
 						},
 					}
 				]
