@@ -6,7 +6,8 @@ import {
 	ICheckoutStepper,
 	TCheckoutStep,
 	ICustomer,
-	BoundlessClient
+	BoundlessClient,
+	ICheckoutInitData
 } from 'boundless-api-client';
 import {ReactNode} from 'react';
 
@@ -23,9 +24,10 @@ const appSlice = createSlice({
 		setBasicProps(state, action: PayloadAction<Required<Pick<IAppState, 'onHide' | 'api' | 'onThankYouPage'>> & {
 			basename?: string,
 			logo?: string|ReactNode,
-			cartId?: string
+			cartId?: string,
+			onCheckoutInited?: TOnCheckoutInited
 		}>) {
-			const {onHide, onThankYouPage, cartId, basename, api, logo} = action.payload;
+			const {onHide, onThankYouPage, cartId, basename, api, logo, onCheckoutInited} = action.payload;
 
 			return {
 				...state,
@@ -34,7 +36,8 @@ const appSlice = createSlice({
 				cartId,
 				basename,
 				api,
-				logo
+				logo,
+				onCheckoutInited
 			};
 		},
 		showCheckout(state) {
@@ -56,9 +59,11 @@ const appSlice = createSlice({
 				items,
 				order,
 				settings,
-				stepper,
-				isInited: true
+				stepper
 			};
+		},
+		setCheckoutInited(state, action: PayloadAction<{isInited: boolean}>) {
+			state.isInited = action.payload.isInited;
 		},
 		addFilledStep(state, action: PayloadAction<{step: TCheckoutStep}>) {
 			const {step} = action.payload;
@@ -89,12 +94,14 @@ export const {
 	addFilledStep,
 	setOrdersCustomer,
 	setGlobalError,
-	setOrder
+	setOrder,
+	setCheckoutInited
 } = appSlice.actions;
 
 export default appSlice.reducer;
 
 export type TOnThankYouPage = ({orderId, error}: {orderId: string, error?: string}) => void;
+export type TOnCheckoutInited = (data: ICheckoutInitData) => void;
 
 export interface IAppState {
 	show: boolean,
@@ -109,5 +116,6 @@ export interface IAppState {
 	order?: IOrder,
 	settings?: ICheckoutPageSettings,
 	logo?: string|ReactNode,
-	stepper?: ICheckoutStepper
+	stepper?: ICheckoutStepper,
+	onCheckoutInited?: TOnCheckoutInited
 }

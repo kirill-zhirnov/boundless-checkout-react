@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import {IPaymentMethod} from 'boundless-api-client';
 import Typography from '@mui/material/Typography';
 import {Form, Formik, FormikHelpers, FormikProps} from 'formik';
@@ -24,6 +24,10 @@ export default function PaymentMethodForm({paymentMethods, countries, requiredBi
 	const {onSubmit} = useSavePaymentMethod();
 	const {loggedInCustomer} = useAppSelector(state => state.user);
 	const initialValues = useMemo(() => getFormInitialValues(loggedInCustomer), [loggedInCustomer]);
+
+	useEffect(() => {
+		document.title = 'Checkout: payment';
+	}, []);
 
 	return (
 		<Formik initialValues={initialValues} onSubmit={onSubmit}>

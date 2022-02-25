@@ -1,17 +1,16 @@
 import React from 'react';
-import {Navigate, Route, Routes} from 'react-router-dom';
+import {Route, Routes} from 'react-router-dom';
 import ContactInfoPage from './pages/ContactInfoPage';
 import ShippingAddressPage from './pages/ShippingAddressPage';
 import {useAppSelector} from './hooks/redux';
-import useLoadingLine from './hooks/loadingLine';
 import PaymentPage from './pages/PaymentPage';
 import {TCheckoutStep} from 'boundless-api-client';
 import PayPalReturnPage from './pages/PayPalReturnPage';
 import ErrorPage from './pages/ErrorPage';
+import IndexPage from './pages/IndexPage';
 
 export default function CheckoutApp() {
 	const {globalError} = useAppSelector((state) => state.app);
-	useLoadingLine();
 
 	if (globalError) {
 		return <ErrorPage error={globalError} />;
@@ -25,7 +24,7 @@ export default function CheckoutApp() {
 			<Route path="/payment" element={<PaymentPage />} />
 			<Route path="/paypal/return" element={<PayPalReturnPage isCancelPage={false}/>} />
 			<Route path="/paypal/cancel" element={<PayPalReturnPage isCancelPage={true}/>} />
-			<Route path="*" element={<Navigate to={'/info'} />} />
+			<Route path="/" element={<IndexPage />} />
 		</Routes>
 	);
 }

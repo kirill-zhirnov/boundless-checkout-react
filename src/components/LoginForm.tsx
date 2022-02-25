@@ -12,21 +12,25 @@ import {TCheckoutAccountPolicy} from 'boundless-api-client';
 import {addPromise} from '../redux/actions/xhr';
 import {setLoggedInCustomer} from '../redux/actions/user';
 import ContactMailIcon from '@mui/icons-material/ContactMail';
+import {Box} from '@mui/material';
+import {AccountCircle} from '@mui/icons-material';
+import VpnKeyIcon from '@mui/icons-material/VpnKey';
 
 export default function LoginForm() {
 	const [viewMode, setViewMode] = useState<TViewMode>(TViewMode.login);
 	const {loggedInCustomer} = useAppSelector(state => state.user);
 
 	useEffect(() => {
+		document.title = 'Checkout: login';
 		if (loggedInCustomer) {
 			setViewMode(TViewMode.contact);
 		}
 	}, [loggedInCustomer]);
 
 	if (viewMode === TViewMode.login) {
-		return <LoginFormView setViewMode={setViewMode}/>;
+		return <LoginFormView setViewMode={setViewMode} />;
 	} else {
-		return <ContactFormView setViewMode={setViewMode}/>;
+		return <ContactFormView setViewMode={setViewMode} />;
 	}
 }
 
@@ -41,44 +45,50 @@ export function LoginFormView({setViewMode}: {setViewMode: (mode: TViewMode) => 
 				<Form className={'bdl-login-form'}>
 					<Typography variant="h5" mb={2}>Login</Typography>
 					{accountPolicy === TCheckoutAccountPolicy.guestAndLogin &&
-					<Typography align={'right'}
-											variant="body2"
-											gutterBottom
-					>
-						<Button variant="text"
-										onClick={() => setViewMode(TViewMode.contact)}
-										disabled={formikProps.isSubmitting}
-										size={'small'}
-										endIcon={<ContactMailIcon />}
+						<Typography align={'right'}
+							variant="body2"
+							gutterBottom
 						>
-							Continue as guest
-						</Button>
-					</Typography>
+							<Button variant="text"
+								onClick={() => setViewMode(TViewMode.contact)}
+								disabled={formikProps.isSubmitting}
+								size={'small'}
+								endIcon={<ContactMailIcon />}
+							>
+								Continue as guest
+							</Button>
+						</Typography>
 					}
 					<Grid container spacing={2}>
 						<Grid item xs={12}>
-							<TextField label={'Email'}
-												 variant={'standard'}
-												 type={'email'}
-												 required={true}
-												 fullWidth
-												 {...fieldAttrs<ILoginFormValues>('email', formikProps)}
-							/>
+							<Box sx={{display: 'flex', alignItems: 'flex-end'}}>
+								<AccountCircle sx={{color: 'action.active', mr: 1, my: 0.5}} />
+								<TextField label={'Email'}
+									variant={'standard'}
+									type={'email'}
+									required={true}
+									fullWidth
+									{...fieldAttrs<ILoginFormValues>('email', formikProps)}
+								/>
+							</Box>
 						</Grid>
 						<Grid item xs={12}>
-							<TextField label={'Password'}
-												 variant={'standard'}
-												 type={'password'}
-												 required={true}
-												 fullWidth
-												 {...fieldAttrs<ILoginFormValues>('password', formikProps)}
-							/>
+							<Box sx={{display: 'flex', alignItems: 'flex-end'}}>
+								<VpnKeyIcon sx={{color: 'action.active', mr: 1, my: 0.5}} />
+								<TextField label={'Password'}
+									variant={'standard'}
+									type={'password'}
+									required={true}
+									fullWidth
+									{...fieldAttrs<ILoginFormValues>('password', formikProps)}
+								/>
+							</Box>
 						</Grid>
 						<Grid item xs={12} sx={{textAlign: 'right'}}>
 							<Button variant="contained"
-											startIcon={<LoginIcon />}
-											type={'submit'}
-											disabled={formikProps.isSubmitting}
+								startIcon={<LoginIcon />}
+								type={'submit'}
+								disabled={formikProps.isSubmitting}
 							>
 								Sign in
 							</Button>
@@ -102,7 +112,7 @@ const useSaveLoginForm = (setViewMode: (mode: TViewMode) => void) => {
 			})
 			.catch(({response: {data}}) => setErrors(apiErrors2Formik(data)))
 			.finally(() => setSubmitting(false))
-		;
+			;
 
 		dispatch(addPromise(promise));
 	};

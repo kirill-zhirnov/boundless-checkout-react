@@ -12,8 +12,22 @@ export const store = configureStore({
 	middleware: (getDefaultMiddleware) =>
 		getDefaultMiddleware({
 			serializableCheck: {
-				ignoredActionPaths: ['payload.onHide', 'payload.onThankYouPage', 'payload.api', 'payload.logo', 'payload.promise'],
-				ignoredPaths: ['app.onHide', 'app.api', 'app.logo', 'app.onThankYouPage', 'xhr.promises'],
+				ignoredActionPaths: [
+					'payload.onHide',
+					'payload.onThankYouPage',
+					'payload.api',
+					'payload.logo',
+					'payload.promise',
+					'payload.onCheckoutInited'
+				],
+				ignoredPaths: [
+					'app.onHide',
+					'app.api',
+					'app.logo',
+					'app.onThankYouPage',
+					'xhr.promises',
+					'app.onCheckoutInited'
+				],
 			},
 		})
 });
