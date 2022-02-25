@@ -80,6 +80,7 @@
     "@tanem/react-nprogress": "^4.0.8",
     "body-scroll-lock": "^4.0.0-beta.0",
     "clsx": "^1.1.1",
+    "currency.js": "^2.0.4",
     "formik": "^2.2.9",
     "js-cookie": "^3.0.1",
     "react-redux": "^7.2.6",
