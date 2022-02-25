@@ -1,7 +1,7 @@
 import {useEffect} from 'react';
 import useInitCheckoutByCart from '../hooks/initCheckout';
 import {useAppSelector} from '../hooks/redux';
-import {getPathByStep} from '../App';
+import {getPathByStep} from '../routes';
 import {useNavigate} from 'react-router-dom';
 
 

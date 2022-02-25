@@ -5,6 +5,7 @@ import Footer from '../components/Footer';
 import Grid from '@mui/material/Grid';
 import Cart from '../components/Cart';
 import LoadingLine from '../components/LoadingLine';
+import CheckoutProgress from '../components/CheckoutProgress';
 
 export default function CheckoutLayout({children}: {children: ReactNode | ReactNode[]}) {
 	return (
@@ -13,6 +14,7 @@ export default function CheckoutLayout({children}: {children: ReactNode | ReactN
 			<Header />
 			<main className={'bdl-checkout-layout__main'}>
 				<Container className={'bdl-checkout-layout__container'}>
+					<CheckoutProgress />
 					<Grid container spacing={2}>
 						<Grid item md={9} sm={8} xs={12} order={{xs: 2, sm: 1}}>
 							{children}

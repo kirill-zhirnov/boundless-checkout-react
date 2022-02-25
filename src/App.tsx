@@ -4,7 +4,6 @@ import ContactInfoPage from './pages/ContactInfoPage';
 import ShippingAddressPage from './pages/ShippingAddressPage';
 import {useAppSelector} from './hooks/redux';
 import PaymentPage from './pages/PaymentPage';
-import {TCheckoutStep} from 'boundless-api-client';
 import PayPalReturnPage from './pages/PayPalReturnPage';
 import ErrorPage from './pages/ErrorPage';
 import IndexPage from './pages/IndexPage';
@@ -28,16 +27,3 @@ export default function CheckoutApp() {
 		</Routes>
 	);
 }
-
-export const getPathByStep = (step: TCheckoutStep) => {
-	switch (step) {
-		case TCheckoutStep.contactInfo:
-			return '/info';
-		case TCheckoutStep.shippingAddress:
-			return '/shipping-address';
-		// case TCheckoutStep.shippingMethod:
-		// 	return '/shipping-method';
-		case TCheckoutStep.paymentMethod:
-			return '/payment';
-	}
-};
