@@ -13,6 +13,7 @@ import {Box} from '@mui/system';
 import {apiErrors2Formik} from '../lib/formUtils';
 import {setOrder} from '../redux/reducers/app';
 import SelectDelivery from '../components/SelectDelivery';
+import ExtraErrors from '../components/ExtraErrors';
 
 export default function ShippingAddressPage() {
 	const {isInited} = useInitCheckoutByCart();
@@ -31,13 +32,17 @@ export default function ShippingAddressPage() {
 	}, [order, shippingPage]);
 
 	useEffect(() => {
-		if (api && order) {
+		if (api && order && !shippingPage) {
 			const promise = api.checkout.getShippingPage(order.id)
 				.then((data) => setShippingPage(data))
 				;
 			dispatch(addPromise(promise));
 		}
 	}, [api, order]);//eslint-disable-line
+
+	useEffect(() => {
+		document.title = 'Checkout: shipping';
+	}, []);
 
 	if (!isInited || !shippingPage) {
 		return <Loading />;
@@ -48,6 +53,8 @@ export default function ShippingAddressPage() {
 			<Formik initialValues={getFormInitialValues(order, shippingPage?.shippingAddress)} onSubmit={onSubmit}>
 				{(formikProps) => (
 					<Form className={'bdl-shipping-form'}>
+						{Object.keys(formikProps.errors).length > 0 &&
+							<ExtraErrors excludedFields={...Object.keys(formikProps.initialValues)} errors={formikProps.errors} />}
 						<Typography variant="h5" mb={2}>Delivery method</Typography>
 						<Box mb={2}>
 							<SelectDelivery
@@ -153,14 +160,14 @@ const useSaveDelivery = (selectedDelivery: IDelivery | null) => {
 		if (!api || !order) return;
 		const {delivery_id, ...restValues} = values;
 
-		const promise = api.checkout.setDeliveryMethod(order?.id, +delivery_id)
+		const promise = Promise.resolve()
+			.then(() => {
+				if (!isPickUpDelivery(selectedDelivery)) return api.checkout.setShippingAddress({order_id: order?.id, ...restValues});
+				return;
+			})
+			.then(() => api.checkout.setDeliveryMethod(order?.id, +delivery_id))
 			.then(({order}) => {
 				if (order) dispatch(setOrder(order));
-				if (isPickUpDelivery(selectedDelivery)) return;
-
-				return api.checkout.setShippingAddress({order_id: order?.id, ...restValues});
-			})
-			.then(() => {
 				navigate('/payment');
 			})
 			.catch(({response: {data}}) => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import {FormControl, FormControlLabel, Radio, RadioGroup} from '@mui/material';
+import {FormControl, FormControlLabel, FormHelperText, Radio, RadioGroup} from '@mui/material';
 import {IDelivery, TShippingAlias} from 'boundless-api-client';
 import currency from 'currency.js';
 import {IDeliveryFormValues} from '../pages/ShippingAddressPage';
@@ -26,7 +26,11 @@ export default function SelectDelivery({formikProps, deliveries, setDelivery, se
 
 	return (
 		<FormControl component="fieldset" error={Boolean('delivery_id' in formikProps.errors)}>
-			<RadioGroup name='delivery_id' onChange={handleSelectDelivery.bind(null, formikProps.handleChange)} value={formikProps.values.delivery_id}>
+			<RadioGroup
+				name='delivery_id'
+				onChange={handleSelectDelivery.bind(null, formikProps.handleChange)}
+				value={formikProps.values.delivery_id}
+			>
 				{deliveries.map(delivery => (
 					<React.Fragment key={delivery.delivery_id}>
 						<FormControlLabel
@@ -42,6 +46,7 @@ export default function SelectDelivery({formikProps, deliveries, setDelivery, se
 					</React.Fragment>
 				))}
 			</RadioGroup>
+			{'delivery_id' in formikProps.errors && <FormHelperText>{formikProps.errors.delivery_id}</FormHelperText>}
 		</FormControl>
 	);
 }

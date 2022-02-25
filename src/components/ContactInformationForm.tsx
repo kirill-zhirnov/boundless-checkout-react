@@ -48,9 +48,9 @@ export function ContactFormView({setViewMode}: { setViewMode: (mode: TViewMode) 
 	const fieldsList = getFieldsList(contactFields);
 	const smGridCell = fieldsList.length ? 12 / fieldsList.length : 12;
 	const {onSubmit} = useSaveContactInfo();
-	const presentedFields = fieldsList.map(({type}) => type);
+	const excludedFields = fieldsList.map(({type}) => type);
 	if (!order!.customer && !loggedInCustomer) {
-		presentedFields.push('receive_marketing_info');
+		excludedFields.push('receive_marketing_info');
 	}
 
 	return (
@@ -61,7 +61,7 @@ export function ContactFormView({setViewMode}: { setViewMode: (mode: TViewMode) 
 					'one-field': fieldsList.length === 1
 				})}>
 					{Object.keys(formikProps.errors).length > 0 &&
-					<ExtraErrors presentedFields={presentedFields} errors={formikProps.errors}/>}
+					<ExtraErrors excludedFields={excludedFields} errors={formikProps.errors}/>}
 					<Typography variant="h5" mb={2}>
 						Contact information
 					</Typography>
@@ -106,7 +106,7 @@ export function ContactFormView({setViewMode}: { setViewMode: (mode: TViewMode) 
 								}
 							</Grid>
 						)}
-						{presentedFields.includes('receive_marketing_info') &&
+						{excludedFields.includes('receive_marketing_info') &&
 						<Grid item
 									xs={12}
 						>
