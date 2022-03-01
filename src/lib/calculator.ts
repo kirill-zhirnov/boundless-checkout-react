@@ -1,5 +1,4 @@
-import {ICartItem, IDetailedOrder, IOrder} from 'boundless-api-client';
-import {TotalCalculator} from 'boundless-api-client/totalCalculator';
+import {ICartItem, IDetailedOrder, IOrder, TotalCalculator} from 'boundless-api-client';
 
 export const calcCartTotal = (items: ICartItem[] | undefined, order: IOrder | undefined): IOrderTotal | null => {
 	if (!items || !order) return null;
