@@ -4,6 +4,7 @@ import Paper from '@mui/material/Paper';
 import OrderItems from './components/orderInfo/OrderItems';
 import Typography from '@mui/material/Typography';
 import PayButton from './components/PayButton';
+import Loading from './components/Loading';
 
 export const ApiContext = React.createContext<BoundlessClient | null>(null);
 
@@ -23,7 +24,7 @@ export default function BoundlessOrderInfo({api, orderId, showItems = true, show
 
 	}, [api, orderId, onError]);
 
-	if (!order) return <div>Loading...</div>;
+	if (!order) return <Loading />;
 
 	return (
 		<ApiContext.Provider value={api}>
