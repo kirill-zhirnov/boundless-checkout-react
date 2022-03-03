@@ -19,6 +19,7 @@ export default function ShippingAddressPage() {
 	const {isInited} = useInitCheckoutByCart();
 	const [shippingPage, setShippingPage] = useState<null | ICheckoutShippingPageData>(null);
 	const {api, order} = useAppSelector(state => state.app);
+	const [loading, setLoading] = useState(false);
 	const dispatch = useAppDispatch();
 	const [selectedDelivery, setSelectedDelivery] = useState<IDelivery | null>(null);
 	const {onSubmit} = useSaveDelivery(selectedDelivery);
@@ -33,8 +34,10 @@ export default function ShippingAddressPage() {
 
 	useEffect(() => {
 		if (api && order && !shippingPage) {
+			setLoading(true);
 			const promise = api.checkout.getShippingPage(order.id)
 				.then((data) => setShippingPage(data))
+				.finally(() => setLoading(false))
 				;
 			dispatch(addPromise(promise));
 		}
@@ -44,9 +47,15 @@ export default function ShippingAddressPage() {
 		document.title = 'Checkout: shipping';
 	}, []);
 
-	if (!isInited || !shippingPage) {
+	if (!isInited) {
 		return <Loading />;
 	}
+
+	if (loading || !shippingPage) return (
+		<CheckoutLayout>
+			<Loading />
+		</CheckoutLayout>
+	);
 
 	return (
 		<CheckoutLayout>
