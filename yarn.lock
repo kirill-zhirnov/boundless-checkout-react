@@ -2042,10 +2042,10 @@ boolbase@^1.0.0:
   resolved "https://registry.yarnpkg.com/boolbase/-/boolbase-1.0.0.tgz#68dff5fbe60c51eb37725ea9e3ed310dcc1e776e"
   integrity sha1-aN/1++YMUes3cl6p4+0xDcwed24=
 
-boundless-api-client@^0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/boundless-api-client/-/boundless-api-client-0.0.4.tgz#69ae3107dcef7960fd187166cff52413472b7665"
-  integrity sha512-Ym1U5UUI8cvqlJ+/m80ZQh9ul8q2nZqhLvxZD6t6HYtyfrM+uF9OoWVoR4fvGjJ5cBoNcwMu6ZASQEgOvB9fTA==
+boundless-api-client@^0.0.7:
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/boundless-api-client/-/boundless-api-client-0.0.7.tgz#2045640e31748563faab79d2bea3c7064ce43c7a"
+  integrity sha512-elIeuiVsVdVaVne/iJfo1z2e3M8WHbgPq9JzIXJMQdML1XbUqf3aSVKPJ5F3w2+cSBi1dHePaZ8csRJ/OM6Uzg==
   dependencies:
     axios "^0.26.0"
     currency.js "^2.0.4"
