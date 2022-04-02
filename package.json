@@ -1,12 +1,26 @@
 {
   "name": "boundless-checkout-react",
   "version": "0.0.12",
+	"description": "The official checkout React component for Boundless Commerce.",
+	"keywords": [
+		"boundless",
+		"boundless-commerce",
+		"cms",
+		"headless",
+		"ecommerce",
+		"api",
+		"checkout",
+		"typescript",
+		"cms",
+		"cart",
+		"react"
+	],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kirill-zhirnov/boundless-checkout-react.git"
   },
-  "author": "Kirill Zhirnov",
-  "license": "MIT",
+  "author": "Kirill Zhirnov <ekvixgroup@gmail.com>",
+	"license": "BSD-3-Clause",
   "scripts": {
     "build": "rm -rf ./dist && npx rollup --config rollup.prod.js",
     "watch": "rm -rf ./dist && npx webpack --config webpack.watch.js --watch",
