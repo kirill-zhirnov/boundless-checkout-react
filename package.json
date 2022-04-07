@@ -1,6 +1,6 @@
 {
   "name": "boundless-checkout-react",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "The official checkout React component for Boundless Commerce.",
   "keywords": [
     "boundless",
@@ -93,7 +93,7 @@
     "@reduxjs/toolkit": "^1.7.1",
     "@tanem/react-nprogress": "^4.0.8",
     "body-scroll-lock": "^4.0.0-beta.0",
-    "boundless-api-client": "^0.0.7",
+    "boundless-api-client": "^0.0.9",
     "clsx": "^1.1.1",
     "currency.js": "^2.0.4",
     "formik": "^2.2.9",
