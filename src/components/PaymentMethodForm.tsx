@@ -34,7 +34,9 @@ export default function PaymentMethodForm({paymentMethods, countries, requiredBi
 			{(formikProps) => (
 				<Form className={'bdl-payment-form'}>
 					{Object.keys(formikProps.errors).length > 0 &&
-					<ExtraErrors excludedFields={['payment_method_id']} errors={formikProps.errors}/>}
+					<ExtraErrors excludedFields={['payment_method_id', 'first_name', 'last_name', 'company', 'address_line_1', 'address_line_2', 'city', 'state', 'country_id', 'zip', 'phone']}
+											 errors={formikProps.errors}/>
+					}
 					<Typography variant="h5" mb={2}>Payment method</Typography>
 					<PaymentMethods formikProps={formikProps} paymentMethods={paymentMethods} />
 					{!requiredBillingAddress &&
@@ -184,7 +186,7 @@ export interface IPaymentMethodFormValues {
 	address_line_2?: string;
 	city?: string;
 	state?: string;
-	country_id?: number;
+	country_id?: number|string;
 	zip?: string;
 }
 

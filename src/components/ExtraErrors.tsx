@@ -4,7 +4,7 @@ import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 
 /**
- * Some fields might not be presented in the form,
+ * Some fields might not be represented in the form,
  * but in the response might be errors related to these hidden fields (e.g. some system errors).
  *
  * We need to display errors in any case.

@@ -92,6 +92,7 @@ export default function AddressFieldset({formikProps, countries, showPhone}: IPr
 			<Grid item xs={6}>
 				<TextField label={'Country'}
 									 variant={'standard'}
+									 required={true}
 									 fullWidth
 									 select
 									 SelectProps={{
@@ -127,7 +128,7 @@ export interface IAddressFields {
 	address_line_2?: string;
 	city?: string;
 	state?: string;
-	country_id?: number;
+	country_id?: number|string;
 	zip?: string;
 	phone?: string;
 }

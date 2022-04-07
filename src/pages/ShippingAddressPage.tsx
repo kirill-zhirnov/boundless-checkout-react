@@ -108,7 +108,7 @@ const getFormInitialValues = (order?: IOrder | null, storedAddress?: IAddress | 
 		last_name: '',
 		company: '',
 		city: '',
-		country_id: 0,
+		country_id: '',
 		address_line_1: '',
 		address_line_2: '',
 		state: '',
@@ -203,7 +203,7 @@ export interface IDeliveryFormValues {
 	address_line_2?: string;
 	city: string;
 	state?: string;
-	country_id: number;
+	country_id: number|string;
 	zip: string;
 	phone?: string;
 }
