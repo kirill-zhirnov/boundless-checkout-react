@@ -20,7 +20,7 @@
     "url": "git+https://github.com/kirill-zhirnov/boundless-checkout-react.git"
   },
   "author": "Kirill Zhirnov <ekvixgroup@gmail.com>",
-  "license": "BSD-3-Clause",
+	"license": "MIT",
   "scripts": {
     "build": "rm -rf ./dist && npx rollup --config rollup.prod.js",
     "watch": "rm -rf ./dist && npx webpack --config webpack.watch.js --watch",
