@@ -1,27 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8" />
-	<title>Starter for the checkout</title>
+    <meta charset="UTF-8"/>
+    <title>Starter for the checkout</title>
+    <% for(const script of scripts) { %>
+        <script src="<%= script %>"></script>
+    <% } %>
 </head>
 <body>
-coming soon 123
-<div id="checkout-app"></div>
+    <div id="checkout-app"></div>
+    <script type="text/javascript">
+        const api = new window.BoundlessCheckout.BoundlessClient('<%= process.env.DEV_BOUNDLESS_INSTANCE_TOKEN ;%>');
+        api.setInstanceId('<%= process.env.DEV_BOUNDLESS_INSTANCE_TOKEN ;%>');
 
-<!--<script type="text/javascript">-->
-<!--	const api = new window.BoundlessCheckout.BoundlessClient('<%= process.env.DEV_BOUNDLESS_INSTANCE_TOKEN %>');-->
-<!--	api.setInstanceId('<%= process.env.DEV_BOUNDLESS_INSTANCE_TOKEN %>');-->
-
-<!--	window.BoundlessCheckout.startCheckout(document.querySelector('#checkout-app'), {-->
-<!--		cartId: '<%= process.env.DEV_CART_ID %>',-->
-<!--		onHide: function() {-->
-<!--			console.log('on hide :)')-->
-<!--		},-->
-<!--		api: api,-->
-<!--		onThankYouPage: function() {-->
-<!--			console.log('on thank you page :)')-->
-<!--		},-->
-<!--	});-->
-<!--</script>-->
+    	const wrapper = window.BoundlessCheckout.startCheckout(document.querySelector('#checkout-app'), {
+            logoText: 'My custom logo',
+            // logoSrc: 'https://boundless-commerce.com/_next/static/media/moon.b8557b5d.png',
+    		cartId: '<%= process.env.DEV_CART_ID ;%>',
+    		onHide: function() {
+              wrapper.destroy();
+    		},
+    		api: api,
+    		onThankYouPage: function() {
+    			console.log('on thank you page :)')
+    		},
+    	});
+    </script>
 </body>
 </html>

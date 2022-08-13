@@ -92,12 +92,12 @@ export default class BoundlessCheckout extends Component<IBoundlessCheckoutProps
 	}
 }
 
-interface IBoundlessCheckoutProps {
-	cartId?: string,
+export interface IBoundlessCheckoutProps {
+	api: BoundlessClient,
 	show: boolean,
 	onHide: () => void,
 	onThankYouPage: TOnThankYouPage,
-	api: BoundlessClient,
+	cartId?: string,
 	basename?: string,
 	logo?: string|ReactNode,
 	onCheckoutInited?: TOnCheckoutInited

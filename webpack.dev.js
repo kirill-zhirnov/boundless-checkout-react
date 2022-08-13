@@ -1,17 +1,37 @@
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
+// const fs = require('fs');
+// if (fs.existsSync(path.resolve(__dirname, './.env'))) {
+// 	require('dotenv').config();
+// }
+const WebpackAssetsManifest = require('webpack-assets-manifest');
+const runtimePath =  path.resolve(__dirname, 'runtime');
 
 module.exports = {
-	entry: './src/index.ts',
+	entry: {
+		dev: './src/dev/dev-client.ts'
+	},
 	mode: 'development',
+	cache: false,
 	resolve: {
 		extensions: ['.tsx', '.ts', '.js', '.json']
 	},
 	output: {
-		publicPath: 'http://localhost:9000/',
-		filename: '[name].bundle.js',
-		chunkFilename: '[name].bundle.js?ver=[chunkhash]',
+		// publicPath: 'http://localhost:9050/',
+		filename: '[name].[fullhash].js',
+		chunkFilename: '[name].bundle.[chunkhash].js',
+		library: 'BoundlessCheckout'
 	},
+	// devServer: {
+	// 	port: 9090,
+	// 	hot: true,
+	// 	historyApiFallback: {
+	// 		index: path.resolve(__dirname, './src/index.ejs'),
+	// 		rewrites: [
+	// 			// { from: /^\/$/, to: '/views/landing.html' },
+	// 		]
+	// 	}
+	// },
 	// output: {
 	// 	path: path.resolve(__dirname, 'dist'),
 	// 	library: 'BoundlessCheckout',
@@ -73,8 +93,16 @@ module.exports = {
 	},
 
 	plugins: [
-		new HtmlWebpackPlugin({
-			template: path.resolve(__dirname, '../src/dev-starter.html'),
-		})
+		// new webpack.HotModuleReplacementPlugin(),
+		new webpack.DefinePlugin({
+			'process.env.DEV_CART_ID': JSON.stringify(process.env.DEV_CART_ID),
+			'process.env.DEV_BOUNDLESS_INSTANCE_TOKEN': JSON.stringify(process.env.DEV_BOUNDLESS_INSTANCE_TOKEN),
+			'process.env.DEV_BOUNDLESS_INSTANCE_ID': JSON.stringify(process.env.DEV_BOUNDLESS_INSTANCE_ID),
+		}),
+		new WebpackAssetsManifest({
+			writeToDisk: true,
+			output: `${runtimePath}/manifest.json`,
+			publicPath: true
+		}),
 	],
 };

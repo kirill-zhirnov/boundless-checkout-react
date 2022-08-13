@@ -24,7 +24,7 @@ export default function Footer() {
 						</p>
 						}
 					</Grid>
-					<Grid item md={3} sm={4} xs={12}>some right links</Grid>
+					<Grid item md={3} sm={4} xs={12}></Grid>
 				</Grid>
 			</Container>
 			<div className={'bdl-footer__hr'} />

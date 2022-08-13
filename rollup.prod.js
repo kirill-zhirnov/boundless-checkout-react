@@ -8,14 +8,17 @@ import {babel} from '@rollup/plugin-babel';
 import {terser} from 'rollup-plugin-terser';
 
 export default {
-	external: ['react', 'react-dom', 'boundless-api-client'],
+	external: ['boundless-api-client'],
 	input: 'src/index.ts',
 	plugins: [
 		nodeResolve({
 			extensions: ['.ts', '.tsx', '.mjs', '.js', '.json', '.node', '.css'],
 		}),
 		commonjs(),
-		typescript({tsconfig: './tsconfig.json'}),
+		typescript({
+			tsconfig: './tsconfig.json',
+			exclude: ['./src/dev/**.*']
+		}),
 		babel({
 			babelHelpers: 'bundled',
 			exclude: 'node_modules/**',
