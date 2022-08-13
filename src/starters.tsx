@@ -1,6 +1,7 @@
 import React, {ReactNode} from 'react';
 import ReactDOM, {Root} from 'react-dom/client';
 import BoundlessCheckout, {IBoundlessCheckoutProps} from './BoundlessCheckout';
+import BoundlessOrderInfo, {BoundlessOrderInfoProps} from './BoundlessOrderInfo';
 
 export class StarterWrapper {
 	protected root?: Root;
@@ -31,23 +32,20 @@ export function startCheckout(el: HTMLElement, props: Omit<IBoundlessCheckoutPro
 	} else if (props.logoSrc) {
 		logo = <img src={props.logoSrc} className={'bdl-header__img-logo'} />;
 	}
-	console.log('in startCheckout');
+
 	const wrapper = new StarterWrapper(el, <BoundlessCheckout
 		show={true}
 		logo={logo}
 		{...props}
 	/>);
 	wrapper.start();
-	console.log('started');
+
 	return wrapper;
-	// const root = ReactDOM.createRoot(el);
-	// root.render(
-	// 	<>
-	// 		<BoundlessCheckout
-	// 			show={true}
-	// 			logo={logo}
-	// 			{...props}
-	// 		/>
-	// 	</>
-	// );
+}
+
+export function startOrderInfo(el: HTMLElement, props: BoundlessOrderInfoProps): StarterWrapper {
+	const wrapper = new StarterWrapper(el, <BoundlessOrderInfo {...props} />);
+	wrapper.start();
+
+	return wrapper;
 }

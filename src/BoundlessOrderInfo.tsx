@@ -46,7 +46,7 @@ export default function BoundlessOrderInfo({api, orderId, showItems = true, show
 	);
 }
 
-interface BoundlessOrderInfoProps {
+export interface BoundlessOrderInfoProps {
 	orderId: string;
 	api: BoundlessClient;
 	showItems?: boolean;
