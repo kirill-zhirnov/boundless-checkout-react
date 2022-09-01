@@ -5,13 +5,14 @@ import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import Button from '@mui/material/Button';
 import {useAppSelector} from '../hooks/redux';
+import {TClickedElement} from '../lib/elementEvents';
 
 export default function ErrorPage({error}: {error: string}) {
 	const {onHide} = useAppSelector((state) => state.app);
 
 	const onBackClicked = () => {
 		if (onHide) {
-			onHide();
+			onHide(TClickedElement.backToCart);
 		}
 	};
 
