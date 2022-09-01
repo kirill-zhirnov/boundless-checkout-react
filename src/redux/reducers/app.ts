@@ -21,17 +21,18 @@ const appSlice = createSlice({
 	name: 'app',
 	initialState,
 	reducers: {
-		setBasicProps(state, action: PayloadAction<Required<Pick<IAppState, 'onHide' | 'api' | 'onThankYouPage'>> & {
+		setBasicProps(state, action: PayloadAction<Required<Pick<IAppState, 'onHide' | 'onGoHome' | 'api' | 'onThankYouPage'>> & {
 			basename?: string,
 			logo?: string|ReactNode,
 			cartId?: string,
 			onCheckoutInited?: TOnCheckoutInited
 		}>) {
-			const {onHide, onThankYouPage, cartId, basename, api, logo, onCheckoutInited} = action.payload;
+			const {onHide, onGoHome, onThankYouPage, cartId, basename, api, logo, onCheckoutInited} = action.payload;
 
 			return {
 				...state,
 				onHide,
+				onGoHome,
 				onThankYouPage,
 				cartId,
 				basename,
@@ -111,6 +112,7 @@ export interface IAppState {
 	isInited: boolean,
 	globalError: string|null,
 	basename?: string,
+	onGoHome?: () => void,
 	onHide?: () => void,
 	onThankYouPage?: TOnThankYouPage,
 	cartId?: string,

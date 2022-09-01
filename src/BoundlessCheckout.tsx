@@ -28,10 +28,11 @@ export default class BoundlessCheckout extends Component<IBoundlessCheckoutProps
 	componentDidMount() {
 		document.body.appendChild(this.el!);
 
-		const {onHide, onThankYouPage, cartId, basename, api, logo, onCheckoutInited} = this.props;
+		const {onHide, onThankYouPage, onGoHome, cartId, basename, api, logo, onCheckoutInited} = this.props;
 		store.dispatch(setBasicProps({
 			onHide,
 			onThankYouPage,
+			onGoHome,
 			cartId,
 			basename,
 			api,
@@ -96,6 +97,7 @@ export interface IBoundlessCheckoutProps {
 	api: BoundlessClient,
 	show: boolean,
 	onHide: () => void,
+	onGoHome: () => void,
 	onThankYouPage: TOnThankYouPage,
 	cartId?: string,
 	basename?: string,
