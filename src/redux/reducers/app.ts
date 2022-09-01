@@ -10,6 +10,7 @@ import {
 	ICheckoutInitData
 } from 'boundless-api-client';
 import {ReactNode} from 'react';
+import {TClickedElement} from '../../lib/elementEvents';
 
 const initialState: IAppState = {
 	isInited: false,
@@ -111,7 +112,7 @@ export interface IAppState {
 	isInited: boolean,
 	globalError: string|null,
 	basename?: string,
-	onHide?: () => void,
+	onHide?: (element: TClickedElement) => void,
 	onThankYouPage?: TOnThankYouPage,
 	cartId?: string,
 	api?: BoundlessClient,

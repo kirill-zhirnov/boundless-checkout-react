@@ -2,13 +2,19 @@ import React, {MouseEvent} from 'react';
 import Container from '@mui/material/Container';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import {useAppSelector} from '../hooks/redux';
+import {TClickedElement} from '../lib/elementEvents';
 
 export default function Header() {
 	const {onHide} = useAppSelector(state => state.app);
 
 	const onBackToCartClicked = (e: MouseEvent<HTMLAnchorElement>) => {
 		e.preventDefault();
-		onHide!();
+		onHide!(TClickedElement.backToCart);
+	};
+
+	const onLogoClicked = (e: MouseEvent<HTMLAnchorElement>) => {
+		e.preventDefault();
+		onHide!(TClickedElement.logo);
 	};
 
 	return (
@@ -22,9 +28,12 @@ export default function Header() {
 						<ChevronLeftIcon /> Back to the cart
 					</a>
 					<div className={'bdl-header__logo-wrapper'}>
-						<a href={'/'} className={'bdl-header__logo'}>
-							<Logo />
-						</a>
+							<a href={'#'}
+								 className={'bdl-header__logo'}
+								 onClick={onLogoClicked}
+							>
+								<Logo />
+							</a>
 					</div>
 					{/*<div className={'bdl-header__at-right'}></div>*/}
 				</div>
