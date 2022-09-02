@@ -23,7 +23,7 @@ export default {
 			babelHelpers: 'bundled',
 			exclude: 'node_modules/**',
 		}),
-		scss(),
+		scss({output: './dist/index.css'}),
 		css(),
 		terser()
 	],
