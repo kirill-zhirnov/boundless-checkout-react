@@ -21,7 +21,7 @@ export default function CartDiscountForm() {
 			})
 			.catch(({response: {data}}) => setErrors(apiErrors2Formik(data)))
 			.finally(() => setSubmitting(false))
-			;
+		;
 
 		dispatch(addPromise(promise));
 	};

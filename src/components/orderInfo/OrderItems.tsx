@@ -1,7 +1,7 @@
 import {Grid} from '@mui/material';
 import {IDetailedOrder} from 'boundless-api-client';
 import React, {useMemo} from 'react';
-import {calcOrderTotal} from '../../lib/calculator';
+// import {calcOrderTotal} from '../../lib/calculator';
 import OrderDiscounts from './OrderDiscounts';
 import OrderPayment from './OrderPayment';
 import OrderRow from './OrderRow';
@@ -10,7 +10,7 @@ import OrderTotalRow from './OrderTotalRow';
 
 export default function OrderItems({order}: {order: IDetailedOrder}) {
 	const {items} = order;
-	const total = useMemo(() => calcOrderTotal(order), [order]);
+	// const total = useMemo(() => calcOrderTotal(order), [order]);
 	const showSubtotal = order.services?.length || order.discounts.length || order.paymentMethod;
 
 	return (
@@ -25,11 +25,11 @@ export default function OrderItems({order}: {order: IDetailedOrder}) {
 				{items.map(item => (
 					<OrderRow item={item} key={item.item_id} />
 				))}
-				{showSubtotal && <OrderTotalRow total={total!} isSubTotal />}
-				<OrderDiscounts discounts={order.discounts} total={total!} />
+				{/*{showSubtotal && <OrderTotalRow total={total!} isSubTotal />}*/}
+				{/*<OrderDiscounts discounts={order.discounts} total={total!} />*/}
 				<OrderShipping services={order.services} customer={order.customer}/>
-				{order.paymentMethod && <OrderPayment paymentMethod={order.paymentMethod} total={total!} />}
-				<OrderTotalRow total={total!} />
+				{/*{order.paymentMethod && <OrderPayment paymentMethod={order.paymentMethod} total={total!} />}*/}
+				{/*<OrderTotalRow total={total!} />*/}
 			</div>
 		</>
 	);

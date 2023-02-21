@@ -26,10 +26,13 @@ const userSlice = createSlice({
 				authToken: null
 			};
 		},
+		resetUserState() {
+			return {...initialState};
+		}
 	}
 });
 
-export const {login, logout} = userSlice.actions;
+export const {login, logout, resetUserState} = userSlice.actions;
 export default userSlice.reducer;
 
 export interface IUserState {

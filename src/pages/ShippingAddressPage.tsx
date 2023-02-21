@@ -36,7 +36,9 @@ export default function ShippingAddressPage() {
 		if (api && order && !shippingPage) {
 			setLoading(true);
 			const promise = api.checkout.getShippingPage(order.id)
-				.then((data) => setShippingPage(data))
+				.then((data) => {
+					setShippingPage(data);
+				})
 				.finally(() => setLoading(false))
 				;
 			dispatch(addPromise(promise));
@@ -183,7 +185,7 @@ const useSaveDelivery = (selectedDelivery: IDelivery | null) => {
 				setErrors(apiErrors2Formik(data));
 			})
 			.finally(() => setSubmitting(false))
-			;
+		;
 
 		dispatch(addPromise(promise));
 	};

@@ -2,6 +2,8 @@ import React, {ReactNode} from 'react';
 import ReactDOM, {Root} from 'react-dom/client';
 import BoundlessCheckout, {IBoundlessCheckoutProps} from './BoundlessCheckout';
 import BoundlessOrderInfo, {BoundlessOrderInfoProps} from './BoundlessOrderInfo';
+import {store} from './redux/store';
+import {resetState} from './redux/actions/app';
 
 export class StarterWrapper {
 	protected root?: Root;
@@ -19,6 +21,7 @@ export class StarterWrapper {
 
 	destroy() {
 		this.root?.unmount();
+		store.dispatch(resetState());
 	}
 }
 
