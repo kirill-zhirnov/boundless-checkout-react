@@ -1,7 +1,7 @@
 import {FormikProps, FormikValues} from 'formik';
 import {FormikHandlers} from 'formik/dist/types';
 
-interface IFieldAttrs {
+export interface IFieldAttrs {
 	name: string;
 	error: boolean;
 	value: string;

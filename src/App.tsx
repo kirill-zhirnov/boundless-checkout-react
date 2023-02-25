@@ -1,7 +1,7 @@
 import React from 'react';
 import {Route, Routes} from 'react-router-dom';
 import ContactInfoPage from './pages/ContactInfoPage';
-import ShippingAddressPage from './pages/ShippingAddressPage';
+import ShippingPage from './pages/ShippingPage';
 import {useAppSelector} from './hooks/redux';
 import PaymentPage from './pages/PaymentPage';
 import PayPalReturnPage from './pages/PayPalReturnPage';
@@ -18,7 +18,7 @@ export default function CheckoutApp() {
 	return (
 		<Routes>
 			<Route path="/info" element={<ContactInfoPage/>}/>
-			<Route path="/shipping-address" element={<ShippingAddressPage/>} />
+			<Route path="/shipping-address" element={<ShippingPage/>} />
 			{/*<Route path="/shipping-method" element={<div>choose shipping method</div>} />*/}
 			<Route path="/payment" element={<PaymentPage />} />
 			<Route path="/paypal/return" element={<PayPalReturnPage isCancelPage={false}/>} />

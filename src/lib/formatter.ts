@@ -5,7 +5,3 @@ export function formatMoney(amount: number|string|null): string {
 
 	return currency(amount).format();
 }
-
-export function getCurrencySymbol() {
-	return currency(0, {pattern: '!'}).format();
-}

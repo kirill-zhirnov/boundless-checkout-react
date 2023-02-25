@@ -104,6 +104,10 @@ const appSlice = createSlice({
 		},
 		resetAppState() {
 			return {...initialState};
+		},
+		setTotal(state, action: PayloadAction<ITotal>) {
+			const total = action.payload;
+			state.total = total;
 		}
 	}
 });
@@ -118,7 +122,8 @@ export const {
 	setGlobalError,
 	setOrder,
 	setCheckoutInited,
-	resetAppState
+	resetAppState,
+	setTotal
 } = appSlice.actions;
 
 export default appSlice.reducer;

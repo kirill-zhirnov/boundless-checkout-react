@@ -9,11 +9,13 @@ import {RootState} from '../redux/store';
 import {formatMoney} from '../lib/formatter';
 import CartFooter from './cart/CartFooter';
 import CartDiscountForm from './cart/CartDiscountForm';
+import useFormatCurrency from '../hooks/useFormatCurrency';
 
 export default function Cart() {
 	const order = useAppSelector((state: RootState) => state.app.order);
 	const total = useAppSelector((state: RootState) => state.app.total);
 	const [fullOpened, setFullOpened] = useState(false);
+	const {formatCurrency} = useFormatCurrency();
 
 	const hasCouponCampaigns = useAppSelector((state: RootState) => state.app.hasCouponCampaigns);
 	const hasDisounts = order?.discounts && order?.discounts?.length > 0;
@@ -43,7 +45,11 @@ export default function Cart() {
 						</>}
 				</a>
 				<h4 className='bdl-cart__total'>
-					{total && formatMoney(total.price)}
+					<>
+						{total && formatMoney(total.price)}
+						<br/>
+						{total && formatCurrency(total.price)}
+					</>
 				</h4>
 			</div>
 			<div className={clsx('bdl-cart__full', {open: fullOpened})}>
