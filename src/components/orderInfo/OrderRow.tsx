@@ -1,14 +1,14 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {IOrderItem} from 'boundless-api-client';
 import currency from 'currency.js';
 import {Grid} from '@mui/material';
 import {getProductImg} from '../../lib/images';
-import {ApiContext} from '../../BoundlessOrderInfo';
+import {useAppSelector} from '../../hooks/redux';
+import useFormatCurrency from '../../hooks/useFormatCurrency';
 
 export default function OrderRow({item}: {item: IOrderItem}) {
-	const api = useContext(ApiContext);
-
-	if (!api) return null;
+	const api = useAppSelector((state) => state.app.api);
+	const {formatCurrency} = useFormatCurrency();
 
 	return (
 		<>
@@ -29,7 +29,9 @@ export default function OrderRow({item}: {item: IOrderItem}) {
 				</Grid>
 				<Grid item className='bdl-order-item__col' sm={2} xs={12}>
 					<span className='bdl-order-items__label'><strong>Price: </strong></span>
-					<span className='bdl-order-items__value'>{currency(item.itemPrice.final_price || '').format()}</span>
+					<span className='bdl-order-items__value'>
+						{item.itemPrice.final_price !== null && formatCurrency(item.itemPrice.final_price)}
+					</span>
 				</Grid>
 				<Grid item className='bdl-order-item__col' sm={2} xs={12}>
 					<span className='bdl-order-items__label'><strong>Qty: </strong></span>
@@ -37,7 +39,9 @@ export default function OrderRow({item}: {item: IOrderItem}) {
 				</Grid>
 				<Grid item className='bdl-order-item__col' sm={2} xs={12}>
 					<span className='bdl-order-items__label'><strong>Total: </strong></span>
-					<span className='bdl-order-items__value'>{currency(item.itemPrice.final_price || '').multiply(item.qty).format()}</span>
+					<span className='bdl-order-items__value'>
+						{item.itemPrice.final_price !== null && formatCurrency(currency(item.itemPrice.final_price).multiply(item.qty).toString())}
+					</span>
 				</Grid>
 			</Grid>
 		</>

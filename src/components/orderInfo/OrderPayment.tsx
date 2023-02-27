@@ -1,15 +1,16 @@
 import {Grid} from '@mui/material';
 import React from 'react';
-import {IPaymentMethod} from 'boundless-api-client';
-import {formatMoney} from '../../lib/formatter';
-import {IOrderTotal} from '../../lib/calculator';
+import {IDetailedOrder} from 'boundless-api-client';
 import PaymentsIcon from '@mui/icons-material/Payments';
-import currency from 'currency.js';
+import useFormatCurrency from '../../hooks/useFormatCurrency';
 
-export default function OrderPayment({paymentMethod, total}: {paymentMethod: IPaymentMethod, total: IOrderTotal}) {
+export default function OrderPayment({order}: {order: IDetailedOrder}) {
+	const paymentMethod = order.paymentMethod;
+	const {formatCurrency} = useFormatCurrency();
+
 	if (!paymentMethod) return null;
 
-	const hasMarkUp = Boolean(currency(paymentMethod.mark_up).value);
+	const hasMarkUp = (order.payment_mark_up && Number(order.payment_mark_up) > 0);
 
 	return (
 		<div className='bdl-order-items__service-row'>
@@ -30,7 +31,7 @@ export default function OrderPayment({paymentMethod, total}: {paymentMethod: IPa
 				<Grid item sm={2} xs={12} className='bdl-order-items__service-cell'>
 					{hasMarkUp && <>
 						<span className='bdl-order-items__label'>Total: </span>
-						{formatMoney(total.payment_markup || '')}
+						{formatCurrency(order.payment_mark_up!)}
 					</>}
 				</Grid>
 			</Grid>

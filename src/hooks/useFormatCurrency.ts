@@ -6,9 +6,11 @@ export default function useFormatCurrency() {
 	const localeSettings = useAppSelector(state => state.app.localeSettings);
 
 	const formatCurrency = useCallback((amount: number|string) => {
+		amount = Number(amount);
+
 		const currencyOptions: Options = {};
 		if (localeSettings) {
-			const {format, precision, symbol, decimal} = localeSettings.money;
+			const {format, precision, symbol, decimal, thousand} = localeSettings.money;
 			let pattern = format.replace('%v', '#');
 			pattern = pattern.replace('%s', '!');
 
@@ -16,7 +18,8 @@ export default function useFormatCurrency() {
 				precision,
 				symbol,
 				decimal,
-				pattern
+				pattern,
+				separator: thousand
 			});
 		}
 

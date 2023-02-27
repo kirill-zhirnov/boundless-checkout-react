@@ -108,6 +108,15 @@ const appSlice = createSlice({
 		setTotal(state, action: PayloadAction<ITotal>) {
 			const total = action.payload;
 			state.total = total;
+		},
+		setApi(state, action: PayloadAction<{api: BoundlessClient}>) {
+			state.api = action.payload.api;
+		},
+		setIsInited(state, action: PayloadAction<boolean>) {
+			state.isInited = action.payload;
+		},
+		setLocaleSettings(state, action: PayloadAction<ILocaleSettings>) {
+			state.localeSettings = action.payload;
 		}
 	}
 });
@@ -123,7 +132,10 @@ export const {
 	setOrder,
 	setCheckoutInited,
 	resetAppState,
-	setTotal
+	setTotal,
+	setApi,
+	setIsInited,
+	setLocaleSettings
 } = appSlice.actions;
 
 export default appSlice.reducer;

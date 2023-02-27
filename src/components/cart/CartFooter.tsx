@@ -1,10 +1,10 @@
 import {TDiscountType} from 'boundless-api-client';
 import React, {useState} from 'react';
-import {formatMoney} from '../../lib/formatter';
 import clsx from 'clsx';
 import {useAppDispatch, useAppSelector} from '../../hooks/redux';
 import {addPromise} from '../../redux/actions/xhr';
 import {setOrder} from '../../redux/reducers/app';
+import useFormatCurrency from '../../hooks/useFormatCurrency';
 
 export default function CartFooter({open}: ICartFooterProps) {
 	const dispatch = useAppDispatch();
@@ -13,6 +13,7 @@ export default function CartFooter({open}: ICartFooterProps) {
 	const total = useAppSelector(state => state.app.total);
 	const taxSettings = useAppSelector(state => state.app.taxSettings);
 	const [submitting, setSubmitting] = useState(false);
+	const {formatCurrency} = useFormatCurrency();
 
 	const getDiscountAmount = () => {
 		if (!order?.discounts || !order?.discounts.length) return '';
@@ -48,28 +49,28 @@ export default function CartFooter({open}: ICartFooterProps) {
 		<div className={clsx('bdl-cart__footer', {open})}>
 			{(hasShipping || hasDiscount || hasTax) && <div className='bdl-cart__footer-row'>
 				<h5 className='bdl-cart__footer-title'>Subtotal:
-					<span className='bdl-cart__footer-value'> {formatMoney(total.itemsSubTotal.price)}</span>
+					<span className='bdl-cart__footer-value'> {formatCurrency(total.itemsSubTotal.price)}</span>
 				</h5>
 			</div>}
 			{hasDiscount && <div className="bdl-cart__footer-row">
 				<h5 className='bdl-cart__footer-title'>
 					Сoupon{getDiscountAmount()}:
-					<span className='bdl-cart__footer-value'> -{formatMoney(total.discount)}</span>
+					<span className='bdl-cart__footer-value'> -{formatCurrency(total.discount)}</span>
 				</h5>
 			</div>}
 			{hasShipping && <div className="bdl-cart__footer-row" >
 				<h5 className='bdl-cart__footer-title'>Shipping:
-					<span className='bdl-cart__footer-value'> {formatMoney(total.servicesSubTotal.price)}</span>
+					<span className='bdl-cart__footer-value'> {formatCurrency(total.servicesSubTotal.price)}</span>
 				</h5>
 			</div>}
 
 			{hasTax && <div className="bdl-cart__footer-row" >
 				<h5 className='bdl-cart__footer-title'>{taxSettings?.taxTitle}:
-					<span className='bdl-cart__footer-value'> {formatMoney(total.tax.totalTaxAmount)}</span>
+					<span className='bdl-cart__footer-value'> {formatCurrency(total.tax.totalTaxAmount!)}</span>
 				</h5>
 			</div>}
 			<h4 className="bdl-cart__footer-row bdl-cart__footer-row_total">
-				Total: <span className='bdl-cart__footer-value'>{formatMoney(total.price)}</span>
+				Total: <span className='bdl-cart__footer-value'>{formatCurrency(total.price)}</span>
 			</h4>
 
 			{hasDiscount && <div className='bdl-cart__footer-rm'>

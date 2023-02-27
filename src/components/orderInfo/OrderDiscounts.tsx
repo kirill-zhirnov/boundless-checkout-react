@@ -1,11 +1,13 @@
-import {Grid} from '@mui/material';
-import {IOrderDiscount, TDiscountType} from 'boundless-api-client';
 import React from 'react';
-import {IOrderTotal} from '../../lib/calculator';
-import {formatMoney} from '../../lib/formatter';
+import {Grid} from '@mui/material';
+import {IDetailedOrder, IOrderDiscount, TDiscountType} from 'boundless-api-client';
 import PercentIcon from '@mui/icons-material/Percent';
+import useFormatCurrency from '../../hooks/useFormatCurrency';
 
-export default function OrderDiscounts({discounts, total}: {discounts: IOrderDiscount[], total: IOrderTotal}) {
+export default function OrderDiscounts({order}: {order: IDetailedOrder}) {
+	const {formatCurrency} = useFormatCurrency();
+	const discounts = order.discounts;
+
 	if (!discounts.length) return null;
 
 	const getDiscountTitleWithAmount = (discount: IOrderDiscount) => {
@@ -30,7 +32,11 @@ export default function OrderDiscounts({discounts, total}: {discounts: IOrderDis
 				</Grid>
 				<Grid item sm={2} xs={12} className='bdl-order-items__service-cell'>
 					<span className='bdl-order-items__label'>Total discount: </span>
-					<span className='bdl-order-items__value'>-{formatMoney(total?.discount_for_order || '')}</span>
+					{order.discount_for_order &&
+					<span className='bdl-order-items__value'>
+						-{formatCurrency(order.discount_for_order)}
+					</span>
+					}
 				</Grid>
 			</Grid>
 		</div>
