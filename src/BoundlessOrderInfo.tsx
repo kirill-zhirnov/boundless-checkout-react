@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {BoundlessClient, IDetailedOrder, TPaymentGatewayAlias, ILocaleSettings} from 'boundless-api-client';
+import {BoundlessClient, IDetailedOrder, TPaymentGatewayAlias, ILocaleSettings, ISystemTax} from 'boundless-api-client';
 import Paper from '@mui/material/Paper';
 import OrderItems from './components/orderInfo/OrderItems';
 import Typography from '@mui/material/Typography';
@@ -8,9 +8,7 @@ import Loading from './components/Loading';
 import {store} from './redux/store';
 import {Provider} from 'react-redux';
 import {useAppDispatch, useAppSelector} from './hooks/redux';
-import {setApi, setIsInited, setLocaleSettings} from './redux/reducers/app';
-
-export const ApiContext = React.createContext<BoundlessClient | null>(null);
+import {setApi, setIsInited, setLocaleSettings, setTaxSettings} from './redux/reducers/app';
 
 export default function BoundlessOrderInfo({api, ...restProps}: BoundlessOrderInfoProps) {
 	useEffect(() => {
@@ -44,9 +42,10 @@ const OrderInfo = ({orderId, showItems = true, showPayButton = true, showStatus 
 
 	useEffect(() => {
 		if (isInited && api) {
-			api.system.fetchSettings(['system.locale'])
+			api.system.fetchSettings(['system.locale', 'system.tax'])
 				.then((data) => {
 					dispatch(setLocaleSettings(data['system.locale'] as ILocaleSettings));
+					dispatch(setTaxSettings(data['system.tax'] as ISystemTax));
 					return api.customerOrder.getOrder(orderId);
 				})
 				.then((data) => {

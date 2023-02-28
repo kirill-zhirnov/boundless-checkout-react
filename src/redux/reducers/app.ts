@@ -117,6 +117,9 @@ const appSlice = createSlice({
 		},
 		setLocaleSettings(state, action: PayloadAction<ILocaleSettings>) {
 			state.localeSettings = action.payload;
+		},
+		setTaxSettings(state, action: PayloadAction<ISystemTax>) {
+			state.taxSettings = action.payload;
 		}
 	}
 });
@@ -135,7 +138,8 @@ export const {
 	setTotal,
 	setApi,
 	setIsInited,
-	setLocaleSettings
+	setLocaleSettings,
+	setTaxSettings
 } = appSlice.actions;
 
 export default appSlice.reducer;

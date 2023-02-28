@@ -7,10 +7,12 @@ import OrderRow from './OrderRow';
 import OrderShipping from './OrderShipping';
 import OrderTotalRow from './OrderTotalRow';
 import currency from 'currency.js';
+import OrderTaxes from './OrderTaxes';
 
 export default function OrderItems({order}: {order: IDetailedOrder}) {
 	const {items, total_price} = order;
-	const showSubtotal = order.services?.length || order.discounts.length || order.paymentMethod;
+	const hasTaxes = order.tax_amount !== null;
+	const showSubtotal = order.services?.length || order.discounts.length || order.paymentMethod || hasTaxes;
 
 	const itemsSubTotal = useMemo(() => {
 		let totalQty = 0, totalPrice = '0';
@@ -38,6 +40,7 @@ export default function OrderItems({order}: {order: IDetailedOrder}) {
 				<OrderDiscounts order={order} />
 				<OrderShipping services={order.services} customer={order.customer}/>
 				{order.paymentMethod && <OrderPayment order={order} />}
+				{hasTaxes && <OrderTaxes order={order} />}
 				{total_price && <OrderTotalRow price={total_price} qty={itemsSubTotal.totalQty} />}
 			</div>
 		</>

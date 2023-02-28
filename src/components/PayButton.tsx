@@ -1,10 +1,10 @@
-import React, {useContext, useState} from 'react';
+import React, {useState} from 'react';
 import {Button} from '@mui/material';
 import PaymentIcon from '@mui/icons-material/Payment';
-import {ApiContext} from '../BoundlessOrderInfo';
+import {useAppSelector} from '../hooks/redux';
 
 export default function PayButton({orderId, onError}: {orderId: string, onError?: (err: any) => void}) {
-	const api = useContext(ApiContext);
+	const api = useAppSelector((state) => state.app.api);
 	const [submitting, setSubmitting] = useState(false);
 
 	const handlePayClick = () => {

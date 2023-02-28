@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 import clsx from 'clsx';
 import {useAppDispatch, useAppSelector} from '../../hooks/redux';
 import {addPromise} from '../../redux/actions/xhr';
-import {setOrder} from '../../redux/reducers/app';
+import {setOrder, setTotal} from '../../redux/reducers/app';
 import useFormatCurrency from '../../hooks/useFormatCurrency';
 
 export default function CartFooter({open}: ICartFooterProps) {
@@ -30,8 +30,9 @@ export default function CartFooter({open}: ICartFooterProps) {
 		setSubmitting(true);
 
 		const promise = api.checkout.clearDiscounts(order.id)
-			.then(({order}) => {
-				if (order) dispatch(setOrder(order));
+			.then(({order, total}) => {
+				dispatch(setOrder(order));
+				dispatch(setTotal(total));
 			})
 			.catch((err) => console.error(err))
 			.finally(() => setSubmitting(false));
