@@ -62,7 +62,7 @@ const OrderInfo = ({orderId, showItems = true, showPayButton = true, showStatus 
 		}
 	}, [api, isInited, onError, dispatch, orderId]);
 
-	if (!order) return <Loading />;
+	if (!order || !api || !isInited) return <Loading />;
 
 	return (
 		<div className='bdl-order-summary'>
