@@ -5,7 +5,7 @@ import {apiErrors2Formik, fieldAttrs} from '../../lib/formUtils';
 import {useAppSelector, useAppDispatch} from '../../hooks/redux';
 import {RootState} from '../../redux/store';
 import {addPromise} from '../../redux/actions/xhr';
-import {setOrder} from '../../redux/reducers/app';
+import {setOrder, setTotal} from '../../redux/reducers/app';
 
 export default function CartDiscountForm() {
 	const dispatch = useAppDispatch();
@@ -16,12 +16,13 @@ export default function CartDiscountForm() {
 		if (!api || !orderId) return;
 
 		const promise = api.checkout.addDiscountCode(orderId, values.code)
-			.then(({order}) => {
-				if (order) dispatch(setOrder(order));
+			.then(({order, total}) => {
+				dispatch(setOrder(order));
+				dispatch(setTotal(total));
 			})
 			.catch(({response: {data}}) => setErrors(apiErrors2Formik(data)))
 			.finally(() => setSubmitting(false))
-			;
+		;
 
 		dispatch(addPromise(promise));
 	};

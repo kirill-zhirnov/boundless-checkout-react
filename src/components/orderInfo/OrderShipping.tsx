@@ -1,14 +1,16 @@
-import {Grid} from '@mui/material';
 import React, {useMemo} from 'react';
+import {Grid} from '@mui/material';
 import {IAddress, ICustomer, IOrderService, TAddressType} from 'boundless-api-client';
-import {formatMoney} from '../../lib/formatter';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
+import useFormatCurrency from '../../hooks/useFormatCurrency';
 
 export default function OrderShipping({services, customer}: {services: IOrderService[], customer: ICustomer | null}) {
 	const delivery = useMemo(() => services.find(service => service.is_delivery), [services]);
 	const shippingAddress = useMemo(() =>
 		customer?.addresses?.find(address => address.type === TAddressType.shipping) || null
 		, [customer]);
+
+	const {formatCurrency} = useFormatCurrency();
 
 	if (!delivery) return null;
 
@@ -27,7 +29,9 @@ export default function OrderShipping({services, customer}: {services: IOrderSer
 				</Grid>
 				<Grid item sm={2} xs={12} className='bdl-order-items__service-cell'>
 					<span className='bdl-order-items__label'>Shipping total: </span>
-					<span className='bdl-order-items__value'>{formatMoney(delivery.total_price || '')}</span>
+					<span className='bdl-order-items__value'>
+						{delivery.total_price && formatCurrency(delivery.total_price)}
+					</span>
 				</Grid>
 			</Grid>
 		</div>

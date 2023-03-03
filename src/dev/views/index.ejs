@@ -10,14 +10,14 @@
 <body>
     <div id="checkout-app"></div>
     <script type="text/javascript">
-        const api = new window.BoundlessCheckout.BoundlessClient('<%= process.env.DEV_BOUNDLESS_INSTANCE_TOKEN ;%>');
-        api.setInstanceId('<%= process.env.DEV_BOUNDLESS_INSTANCE_TOKEN ;%>');
+        const api = new window.BoundlessCheckout.BoundlessClient('<%= process.env.DEV_BOUNDLESS_INSTANCE_TOKEN ;%>', '<%= process.env.DEV_BOUNDLESS_API_URL || 'https://v1.api.boundless-commerce.com' ;%>');
+        api.setInstanceId('<%= process.env.DEV_BOUNDLESS_INSTANCE_ID ;%>');
 
     	const wrapper = window.BoundlessCheckout.startCheckout(document.querySelector('#checkout-app'), {
             logoText: 'My custom logo',
             // logoSrc: 'https://boundless-commerce.com/_next/static/media/moon.b8557b5d.png',
     		cartId: '<%= process.env.DEV_CART_ID ;%>',
-    		onHide: function() {
+    		onHide: function(el, err) {
               wrapper.destroy();
     		},
     		api: api,
@@ -25,6 +25,13 @@
     			console.log('on thank you page :)')
     		},
     	});
+
+/*
+        const orderInfoWrapper = window.BoundlessCheckout.startOrderInfo(document.querySelector('#checkout-app'), {
+            api: api,
+            orderId: 'c3659dda-df0a-48f2-9c4f-60c1461fa7ab',
+        });
+ */
     </script>
 </body>
 </html>

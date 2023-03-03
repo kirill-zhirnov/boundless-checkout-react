@@ -54,3 +54,7 @@ Props `api`, `onHide`, `onThankYouPage` - are required, others are optional.
 1. Copy & adjust `.env.example` => `.env`
 2. `yarn dev` - starts dev server at http://localhost:8080
 3. Real component usage can be tested locally via yarn link or manually creation symbolic link in node_modules.
+
+---
+
+[NextJS eCommerce templates](https://boundless-commerce.com/templates) - Free. Ready to use. Just clone & deploy!

@@ -1,17 +1,27 @@
 import {Grid} from '@mui/material';
 import {IDetailedOrder} from 'boundless-api-client';
 import React, {useMemo} from 'react';
-import {calcOrderTotal} from '../../lib/calculator';
 import OrderDiscounts from './OrderDiscounts';
 import OrderPayment from './OrderPayment';
 import OrderRow from './OrderRow';
 import OrderShipping from './OrderShipping';
 import OrderTotalRow from './OrderTotalRow';
+import currency from 'currency.js';
+import OrderTaxes from './OrderTaxes';
 
 export default function OrderItems({order}: {order: IDetailedOrder}) {
-	const {items} = order;
-	const total = useMemo(() => calcOrderTotal(order), [order]);
-	const showSubtotal = order.services?.length || order.discounts.length || order.paymentMethod;
+	const {items, total_price} = order;
+	const hasTaxes = order.tax_amount !== null;
+	const showSubtotal = order.services?.length || order.discounts.length || order.paymentMethod || hasTaxes;
+
+	const itemsSubTotal = useMemo(() => {
+		let totalQty = 0, totalPrice = '0';
+		items.forEach(({qty, total_price}) => {
+			totalQty += qty;
+			totalPrice = currency(total_price || 0).add(totalPrice).toString();
+		});
+		return {totalQty, totalPrice};
+	}, [items]);
 
 	return (
 		<>
@@ -25,11 +35,13 @@ export default function OrderItems({order}: {order: IDetailedOrder}) {
 				{items.map(item => (
 					<OrderRow item={item} key={item.item_id} />
 				))}
-				{showSubtotal && <OrderTotalRow total={total!} isSubTotal />}
-				<OrderDiscounts discounts={order.discounts} total={total!} />
+				{showSubtotal &&
+				<OrderTotalRow price={itemsSubTotal.totalPrice} qty={itemsSubTotal.totalQty} isSubTotal />}
+				<OrderDiscounts order={order} />
 				<OrderShipping services={order.services} customer={order.customer}/>
-				{order.paymentMethod && <OrderPayment paymentMethod={order.paymentMethod} total={total!} />}
-				<OrderTotalRow total={total!} />
+				{order.paymentMethod && <OrderPayment order={order} />}
+				{hasTaxes && <OrderTaxes order={order} />}
+				{total_price && <OrderTotalRow price={total_price} qty={itemsSubTotal.totalQty} />}
 			</div>
 		</>
 	);

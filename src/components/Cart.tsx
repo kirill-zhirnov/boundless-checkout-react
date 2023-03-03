@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from 'react';
+import React, {useState} from 'react';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import ExpandLess from '@mui/icons-material/ExpandLess';
@@ -6,17 +6,16 @@ import clsx from 'clsx';
 import CartItems from './cart/CartItems';
 import {useAppSelector} from '../hooks/redux';
 import {RootState} from '../redux/store';
-import {formatMoney} from '../lib/formatter';
-import {calcCartTotal} from '../lib/calculator';
 import CartFooter from './cart/CartFooter';
 import CartDiscountForm from './cart/CartDiscountForm';
+import useFormatCurrency from '../hooks/useFormatCurrency';
 
 export default function Cart() {
-	const cartItems = useAppSelector((state: RootState) => state.app.items);
 	const order = useAppSelector((state: RootState) => state.app.order);
+	const total = useAppSelector((state: RootState) => state.app.total);
 	const [fullOpened, setFullOpened] = useState(false);
+	const {formatCurrency} = useFormatCurrency();
 
-	const total = useMemo(() => calcCartTotal(cartItems, order), [cartItems, order]);
 	const hasCouponCampaigns = useAppSelector((state: RootState) => state.app.hasCouponCampaigns);
 	const hasDisounts = order?.discounts && order?.discounts?.length > 0;
 
@@ -45,7 +44,7 @@ export default function Cart() {
 						</>}
 				</a>
 				<h4 className='bdl-cart__total'>
-					{formatMoney(total?.total_price || 0)}
+					{total && formatCurrency(total.price)}
 				</h4>
 			</div>
 			<div className={clsx('bdl-cart__full', {open: fullOpened})}>
@@ -54,7 +53,7 @@ export default function Cart() {
 			{hasCouponCampaigns && !hasDisounts && <div className='bdl-cart__discount'>
 				<CartDiscountForm />
 			</div>}
-			<CartFooter total={total} open={fullOpened} />
+			<CartFooter open={fullOpened} />
 		</div >
 	);
 }
