@@ -38,7 +38,7 @@ const useInitPaymentPage = () => {
 			;
 			dispatch(addPromise(promise));
 		}
-	}, [isInited, api, order, dispatch]);
+	}, [isInited, api, order, dispatch]);//eslint-disable-line
 
 	return {
 		isInited,

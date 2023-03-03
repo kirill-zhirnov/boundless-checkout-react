@@ -14,7 +14,7 @@ export default function BoundlessOrderInfo({api, ...restProps}: BoundlessOrderIn
 	useEffect(() => {
 		store.dispatch(setApi({api}));
 		store.dispatch(setIsInited(true));
-	}, []);
+	}, [api]);
 
 	return (
 		<React.StrictMode>
@@ -60,7 +60,7 @@ const OrderInfo = ({orderId, showItems = true, showPayButton = true, showStatus 
 				})
 			;
 		}
-	}, [api, isInited]);
+	}, [api, isInited, onError, dispatch, orderId]);
 
 	if (!order) return <Loading />;
 
