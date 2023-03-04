@@ -12,8 +12,10 @@ import {setApi, setIsInited, setLocaleSettings, setTaxSettings} from './redux/re
 
 export default function BoundlessOrderInfo({api, ...restProps}: BoundlessOrderInfoProps) {
 	useEffect(() => {
-		store.dispatch(setApi({api}));
-		store.dispatch(setIsInited(true));
+		if (api) {
+			store.dispatch(setApi({api}));
+			store.dispatch(setIsInited(true));
+		}
 	}, [api]);
 
 	return (
