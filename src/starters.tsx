@@ -21,7 +21,7 @@ export class StarterWrapper {
 
 	destroy() {
 		this.root?.unmount();
-		store.dispatch(resetState());
+		// store.dispatch(resetState());
 	}
 }
 
@@ -51,4 +51,8 @@ export function startOrderInfo(el: HTMLElement, props: BoundlessOrderInfoProps):
 	wrapper.start();
 
 	return wrapper;
+}
+
+export function resetCheckoutState() {
+	store.dispatch(resetState());
 }

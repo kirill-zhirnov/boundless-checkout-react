@@ -19,10 +19,12 @@
     		cartId: '<%= process.env.DEV_CART_ID ;%>',
     		onHide: function(el, err) {
               wrapper.destroy();
+              window.BoundlessCheckout.resetCheckoutState();
     		},
     		api: api,
     		onThankYouPage: function() {
-    			console.log('on thank you page :)')
+    			console.log('on thank you page :)');
+                window.BoundlessCheckout.resetCheckoutState();
     		},
     	});
 
