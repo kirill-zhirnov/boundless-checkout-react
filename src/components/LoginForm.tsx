@@ -15,13 +15,15 @@ import ContactMailIcon from '@mui/icons-material/ContactMail';
 import {Box} from '@mui/material';
 import {AccountCircle} from '@mui/icons-material';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
+import {useTranslation} from 'react-i18next';
 
 export default function LoginForm() {
 	const [viewMode, setViewMode] = useState<TViewMode>(TViewMode.login);
 	const {loggedInCustomer} = useAppSelector(state => state.user);
+	const {t} = useTranslation();
 
 	useEffect(() => {
-		document.title = 'Checkout: login';
+		document.title = t('loginForm.pageTitle');
 		if (loggedInCustomer) {
 			setViewMode(TViewMode.contact);
 		}
@@ -38,12 +40,13 @@ export function LoginFormView({setViewMode}: {setViewMode: (mode: TViewMode) => 
 	const {settings} = useAppSelector(state => state.app);
 	const {accountPolicy} = settings!;
 	const {onSubmit} = useSaveLoginForm(setViewMode);
+	const {t} = useTranslation();
 
 	return (
 		<Formik initialValues={{email: '', password: ''}} onSubmit={onSubmit}>
 			{(formikProps) => (
 				<Form className={'bdl-login-form'}>
-					<Typography variant="h5" mb={2}>Login</Typography>
+					<Typography variant="h5" mb={2}>{t('loginForm.pageHeader')}</Typography>
 					{accountPolicy === TCheckoutAccountPolicy.guestAndLogin &&
 						<Typography align={'right'}
 							variant="body2"
@@ -55,7 +58,7 @@ export function LoginFormView({setViewMode}: {setViewMode: (mode: TViewMode) => 
 								size={'small'}
 								endIcon={<ContactMailIcon />}
 							>
-								Continue as guest
+								{t('loginForm.continueAsGuest')}
 							</Button>
 						</Typography>
 					}
@@ -63,7 +66,7 @@ export function LoginFormView({setViewMode}: {setViewMode: (mode: TViewMode) => 
 						<Grid item xs={12}>
 							<Box sx={{display: 'flex', alignItems: 'flex-end'}}>
 								<AccountCircle sx={{color: 'action.active', mr: 1, my: 0.5}} />
-								<TextField label={'Email'}
+								<TextField label={t('loginForm.email')}
 									variant={'standard'}
 									type={'email'}
 									required={true}
@@ -75,7 +78,7 @@ export function LoginFormView({setViewMode}: {setViewMode: (mode: TViewMode) => 
 						<Grid item xs={12}>
 							<Box sx={{display: 'flex', alignItems: 'flex-end'}}>
 								<VpnKeyIcon sx={{color: 'action.active', mr: 1, my: 0.5}} />
-								<TextField label={'Password'}
+								<TextField label={t('loginForm.password')}
 									variant={'standard'}
 									type={'password'}
 									required={true}
@@ -90,7 +93,7 @@ export function LoginFormView({setViewMode}: {setViewMode: (mode: TViewMode) => 
 								type={'submit'}
 								disabled={formikProps.isSubmitting}
 							>
-								Sign in
+								{t('loginForm.signIn')}
 							</Button>
 						</Grid>
 					</Grid>

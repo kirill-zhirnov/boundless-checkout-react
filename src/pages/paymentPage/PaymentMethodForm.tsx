@@ -16,9 +16,11 @@ import ExtraErrors from '../../components/ExtraErrors';
 import {
 	ICheckoutPaymentPageData, TCheckoutStep, TPaymentGatewayAlias, IPaymentMethod
 } from 'boundless-api-client';
+import {useTranslation} from 'react-i18next';
 
 export default function PaymentMethodForm({paymentPage}: { paymentPage: ICheckoutPaymentPageData }) {
 	const {onSubmit} = useSavePaymentMethod();
+	const {t} = useTranslation();
 
 	return (
 		<Formik initialValues={getFormInitialValues()} onSubmit={onSubmit}>
@@ -28,7 +30,7 @@ export default function PaymentMethodForm({paymentPage}: { paymentPage: ICheckou
 						<ExtraErrors excludedFields={['payment_method_id']}
 												 errors={formikProps.errors}/>
 					}
-					<Typography variant="h5" mb={2}>Payment method</Typography>
+					<Typography variant="h5" mb={2}>{t('paymentMethodForm.pageHeader')}</Typography>
 					<PaymentMethods formikProps={formikProps} paymentMethods={paymentPage.paymentMethods}/>
 					<Box textAlign={'end'}>
 						<Button variant="contained"
@@ -36,7 +38,10 @@ export default function PaymentMethodForm({paymentPage}: { paymentPage: ICheckou
 										type={'submit'}
 										disabled={formikProps.isSubmitting}
 						>
-							{getBtnTitleByPaymentMethod(paymentPage.paymentMethods, formikProps.values.payment_method_id)}
+							<PayBtnTitle
+								paymentMethods={paymentPage.paymentMethods}
+								paymentMethodId={formikProps.values.payment_method_id}
+							/>
 						</Button>
 					</Box>
 				</Form>
@@ -56,6 +61,8 @@ const PaymentMethods = ({
 													formikProps,
 													paymentMethods
 												}: { formikProps: FormikProps<IPaymentMethodFormValues>, paymentMethods: IPaymentMethod[] }) => {
+	const {t} = useTranslation();
+
 	return (
 		<Box mb={2}>
 			<FormControl variant="standard"
@@ -78,8 +85,9 @@ const PaymentMethods = ({
 																			}
 										/>
 										{formikProps.values.payment_method_id == payment_method_id &&
-											<Typography className={'text-muted'} mb={1}>After clicking "Pay now", you will be redirected to
-												PayPal to complete your purchase securely.</Typography>}
+											<Typography className={'text-muted'} mb={1}>
+												{t('paymentMethodForm.payPalHint')}
+											</Typography>}
 									</React.Fragment>
 								);
 							default:
@@ -140,15 +148,16 @@ export interface IPaymentMethodFormValues {
 	payment_method_id: number;
 }
 
-const getBtnTitleByPaymentMethod = (paymentMethods: IPaymentMethod[], paymentMethodId: number) => {
+const PayBtnTitle = ({paymentMethods, paymentMethodId}: {paymentMethods: IPaymentMethod[], paymentMethodId: number}) => {
 	const paymentMethod = paymentMethods.find(({payment_method_id}) => payment_method_id == paymentMethodId);
+	const {t} = useTranslation();
 
 	if (paymentMethod) {
 		switch (paymentMethod.gateway_alias) {
 			case TPaymentGatewayAlias.paypal:
-				return 'Pay now';
+				return <>{t('paymentMethodForm.payNow')}</>;
 		}
 	}
 
-	return 'Complete order';
+	return <>{t('paymentMethodForm.completeOrder')}</>;
 };

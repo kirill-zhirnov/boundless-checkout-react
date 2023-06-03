@@ -25,6 +25,7 @@ import Typography from '@mui/material/Typography';
 import LoginIcon from '@mui/icons-material/Login';
 import {LoginFormView} from './LoginForm';
 import clsx from 'clsx';
+import {useTranslation} from 'react-i18next';
 
 export default function ContactInformationForm() {
 	const [viewMode, setViewMode] = useState<TViewMode>(TViewMode.contact);
@@ -39,9 +40,10 @@ export default function ContactInformationForm() {
 export function ContactFormView({setViewMode}: { setViewMode: (mode: TViewMode) => void }) {
 	const {settings, order, stepper} = useAppSelector(state => state.app);
 	const {loggedInCustomer} = useAppSelector(state => state.user);
+	const {t} = useTranslation();
 
 	useEffect(() => {
-		document.title = 'Checkout: contact information';
+		document.title = t('contactForm.pageTitle');
 	}, []);
 
 	const {accountPolicy, contactFields} = settings!;
@@ -63,7 +65,7 @@ export function ContactFormView({setViewMode}: { setViewMode: (mode: TViewMode) 
 					{Object.keys(formikProps.errors).length > 0 &&
 					<ExtraErrors excludedFields={excludedFields} errors={formikProps.errors}/>}
 					<Typography variant="h5" mb={2}>
-						Contact information
+						{t('contactForm.pageHeader')}
 					</Typography>
 					{(accountPolicy === TCheckoutAccountPolicy.guestAndLogin && !loggedInCustomer) &&
 					<Typography align={'right'}
@@ -71,13 +73,13 @@ export function ContactFormView({setViewMode}: { setViewMode: (mode: TViewMode) 
 											className={'bdl-contact-form__has-account'}
 											gutterBottom
 					>
-						Already have an account?
+						{t('contactForm.alreadyHaveAccount')}
 						<Button startIcon={<LoginIcon/>}
 										variant="text"
 										onClick={() => setViewMode(TViewMode.login)}
 										sx={{mx: 1}}
 										size={'small'}
-						>Login</Button>
+						>{t('contactForm.login')}</Button>
 					</Typography>
 					}
 					<Grid container spacing={2}>
@@ -88,7 +90,7 @@ export function ContactFormView({setViewMode}: { setViewMode: (mode: TViewMode) 
 										key={i}
 							>
 								{type === 'email' &&
-								<TextField label={'Email'}
+								<TextField label={t('contactForm.email')}
 													 variant={'standard'}
 													 type={'email'}
 													 required={required}
@@ -97,7 +99,7 @@ export function ContactFormView({setViewMode}: { setViewMode: (mode: TViewMode) 
 								/>
 								}
 								{type === 'phone' &&
-								<TextField label={'Phone'}
+								<TextField label={t('contactForm.phone')}
 													 variant={'standard'}
 													 required={required}
 													 {...fieldAttrs<IContactInformationFormValues>('phone', formikProps)}
@@ -112,7 +114,7 @@ export function ContactFormView({setViewMode}: { setViewMode: (mode: TViewMode) 
 						>
 							<FormControlLabel control={
 								<Checkbox {...checkAttrs('receive_marketing_info', formikProps)} />
-							} label="Email me with news and offers"/>
+							} label={t('contactForm.receiveMarketingInfo')}/>
 						</Grid>
 						}
 						<Grid item xs={12} sx={{textAlign: 'right'}}>
@@ -128,6 +130,8 @@ export function ContactFormView({setViewMode}: { setViewMode: (mode: TViewMode) 
 }
 
 const NextStepBtn = ({stepper, isSubmitting}: { stepper: ICheckoutStepper, isSubmitting: boolean }) => {
+	const {t} = useTranslation();
+
 	if (stepper.steps.includes(TCheckoutStep.shippingAddress)) {
 		return (
 			<Button variant="contained"
@@ -135,7 +139,7 @@ const NextStepBtn = ({stepper, isSubmitting}: { stepper: ICheckoutStepper, isSub
 							size="large"
 							disabled={isSubmitting}
 							startIcon={<LocalShippingIcon/>}
-			>Continue to shipping</Button>
+			>{t('contactForm.continueToShipping')}</Button>
 		);
 	}
 
@@ -145,7 +149,7 @@ const NextStepBtn = ({stepper, isSubmitting}: { stepper: ICheckoutStepper, isSub
 						size="large"
 						disabled={isSubmitting}
 						startIcon={<PaymentIcon/>}
-		>Continue to payment</Button>
+		>{t('contactForm.continueToPayment')}</Button>
 	);
 };
 

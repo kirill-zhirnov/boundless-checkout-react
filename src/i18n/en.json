@@ -1,0 +1,116 @@
+{
+	"contactForm": {
+		"pageTitle": "Checkout: contact information",
+		"pageHeader": "Contact information",
+		"alreadyHaveAccount": "Already have an account?",
+		"login": "Login",
+		"email": "Email",
+		"phone": "Phone",
+		"receiveMarketingInfo": "Email me with news and offers",
+		"continueToShipping": "Continue to shipping",
+		"continueToPayment": "Continue to payment"
+	},
+	"loginForm": {
+		"pageTitle": "Checkout: Login",
+		"pageHeader": "Login",
+		"continueAsGuest": "Continue as guest",
+		"email": "Email",
+		"password": "Password",
+		"signIn": "Sign in"
+	},
+	"header": {
+		"backToCart": "Back to the cart"
+	},
+	"checkoutProgress": {
+		"contactInfo": "Contact Info",
+		"shippingAddress": "Delivery method",
+		"shippingMethod": "Shipping method",
+		"paymentMethod": "Payment method",
+		"thankYou": "Thank you!"
+	},
+	"errorPage": {
+		"backToSite": "Back to the site",
+		"error": "Error"
+	},
+	"shippingForm": {
+		"pageTitle": "Checkout: Shipping",
+		"pageHeader": "Delivery method",
+		"continueToPayment": "Continue to payment",
+		"freeDelivery": "Free"
+	},
+	"addresses": {
+		"billingAddress": "Billing address",
+		"shippingAddress": "Shipping address",
+		"billingTheSame": "Billing address is the same as shipping address",
+		"firstName": "First name",
+		"lastName": "Last name",
+		"company": "Company",
+		"addressLine1": "Address",
+		"addressLine2": "Apartment, suite, etc.",
+		"zip": "ZIP code",
+		"city": "City",
+		"state": "State",
+		"country": "Country",
+		"phone": "Phone"
+	},
+	"paymentMethodForm": {
+		"pageTitle": "Checkout: Payment",
+		"pageHeader": "Payment method",
+		"payNow": "Pay now",
+		"completeOrder": "Complete order",
+		"payPalHint": "After clicking \"Pay now\", you will be redirected to PayPal to complete your purchase securely."
+	},
+	"cart": {
+		"hideOrderSummary": "Hide order summary",
+		"showOrderSummary": "Show order summary",
+		"discountForm": {
+			"code": "Discount code",
+			"apply": "Apply"
+		},
+		"footer": {
+			"subTotal": "Subtotal:",
+			"couponTitle": "Coupon {{amount}}",
+			"shipping": "Shipping:",
+			"total": "Total:",
+			"removeCoupon": "Remove coupon"
+		},
+		"items": {
+			"cartEmpty": "Your cart is empty"
+		}
+	},
+	"orderInfo": {
+		"orderId": "Order ID: {{id}}",
+		"orderStatus": "Order status: {{status}}",
+		"paymentStatusPaid": "Payment status: Paid",
+		"discounts": {
+			"title": "Discounts",
+			"total": "Total discount:"
+		},
+		"payment": {
+			"title": "Payment Method",
+			"markUp": "MarkUp:",
+			"total": "Total:"
+		},
+		"row": {
+			"sku": "SKU:",
+			"qty": "QTY:",
+			"total": "Total:"
+		},
+		"shipping": {
+			"title": "Shipping",
+			"total": "Shipping total:"
+		},
+		"totalRow": {
+			"titleSubTotal": "Subtotal:",
+			"titleTotal": "Total:",
+			"qty": "Qty:",
+			"price": "Price:"
+		}
+	},
+	"payButton": {
+		"payNow": "Pay now"
+	},
+	"form": {
+		"areYouSure": "Are you sure?"
+	}
+}

@@ -9,9 +9,11 @@ import AddressFieldset from './AddressFieldset';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import {checkAttrs} from '../../../lib/formUtils';
+import {useTranslation} from 'react-i18next';
 
 export default function AddressesFields({shippingPage}: {shippingPage: ICheckoutShippingPageData}) {
 	const formikProps = useFormikContext<IShippingFormValues>();
+	const {t} = useTranslation();
 
 	if (!formikProps.values.delivery_id) return null;
 
@@ -20,7 +22,7 @@ export default function AddressesFields({shippingPage}: {shippingPage: ICheckout
 			{isPickUpDelivery(formikProps.values.delivery_id, shippingPage.options.delivery)
 				? <>
 					<Box className='bdl-shipping-form__address-form' mb={2}>
-						<Typography variant="h6">Billing address</Typography>
+						<Typography variant="h6">{t('addresses.billingAddress')}</Typography>
 						<AddressFieldset
 							countries={shippingPage.options.country}
 							keyPrefix={'billing_address'}
@@ -29,7 +31,7 @@ export default function AddressesFields({shippingPage}: {shippingPage: ICheckout
 				</>
 				: <>
 					<Box className='bdl-shipping-form__address-form' mb={2}>
-						<Typography variant="h6">Shipping address</Typography>
+						<Typography variant="h6">{t('addresses.shippingAddress')}</Typography>
 						<AddressFieldset
 							countries={shippingPage.options.country}
 							keyPrefix={'shipping_address'}
@@ -39,12 +41,12 @@ export default function AddressesFields({shippingPage}: {shippingPage: ICheckout
 					<Box mb={2}>
 						<FormControlLabel
 							control={<Checkbox value={true} {...checkAttrs('billing_address_the_same', formikProps)} />}
-							label="Billing address is the same as shipping address"
+							label={t('addresses.billingTheSame')}
 						/>
 					</Box>
 					{!formikProps.values.billing_address_the_same &&
 						<Box className='bdl-shipping-form__address-form' mb={2}>
-							<Typography variant="h6">Billing address</Typography>
+							<Typography variant="h6">{t('addresses.billingAddress')}</Typography>
 							<AddressFieldset
 								countries={shippingPage.options.country}
 								keyPrefix={'billing_address'}

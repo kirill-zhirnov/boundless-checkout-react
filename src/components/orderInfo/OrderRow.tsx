@@ -5,10 +5,12 @@ import {Grid} from '@mui/material';
 import {getProductImg} from '../../lib/images';
 import {useAppSelector} from '../../hooks/redux';
 import useFormatCurrency from '../../hooks/useFormatCurrency';
+import {useTranslation} from 'react-i18next';
 
 export default function OrderRow({item}: {item: IOrderItem}) {
 	const api = useAppSelector((state) => state.app.api);
 	const {formatCurrency} = useFormatCurrency();
+	const {t} = useTranslation();
 
 	return (
 		<>
@@ -22,9 +24,11 @@ export default function OrderRow({item}: {item: IOrderItem}) {
 					<div className='bdl-order-item__title'>
 						<div className='bdl-order-item__title-row'>{item.vwItem?.product?.title || ''}</div>
 						{item.vwItem.type === 'variant' && <div className='bdl-order-item__title-row bdl-order-item__title-row_muted'>{item.vwItem?.variant?.title || ''}</div>}
-						{(item.vwItem.product?.sku || item.vwItem.variant?.sku) && <div className='bdl-order-item__title-row bdl-order-item__title-row_muted'>
-							SKU: {item.vwItem.variant?.sku || item.vwItem.product?.sku}
-						</div>}
+						{(item.vwItem.product?.sku || item.vwItem.variant?.sku) &&
+						<div className='bdl-order-item__title-row bdl-order-item__title-row_muted'>
+							{t('orderInfo.row.sku')} {item.vwItem.variant?.sku || item.vwItem.product?.sku}
+						</div>
+						}
 					</div>
 				</Grid>
 				<Grid item className='bdl-order-item__col' sm={2} xs={12}>
@@ -34,11 +38,15 @@ export default function OrderRow({item}: {item: IOrderItem}) {
 					</span>
 				</Grid>
 				<Grid item className='bdl-order-item__col' sm={2} xs={12}>
-					<span className='bdl-order-items__label'><strong>Qty: </strong></span>
+					<span className='bdl-order-items__label'>
+						<strong>{t('orderInfo.row.qty')} </strong>
+					</span>
 					<span className='bdl-order-items__value'>{item.qty}</span>
 				</Grid>
 				<Grid item className='bdl-order-item__col' sm={2} xs={12}>
-					<span className='bdl-order-items__label'><strong>Total: </strong></span>
+					<span className='bdl-order-items__label'>
+						<strong>{t('orderInfo.row.total')} </strong>
+					</span>
 					<span className='bdl-order-items__value'>
 						{item.itemPrice.final_price !== null && formatCurrency(currency(item.itemPrice.final_price).multiply(item.qty).toString())}
 					</span>

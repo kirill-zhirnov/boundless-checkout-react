@@ -5,6 +5,7 @@ import {useAppDispatch, useAppSelector} from '../../hooks/redux';
 import {addPromise} from '../../redux/actions/xhr';
 import {setOrder, setTotal} from '../../redux/reducers/app';
 import useFormatCurrency from '../../hooks/useFormatCurrency';
+import {useTranslation} from 'react-i18next';
 
 export default function CartFooter({open}: ICartFooterProps) {
 	const dispatch = useAppDispatch();
@@ -14,6 +15,7 @@ export default function CartFooter({open}: ICartFooterProps) {
 	const taxSettings = useAppSelector(state => state.app.taxSettings);
 	const [submitting, setSubmitting] = useState(false);
 	const {formatCurrency} = useFormatCurrency();
+	const {t} = useTranslation();
 
 	const getDiscountAmount = () => {
 		if (!order?.discounts || !order?.discounts.length) return '';
@@ -25,7 +27,12 @@ export default function CartFooter({open}: ICartFooterProps) {
 
 	const handleRmDiscount = (e: React.MouseEvent) => {
 		e.preventDefault();
-		if (!window.confirm('Are you sure?') || !api || !order?.id || submitting) return;
+		if (
+			!window.confirm(t('form.areYouSure') as string)
+			|| !api
+			|| !order?.id
+			|| submitting
+		) return;
 
 		setSubmitting(true);
 
@@ -49,18 +56,20 @@ export default function CartFooter({open}: ICartFooterProps) {
 	return (
 		<div className={clsx('bdl-cart__footer', {open})}>
 			{(hasShipping || hasDiscount || hasTax) && <div className='bdl-cart__footer-row'>
-				<h5 className='bdl-cart__footer-title'>Subtotal:
+				<h5 className='bdl-cart__footer-title'>
+					{t('cart.footer.subTotal')}
 					<span className='bdl-cart__footer-value'> {formatCurrency(total.itemsSubTotal.price)}</span>
 				</h5>
 			</div>}
 			{hasDiscount && <div className="bdl-cart__footer-row">
 				<h5 className='bdl-cart__footer-title'>
-					Сoupon{getDiscountAmount()}:
+					{t('cart.footer.couponTitle', {amount: getDiscountAmount()})}
 					<span className='bdl-cart__footer-value'> -{formatCurrency(total.discount)}</span>
 				</h5>
 			</div>}
 			{hasShipping && <div className="bdl-cart__footer-row" >
-				<h5 className='bdl-cart__footer-title'>Shipping:
+				<h5 className='bdl-cart__footer-title'>
+					{t('cart.footer.shipping')}
 					<span className='bdl-cart__footer-value'> {formatCurrency(total.servicesSubTotal.price)}</span>
 				</h5>
 			</div>}
@@ -71,13 +80,13 @@ export default function CartFooter({open}: ICartFooterProps) {
 				</h5>
 			</div>}
 			<h4 className="bdl-cart__footer-row bdl-cart__footer-row_total">
-				Total: <span className='bdl-cart__footer-value'>{formatCurrency(total.price)}</span>
+				{t('cart.footer.total')} <span className='bdl-cart__footer-value'>{formatCurrency(total.price)}</span>
 			</h4>
 
 			{hasDiscount && <div className='bdl-cart__footer-rm'>
 				<small>
 					<a href="#" className='bdl-cart__footer-rm-link' onClick={handleRmDiscount}>
-						Remove coupon
+						{t('cart.footer.removeCoupon')}
 					</a>
 				</small>
 			</div>}

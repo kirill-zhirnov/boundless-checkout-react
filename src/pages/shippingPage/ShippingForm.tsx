@@ -18,9 +18,11 @@ import {apiErrors2Formik} from '../../lib/formUtils';
 import {setOrder, setTotal} from '../../redux/reducers/app';
 import AddressesFields from './shippingForm/AddressesFields';
 import {isPickUpDelivery} from '../../lib/shipping';
+import {useTranslation} from 'react-i18next';
 
 export default function ShippingForm({shippingPage}: {shippingPage: ICheckoutShippingPageData}) {
 	const {onSubmit} = useSaveShippingForm({shippingPage});
+	const {t} = useTranslation();
 
 	return (
 		<Formik initialValues={getFormInitialValues(shippingPage)} onSubmit={onSubmit}>
@@ -28,7 +30,7 @@ export default function ShippingForm({shippingPage}: {shippingPage: ICheckoutShi
 				<Form className={'bdl-shipping-form'}>
 					{Object.keys(formikProps.errors).length > 0 &&
 					<ExtraErrors excludedFields={...Object.keys(formikProps.initialValues)} errors={formikProps.errors} />}
-					<Typography variant="h5" mb={2}>Delivery method</Typography>
+					<Typography variant="h5" mb={2}>{t('shippingForm.pageHeader')}</Typography>
 					<DeliverySelector options={shippingPage.options} />
 					<AddressesFields shippingPage={shippingPage} />
 					<Box textAlign={'end'}>
@@ -36,7 +38,7 @@ export default function ShippingForm({shippingPage}: {shippingPage: ICheckoutShi
 							type={'submit'}
 							disabled={formikProps.isSubmitting || !formikProps.values.delivery_id}
 						>
-							Continue to payment
+							{t('shippingForm.continueToPayment')}
 						</Button>
 					</Box>
 				</Form>

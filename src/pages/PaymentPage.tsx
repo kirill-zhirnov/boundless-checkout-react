@@ -6,12 +6,14 @@ import {ICheckoutPaymentPageData} from 'boundless-api-client';
 import useInitCheckoutByCart from '../hooks/initCheckout';
 import Loading from '../components/Loading';
 import PaymentMethodForm from './paymentPage/PaymentMethodForm';
+import {useTranslation} from 'react-i18next';
 
 export default function PaymentPage() {
 	const {isInited, paymentPage} = useInitPaymentPage();
+	const {t} = useTranslation();
 
 	useEffect(() => {
-		document.title = 'Checkout: payment';
+		document.title = t('paymentMethodForm.pageTitle');
 	}, []);
 
 	if (!isInited) {

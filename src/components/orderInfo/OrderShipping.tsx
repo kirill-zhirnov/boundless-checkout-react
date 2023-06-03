@@ -3,6 +3,7 @@ import {Grid} from '@mui/material';
 import {IAddress, ICustomer, IOrderService, TAddressType} from 'boundless-api-client';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import useFormatCurrency from '../../hooks/useFormatCurrency';
+import {useTranslation} from 'react-i18next';
 
 export default function OrderShipping({services, customer}: {services: IOrderService[], customer: ICustomer | null}) {
 	const delivery = useMemo(() => services.find(service => service.is_delivery), [services]);
@@ -11,6 +12,7 @@ export default function OrderShipping({services, customer}: {services: IOrderSer
 		, [customer]);
 
 	const {formatCurrency} = useFormatCurrency();
+	const {t} = useTranslation();
 
 	if (!delivery) return null;
 
@@ -18,7 +20,7 @@ export default function OrderShipping({services, customer}: {services: IOrderSer
 		<div className='bdl-order-items__service-row'>
 			<h5 className='bdl-order-items__service-heading'>
 				<LocalShippingIcon className='bdl-order-items__service-ico' fontSize='small' />
-				Shipping
+				{t('orderInfo.shipping.title')}
 			</h5>
 			<Grid container>
 				<Grid item sm={8} xs={12} className='bdl-order-items__service-cell bdl-order-items__service-cell_title'>
@@ -28,7 +30,7 @@ export default function OrderShipping({services, customer}: {services: IOrderSer
 				<Grid item sm={2} xs={12} className='bdl-order-items__service-cell'>
 				</Grid>
 				<Grid item sm={2} xs={12} className='bdl-order-items__service-cell'>
-					<span className='bdl-order-items__label'>Shipping total: </span>
+					<span className='bdl-order-items__label'>{t('orderInfo.shipping.total')} </span>
 					<span className='bdl-order-items__value'>
 						{delivery.total_price && formatCurrency(delivery.total_price)}
 					</span>

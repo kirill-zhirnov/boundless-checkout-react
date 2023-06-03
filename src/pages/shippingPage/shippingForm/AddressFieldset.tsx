@@ -6,15 +6,17 @@ import TextField from '@mui/material/TextField';
 import {IFieldAttrs} from '../../../lib/formUtils';
 import {useAppSelector} from '../../../hooks/redux';
 import {IAddressSubForm, IShippingFormValues} from '../../../types/shippingForm';
+import {useTranslation} from 'react-i18next';
 
 export default function AddressFieldset({countries, showPhone, keyPrefix}: IProps) {
 	const {settings} = useAppSelector(state => state.app);
 	const formikProps = useFormikContext<IShippingFormValues>();
+	const {t} = useTranslation();
 
 	return (
 		<Grid container spacing={2}>
 			<Grid item xs={6}>
-				<TextField label={'First name'}
+				<TextField label={t('addresses.firstName')}
 									 variant={'standard'}
 									 required={settings!.customerNameRequired.includes(TCheckoutCustomerName.first)}
 									 fullWidth
@@ -22,7 +24,7 @@ export default function AddressFieldset({countries, showPhone, keyPrefix}: IProp
 				/>
 			</Grid>
 			<Grid item xs={6}>
-				<TextField label={'Last name'}
+				<TextField label={t('addresses.lastName')}
 									 variant={'standard'}
 									 required={true}
 									 fullWidth
@@ -32,7 +34,7 @@ export default function AddressFieldset({countries, showPhone, keyPrefix}: IProp
 
 			{[TCheckoutFieldStatus.optional, TCheckoutFieldStatus.required].includes(settings!.companyName) &&
 			<Grid item xs={12}>
-				<TextField label={'Company'}
+				<TextField label={t('addresses.company')}
 									 variant={'standard'}
 									 required={settings!.companyName === TCheckoutFieldStatus.required}
 									 fullWidth
@@ -42,7 +44,7 @@ export default function AddressFieldset({countries, showPhone, keyPrefix}: IProp
 			}
 
 			<Grid item xs={12}>
-				<TextField label={'Address'}
+				<TextField label={t('addresses.addressLine1')}
 									 variant={'standard'}
 									 required={true}
 									 fullWidth
@@ -52,7 +54,7 @@ export default function AddressFieldset({countries, showPhone, keyPrefix}: IProp
 
 			{[TCheckoutFieldStatus.optional, TCheckoutFieldStatus.required].includes(settings!.addressLine2) &&
 			<Grid item xs={12}>
-				<TextField label={'Apartment, suite, etc.'}
+				<TextField label={t('addresses.addressLine2')}
 									 variant={'standard'}
 									 required={settings!.addressLine2 === TCheckoutFieldStatus.required}
 									 fullWidth
@@ -62,7 +64,7 @@ export default function AddressFieldset({countries, showPhone, keyPrefix}: IProp
 			}
 
 			<Grid item xs={6}>
-				<TextField label={'ZIP code'}
+				<TextField label={t('addresses.zip')}
 									 variant={'standard'}
 									 required={true}
 									 fullWidth
@@ -70,7 +72,7 @@ export default function AddressFieldset({countries, showPhone, keyPrefix}: IProp
 				/>
 			</Grid>
 			<Grid item xs={6}>
-				<TextField label={'City'}
+				<TextField label={t('addresses.city')}
 									 variant={'standard'}
 									 required={true}
 									 fullWidth
@@ -79,14 +81,14 @@ export default function AddressFieldset({countries, showPhone, keyPrefix}: IProp
 			</Grid>
 
 			<Grid item xs={6}>
-				<TextField label={'State'}
+				<TextField label={t('addresses.state')}
 									 variant={'standard'}
 									 fullWidth
 									 {...addressFieldAttrs(keyPrefix, 'state', formikProps)}
 				/>
 			</Grid>
 			<Grid item xs={6}>
-				<TextField label={'Country'}
+				<TextField label={t('addresses.country')}
 									 variant={'standard'}
 									 required={true}
 									 fullWidth
@@ -103,7 +105,7 @@ export default function AddressFieldset({countries, showPhone, keyPrefix}: IProp
 
 			{showPhone &&
 			<Grid item xs={12}>
-				<TextField label={'Phone'}
+				<TextField label={t('addresses.phone')}
 									 variant={'standard'}
 									 fullWidth
 									 {...addressFieldAttrs(keyPrefix, 'phone', formikProps)}

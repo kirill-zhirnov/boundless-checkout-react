@@ -9,6 +9,7 @@ import {store} from './redux/store';
 import {Provider} from 'react-redux';
 import {useAppDispatch, useAppSelector} from './hooks/redux';
 import {setApi, setIsInited, setLocaleSettings, setTaxSettings} from './redux/reducers/app';
+import {useTranslation} from 'react-i18next';
 
 export default function BoundlessOrderInfo({api, ...restProps}: BoundlessOrderInfoProps) {
 	useEffect(() => {
@@ -41,6 +42,7 @@ const OrderInfo = ({orderId, showItems = true, showPayButton = true, showStatus 
 	const isInited = useAppSelector((state) => state.app.isInited);
 	const [order, setOrder] = useState<IDetailedOrder | null>(null);
 	const dispatch = useAppDispatch();
+	const {t} = useTranslation();
 
 	useEffect(() => {
 		if (isInited && api) {
@@ -73,9 +75,9 @@ const OrderInfo = ({orderId, showItems = true, showPayButton = true, showStatus 
 			}
 			{showStatus &&
 				<div>
-					<Typography variant="subtitle1" gutterBottom>Order ID: {order.order_id}</Typography>
-					<Typography variant="subtitle1" gutterBottom>Order status: {order.status?.title}</Typography>
-					{order.paid_at && <Typography variant="subtitle1" gutterBottom>Payment status: Paid</Typography>}
+					<Typography variant="subtitle1" gutterBottom>{t('orderInfo.orderId', {id: order.order_id})}</Typography>
+					<Typography variant="subtitle1" gutterBottom>{t('orderInfo.orderStatus', {status: order.status?.title})}</Typography>
+					{order.paid_at && <Typography variant="subtitle1" gutterBottom>{t('orderInfo.paymentStatusPaid')}</Typography>}
 				</div>}
 			<Paper>
 				{showItems && <OrderItems order={order} />}

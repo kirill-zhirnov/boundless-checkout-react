@@ -9,12 +9,14 @@ import {RootState} from '../redux/store';
 import CartFooter from './cart/CartFooter';
 import CartDiscountForm from './cart/CartDiscountForm';
 import useFormatCurrency from '../hooks/useFormatCurrency';
+import {useTranslation} from 'react-i18next';
 
 export default function Cart() {
 	const order = useAppSelector((state: RootState) => state.app.order);
 	const total = useAppSelector((state: RootState) => state.app.total);
 	const [fullOpened, setFullOpened] = useState(false);
 	const {formatCurrency} = useFormatCurrency();
+	const {t} = useTranslation();
 
 	const hasCouponCampaigns = useAppSelector((state: RootState) => state.app.hasCouponCampaigns);
 	const hasDisounts = order?.discounts && order?.discounts?.length > 0;
@@ -35,11 +37,11 @@ export default function Cart() {
 					<ShoppingCartIcon sx={{fontSize: 16}} />
 					{fullOpened
 						? <>
-							Hide order summary
+							{t('cart.hideOrderSummary')}
 							<ExpandLess fontSize='small' />
 						</>
 						: <>
-							Show order summary
+							{t('cart.showOrderSummary')}
 							<ExpandMore fontSize='small' />
 						</>}
 				</a>

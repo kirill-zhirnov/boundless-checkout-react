@@ -4,6 +4,8 @@ import BoundlessCheckout, {IBoundlessCheckoutProps} from './BoundlessCheckout';
 import BoundlessOrderInfo, {BoundlessOrderInfoProps} from './BoundlessOrderInfo';
 import {store} from './redux/store';
 import {resetState} from './redux/actions/app';
+import {initI18n} from './i18n/funcs';
+initI18n();
 
 export class StarterWrapper {
 	protected root?: Root;
@@ -15,7 +17,7 @@ export class StarterWrapper {
 	}
 
 	start() {
-		this.root =  ReactDOM.createRoot(this.el);
+		this.root = ReactDOM.createRoot(this.el);
 		this.root.render(<>{this.component}</>);
 	}
 

@@ -6,12 +6,14 @@ import {useAppDispatch, useAppSelector} from '../hooks/redux';
 import {ICheckoutShippingPageData} from 'boundless-api-client';
 import {addPromise} from '../redux/actions/xhr';
 import ShippingForm from './shippingPage/ShippingForm';
+import {useTranslation} from 'react-i18next';
 
 export default function ShippingPage() {
 	const {isInited, shippingPage} = useInitShippingPage();
+	const {t} = useTranslation();
 
 	useEffect(() => {
-		document.title = 'Checkout: shipping';
+		document.title = t('shippingForm.pageTitle');
 	}, []);
 
 	if (!isInited) {

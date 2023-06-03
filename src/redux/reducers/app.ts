@@ -15,7 +15,8 @@ import {TClickedElement} from '../../lib/elementEvents';
 const initialState: IAppState = {
 	isInited: false,
 	show: false,
-	globalError: null
+	globalError: null,
+	stepper: null
 };
 
 const appSlice = createSlice({
@@ -163,7 +164,7 @@ export interface IAppState {
 	localeSettings?: ILocaleSettings,
 	taxSettings?: ISystemTax,
 	logo?: string|ReactNode,
-	stepper?: ICheckoutStepper,
+	stepper?: ICheckoutStepper|null,
 	hasCouponCampaigns?: boolean,
 	needShipping?: boolean,
 	onCheckoutInited?: TOnCheckoutInited,

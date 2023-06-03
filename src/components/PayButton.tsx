@@ -2,10 +2,12 @@ import React, {useState} from 'react';
 import {Button} from '@mui/material';
 import PaymentIcon from '@mui/icons-material/Payment';
 import {useAppSelector} from '../hooks/redux';
+import {useTranslation} from 'react-i18next';
 
 export default function PayButton({orderId, onError}: {orderId: string, onError?: (err: any) => void}) {
 	const api = useAppSelector((state) => state.app.api);
 	const [submitting, setSubmitting] = useState(false);
+	const {t} = useTranslation();
 
 	const handlePayClick = () => {
 		if (!api) return;
@@ -35,7 +37,7 @@ export default function PayButton({orderId, onError}: {orderId: string, onError?
 				startIcon={<PaymentIcon />}
 				variant='contained'
 			>
-				Pay now
+				{t('payButton.payNow')}
 			</Button>
 		</p>
 	);

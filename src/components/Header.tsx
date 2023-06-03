@@ -3,9 +3,11 @@ import Container from '@mui/material/Container';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import {useAppSelector} from '../hooks/redux';
 import {TClickedElement} from '../lib/elementEvents';
+import {useTranslation} from 'react-i18next';
 
 export default function Header() {
 	const {onHide} = useAppSelector(state => state.app);
+	const {t} = useTranslation();
 
 	const onBackToCartClicked = (e: MouseEvent<HTMLAnchorElement>) => {
 		e.preventDefault();
@@ -25,7 +27,7 @@ export default function Header() {
 						 className={'bdl-header__to-cart'}
 						 onClick={onBackToCartClicked}
 					>
-						<ChevronLeftIcon /> Back to the cart
+						<ChevronLeftIcon /> {t('header.backToCart')}
 					</a>
 					<div className={'bdl-header__logo-wrapper'}>
 							<a href={'#'}

@@ -4,13 +4,17 @@ import {getProductImg} from '../../lib/images';
 import {RootState} from '../../redux/store';
 import currency from 'currency.js';
 import useFormatCurrency from '../../hooks/useFormatCurrency';
+import {useTranslation} from 'react-i18next';
 
 export default function CartItems() {
 	const api = useAppSelector((state: RootState) => state.app.api);
 	const cartItems = useAppSelector((state: RootState) => state.app.items);
 	const {formatCurrency} = useFormatCurrency();
+	const {t} = useTranslation();
 
-	if (!cartItems?.length) return <div style={{padding: 15, textAlign:'center'}}>Your cart is empty</div>;
+	if (!cartItems?.length) {
+		return <div style={{padding: 15, textAlign:'center'}}>{t('cart.items.cartEmpty')}</div>;
+	}
 
 	return (
 		<ul className='bdl-cart-item__list'>

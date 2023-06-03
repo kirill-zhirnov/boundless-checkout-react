@@ -1,9 +1,8 @@
-import {useEffect} from 'react';
+import React, {useEffect} from 'react';
 import useInitCheckoutByCart from '../hooks/initCheckout';
 import {useAppSelector} from '../hooks/redux';
 import {getPathByStep} from '../routes';
 import {useNavigate} from 'react-router-dom';
-
 
 export default function IndexPage() {
 	useInitCheckoutByCart();
@@ -12,12 +11,20 @@ export default function IndexPage() {
 
 	useEffect(() => {
 		if (isInited && stepper) {
-			const urlPath = getPathByStep(stepper.currentStep);
+			let urlPath = getPathByStep(stepper.currentStep);
+			console.log('stepper.currentStep:', stepper.currentStep);
+			console.log('got url path:', urlPath);
+
+			//we need to redirect somewhere:
+			if (urlPath && urlPath === '/') {
+				urlPath = '/info';
+			}
+
 			if (urlPath) {
 				navigate(urlPath, {replace: true});
 			}
 		}
 	}, [isInited, stepper]); //eslint-disable-line
 
-	return null;
+	return <>{isInited} {JSON.stringify(stepper)}</>;
 }

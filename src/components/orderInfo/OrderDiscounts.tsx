@@ -3,10 +3,12 @@ import {Grid} from '@mui/material';
 import {IDetailedOrder, IOrderDiscount, TDiscountType} from 'boundless-api-client';
 import PercentIcon from '@mui/icons-material/Percent';
 import useFormatCurrency from '../../hooks/useFormatCurrency';
+import {useTranslation} from 'react-i18next';
 
 export default function OrderDiscounts({order}: {order: IDetailedOrder}) {
 	const {formatCurrency} = useFormatCurrency();
 	const discounts = order.discounts;
+	const {t} = useTranslation();
 
 	if (!discounts.length) return null;
 
@@ -20,7 +22,7 @@ export default function OrderDiscounts({order}: {order: IDetailedOrder}) {
 		<div className='bdl-order-items__service-row'>
 			<h5 className='bdl-order-items__service-heading'>
 				<PercentIcon className='bdl-order-items__service-ico' fontSize='small' />
-				Discounts
+				{t('orderInfo.discounts.title')}
 			</h5>
 			<Grid container>
 				<Grid item sm={8} xs={12} className='bdl-order-items__service-cell bdl-order-items__service-cell_title'>
@@ -31,7 +33,7 @@ export default function OrderDiscounts({order}: {order: IDetailedOrder}) {
 				<Grid item sm={2} xs={12} className='bdl-order-items__service-cell'>
 				</Grid>
 				<Grid item sm={2} xs={12} className='bdl-order-items__service-cell'>
-					<span className='bdl-order-items__label'>Total discount: </span>
+					<span className='bdl-order-items__label'>{t('orderInfo.discounts.total')} </span>
 					{order.discount_for_order &&
 					<span className='bdl-order-items__value'>
 						-{formatCurrency(order.discount_for_order)}

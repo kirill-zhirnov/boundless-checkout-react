@@ -6,11 +6,13 @@ import {useAppSelector, useAppDispatch} from '../../hooks/redux';
 import {RootState} from '../../redux/store';
 import {addPromise} from '../../redux/actions/xhr';
 import {setOrder, setTotal} from '../../redux/reducers/app';
+import {useTranslation} from 'react-i18next';
 
 export default function CartDiscountForm() {
 	const dispatch = useAppDispatch();
 	const api = useAppSelector((state: RootState) => state.app.api);
 	const orderId = useAppSelector((state: RootState) => state.app.order?.id);
+	const {t} = useTranslation();
 
 	const onSubmit = (values: IDiscountFormValues, {setSubmitting, setErrors}: FormikHelpers<IDiscountFormValues>) => {
 		if (!api || !orderId) return;
@@ -40,7 +42,7 @@ export default function CartDiscountForm() {
 							error={error}
 							required
 						>
-							<InputLabel htmlFor="discount-code-input">Discount code</InputLabel>
+							<InputLabel htmlFor="discount-code-input">{t('cart.discountForm.code')}</InputLabel>
 							<Input
 								id="discount-code-input"
 								type={'text'}
@@ -50,7 +52,7 @@ export default function CartDiscountForm() {
 										type='submit'
 										disabled={formikProps.isSubmitting}
 									>
-										Apply
+										{t('cart.discountForm.apply')}
 									</Button>
 								</InputAdornment>}
 								{...restProps}

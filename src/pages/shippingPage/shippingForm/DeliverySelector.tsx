@@ -5,8 +5,9 @@ import {ICheckoutShippingPageData, IDelivery, TShippingAlias} from 'boundless-ap
 import {IShippingFormValues} from '../../../types/shippingForm';
 import StoreMallDirectoryIcon from '@mui/icons-material/StoreMallDirectory';
 import {Box} from '@mui/system';
-import currency from 'currency.js';
 import {useAppSelector} from '../../../hooks/redux';
+import useFormatCurrency from '../../../hooks/useFormatCurrency';
+import {useTranslation} from 'react-i18next';
 
 export default function DeliverySelector({options}: IInPros) {
 	const formikProps = useFormikContext<IShippingFormValues>();
@@ -44,6 +45,9 @@ type IInPros = Pick<ICheckoutShippingPageData, 'options'>;
 const DeliveryTitle = ({delivery}: {delivery: IDelivery}) => {
 	const price = delivery.shipping_config?.price;
 	const api = useAppSelector(state => state.app.api);
+	const {formatCurrency} = useFormatCurrency();
+	const {t} = useTranslation();
+
 	const getImgThumb = (img: string) => api!.makeThumb({
 		imgLocalPath: img,
 		maxSize: 50
@@ -56,7 +60,7 @@ const DeliveryTitle = ({delivery}: {delivery: IDelivery}) => {
 				: delivery.img && <img className='bdl-shipping-form__shipping-img' src={getImgThumb(delivery.img)} />}
 			{delivery.title}
 			<small className='bdl-shipping-form__price'>
-				{price ? currency(price).format() : 'Free'} {/* FIXME formatMoney */}
+				{price ? formatCurrency(price) : t('shippingForm.freeDelivery')}
 			</small>
 		</span>
 	);
