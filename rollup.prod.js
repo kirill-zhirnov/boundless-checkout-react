@@ -5,11 +5,11 @@ import packageJson from './package.json';
 import {nodeResolve} from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import {babel} from '@rollup/plugin-babel';
-import {terser} from 'rollup-plugin-terser';
+import terser from '@rollup/plugin-terser';
 import json from '@rollup/plugin-json';
 
 export default {
-	external: ['boundless-api-client'],
+	external: ['boundless-api-client', 'react', 'react-dom'],
 	input: 'src/index.ts',
 	plugins: [
 		json(),
@@ -25,7 +25,7 @@ export default {
 			babelHelpers: 'bundled',
 			exclude: 'node_modules/**',
 		}),
-		scss({output: './dist/index.css'}),
+		scss({fileName: 'index.css'}),
 		css(),
 		terser()
 	],

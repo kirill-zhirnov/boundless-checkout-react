@@ -1,4 +1,4 @@
-import React, {Component, createRef, ReactNode, useEffect} from 'react';
+import React, {Component, createRef, ReactNode, ReactPortal, useEffect} from 'react';
 import ReactDOM from 'react-dom';
 import clsx from 'clsx';
 import {disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks} from 'body-scroll-lock';
@@ -69,7 +69,7 @@ export default class BoundlessCheckout extends Component<IBoundlessCheckoutProps
 		document.body.removeChild(this.el!);
 	}
 
-	render() {
+	render(): ReactPortal|null {
 		const {show, basename} = this.props;
 
 		if (!this.el) {

@@ -19,10 +19,7 @@
     "forceConsistentCasingInFileNames": true,
     "allowJs": true,
 		"esModuleInterop": true,
-		"resolveJsonModule": true,
-		"paths": {
-			"react": [ "./node_modules/@types/react" ]
-		}
+		"resolveJsonModule": true
 	},
   "include": [
     "src"

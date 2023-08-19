@@ -26,5 +26,5 @@ export default function IndexPage() {
 		}
 	}, [isInited, stepper]); //eslint-disable-line
 
-	return <>{isInited} {JSON.stringify(stepper)}</>;
+	return <div />;
 }
