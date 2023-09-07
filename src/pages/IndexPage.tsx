@@ -8,7 +8,7 @@ export default function IndexPage() {
 	useInitCheckoutByCart();
 	const {isInited, stepper} = useAppSelector((state) => state.app);
 	const navigate = useNavigate();
-
+	console.log('--- IndexPage');
 	useEffect(() => {
 		if (isInited && stepper) {
 			let urlPath = getPathByStep(stepper.currentStep);

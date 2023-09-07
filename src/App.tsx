@@ -24,6 +24,7 @@ export default function CheckoutApp() {
 			<Route path="/paypal/return" element={<PayPalReturnPage isCancelPage={false}/>} />
 			<Route path="/paypal/cancel" element={<PayPalReturnPage isCancelPage={true}/>} />
 			<Route path="/" element={<IndexPage />} />
+			<Route path="*" element={<ErrorPage error={'Page not found'} />} />
 		</Routes>
 	);
 }
