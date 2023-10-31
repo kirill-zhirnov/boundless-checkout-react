@@ -14,7 +14,7 @@ export default function ShippingPage() {
 
 	useEffect(() => {
 		document.title = t('shippingForm.pageTitle');
-	}, []);
+	}, []);//eslint-disable-line
 
 	if (!isInited) {
 		return <Loading />;

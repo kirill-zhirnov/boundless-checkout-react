@@ -44,7 +44,7 @@ export function ContactFormView({setViewMode}: { setViewMode: (mode: TViewMode) 
 
 	useEffect(() => {
 		document.title = t('contactForm.pageTitle');
-	}, []);
+	}, []);//eslint-disable-line
 
 	const {accountPolicy, contactFields} = settings!;
 	const fieldsList = getFieldsList(contactFields);

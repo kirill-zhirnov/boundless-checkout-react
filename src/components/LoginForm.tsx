@@ -27,7 +27,7 @@ export default function LoginForm() {
 		if (loggedInCustomer) {
 			setViewMode(TViewMode.contact);
 		}
-	}, [loggedInCustomer]);
+	}, [loggedInCustomer]);//eslint-disable-line
 
 	if (viewMode === TViewMode.login) {
 		return <LoginFormView setViewMode={setViewMode} />;

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useAppSelector} from '../hooks/redux';
 import Loading from '../components/Loading';
-import {useSearchParams, useLocation} from 'react-router-dom';
+import {useSearchParams} from 'react-router-dom';
 import ErrorPage from './ErrorPage';
 
 const defaultError = 'Incorrect input params. Please, contact administrator.';
@@ -10,11 +10,9 @@ export default function PayPalReturnPage({isCancelPage}: {isCancelPage: boolean}
 	const [error, setError] = useState<null|string>(null);
 	const [searchParams] = useSearchParams();
 	const {onThankYouPage, api} = useAppSelector((state) => state.app);
-	const location = useLocation();
+	// const location = useLocation();
 
 	useEffect(() => {
-		console.log('--- PayPalReturnPage --- ', searchParams, window.location, 'react-router-location:', location);
-
 		const id = searchParams.get('token');
 		if (id) {
 			api!.checkout.paypalCapture(id)

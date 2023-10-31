@@ -14,7 +14,7 @@ export default function PaymentPage() {
 
 	useEffect(() => {
 		document.title = t('paymentMethodForm.pageTitle');
-	}, []);
+	}, []);//eslint-disable-line
 
 	if (!isInited) {
 		return <Loading />;
