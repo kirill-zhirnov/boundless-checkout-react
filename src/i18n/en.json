@@ -8,7 +8,9 @@
 		"phone": "Phone",
 		"receiveMarketingInfo": "Email me with news and offers",
 		"continueToShipping": "Continue to shipping",
-		"continueToPayment": "Continue to payment"
+		"continueToPayment": "Continue to payment",
+		"registerMe": "Register Me",
+		"youAreLoggedIn": "You are logged in"
 	},
 	"loginForm": {
 		"pageTitle": "Checkout: Login",
