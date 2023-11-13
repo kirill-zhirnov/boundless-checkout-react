@@ -1,6 +1,6 @@
 {
   "name": "boundless-checkout-react",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "The official checkout React component for Boundless Commerce.",
   "keywords": [
     "boundless",
