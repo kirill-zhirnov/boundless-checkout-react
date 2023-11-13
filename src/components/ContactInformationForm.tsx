@@ -26,6 +26,7 @@ import LoginIcon from '@mui/icons-material/Login';
 import {LoginFormView} from './LoginForm';
 import clsx from 'clsx';
 import {useTranslation} from 'react-i18next';
+import {setLoggedInCustomer} from '../redux/actions/user';
 
 export default function ContactInformationForm() {
 	const [viewMode, setViewMode] = useState<TViewMode>(TViewMode.contact);
@@ -95,7 +96,8 @@ export function ContactFormView({setViewMode}: { setViewMode: (mode: TViewMode) 
 													 type={'email'}
 													 required={required}
 													 fullWidth
-													 {...fieldAttrs<IContactInformationFormValues>('email', formikProps)}
+													 disabled={Boolean(loggedInCustomer)}
+													 {...fieldAttrs<IContactInformationFormValues>('email', formikProps, loggedInCustomer ? t('contactForm.youAreLoggedIn') : '')}
 								/>
 								}
 								{type === 'phone' &&
@@ -108,6 +110,15 @@ export function ContactFormView({setViewMode}: { setViewMode: (mode: TViewMode) 
 								}
 							</Grid>
 						)}
+						{(accountPolicy === TCheckoutAccountPolicy.guestAndLogin && !loggedInCustomer) &&
+							<Grid item
+										xs={12}
+							>
+								<FormControlLabel control={
+									<Checkbox {...checkAttrs('register_me', formikProps)} />
+								} label={t('contactForm.registerMe')}/>
+							</Grid>
+						}
 						{excludedFields.includes('receive_marketing_info') &&
 						<Grid item
 									xs={12}
@@ -168,9 +179,13 @@ const useSaveContactInfo = () => {
 		const promise = api!.checkout.saveContactsData({
 				order_id,
 				...rest,
-				receive_marketing_info: receive_marketing_info ? '1' : undefined
+				receive_marketing_info: receive_marketing_info
 			})
-				.then(({customer}) => {
+				.then(({customer, authToken}) => {
+					if (customer && authToken) {
+						dispatch(setLoggedInCustomer(customer, authToken));
+					}
+
 					dispatch(setOrdersCustomer(customer));
 					dispatch(addFilledStep({step: TCheckoutStep.contactInfo}));
 
@@ -221,7 +236,8 @@ const getFieldsList = (contactFields: ICheckoutSettingsContactFields) => {
 const getInitialValues = (order: IOrder, loggedInCustomer: ICustomer | null) => {
 	const {customer} = order;
 	const initialValues: IContactInformationFormValues = {
-		receive_marketing_info: true
+		receive_marketing_info: true,
+		register_me: false
 	};
 
 	if (loggedInCustomer) {
@@ -244,6 +260,7 @@ export interface IContactInformationFormValues {
 	email?: string;
 	phone?: string;
 	receive_marketing_info?: boolean;
+	register_me?: boolean;
 }
 
 export enum TViewMode {
