@@ -7,6 +7,10 @@ Checkout React Component for [Boundless Commerce](https://boundless-commerce.com
 API’s First Headless E-commerce CMS: We Provide An Admin-Side For Store Management, Powerful API, And Ready-To-Use
 Checkout Area.
 
+#### Self-Hosted solution
+
+There is an option for Running Boundless-Commerce on your own server. Read more at [Open-Source Headless eCommerce Platform](https://boundless-commerce.com/open-source)
+
 ## Installation
 
 Besides the checkout component the API client should be installed:
