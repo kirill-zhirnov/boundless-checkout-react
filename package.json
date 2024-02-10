@@ -1,6 +1,6 @@
 {
   "name": "boundless-checkout-react",
-  "version": "1.3.1",
+  "version": "1.3.2",
   "description": "The official checkout React component for Boundless Commerce.",
   "keywords": [
     "boundless",
@@ -54,7 +54,7 @@
     "@typescript-eslint/eslint-plugin": "^5.10.1",
     "@typescript-eslint/parser": "^5.10.1",
     "babel-loader": "^8.2.3",
-    "boundless-api-client": "^0.3.0",
+    "boundless-api-client": "^1.0.2",
     "css-loader": "^6.5.1",
     "dotenv": "^16.0.1",
     "eslint": "^8.7.0",
@@ -111,7 +111,7 @@
     "react-router-dom": "^6.15.0"
   },
   "peerDependencies": {
-    "boundless-api-client": ">=0.2.0",
+    "boundless-api-client": ">=1.0.2",
     "react": ">=18.2.0",
     "react-dom": ">=18.2.0"
   }
