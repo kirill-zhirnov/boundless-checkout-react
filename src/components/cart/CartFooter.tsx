@@ -75,7 +75,7 @@ export default function CartFooter({ open }: ICartFooterProps) {
 					<h5 className="bdl-cart__footer-title">
 						{t("cart.footer.couponTitle", { amount: getDiscountAmount() })}
 						<span className="bdl-cart__footer-value">
-							{" "}-{formatCurrency(total.discount)}
+							{" "}-{formatCurrency(total?.discount)}
 						</span>
 					</h5>
 				</div>

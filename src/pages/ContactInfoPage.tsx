@@ -14,7 +14,6 @@ export default function ContactInfoPage() {
 	return (
 		<CheckoutLayout>
 			<ContactInformationForm />
-			{/* <LoginForm /> */}
 		</CheckoutLayout>
 	);
 }

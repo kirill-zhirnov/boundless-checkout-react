@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import useInitCheckoutByCart from '../hooks/initCheckout';
 import {useAppSelector} from '../hooks/redux';
 import {getPathByStep} from '../routes';
-import {useNavigate} from 'react-router-dom';
+import {useNavigate} from 'react-router';
 
 export default function IndexPage() {
 	useInitCheckoutByCart();

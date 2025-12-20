@@ -13,7 +13,7 @@ import { Box } from "@mui/system";
 import { IShippingFormValues } from "../../types/shippingForm";
 import DeliverySelector from "./shippingForm/DeliverySelector";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router';
 import { addPromise } from "../../redux/actions/xhr";
 import { apiErrors2Formik } from "../../lib/formUtils";
 import { addFilledStep, setOrder, setTotal } from "../../redux/reducers/app";

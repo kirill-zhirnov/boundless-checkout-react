@@ -12,7 +12,7 @@ import {
 	SHIPPING_DELIVERY_INFO,
 } from "../constants";
 import { cartHasTickets } from "../lib/products";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router';
 
 const useInitShippingPage = () => {
 	const { isInited } = useInitCheckoutByCart();

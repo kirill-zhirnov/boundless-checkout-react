@@ -11,7 +11,7 @@ import {
 } from "../constants";
 import { cartHasTickets } from "../lib/products";
 import { getCheckoutData } from "../hooks/checkoutData";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router';
 
 export default function PaymentPage() {
 	const { isInited, paymentPage } = useInitPaymentPage();

@@ -1,7 +1,7 @@
 import {Step, StepButton, Stepper} from '@mui/material';
 import {TCheckoutStep} from 'boundless-api-client';
 import React, {useMemo} from 'react';
-import {useLocation, useNavigate} from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router';
 import {getPathByStep, getStepByPath} from '../routes';
 import {useAppSelector} from '../hooks/redux';
 import {useTranslation} from 'react-i18next';

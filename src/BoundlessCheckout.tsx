@@ -23,7 +23,7 @@ import {
 	TOnThankYouPage,
 	TOnCheckoutInited,
 } from "./redux/reducers/app";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter } from 'react-router';
 import { useAppSelector } from "./hooks/redux";
 import { TClickedElement } from "./lib/elementEvents";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";

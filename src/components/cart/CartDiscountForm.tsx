@@ -91,7 +91,7 @@ export default function CartDiscountForm() {
 		},
 	});
 
-	if (cart?.items?.length === 1 && isPromotionItem(cart.items[0].product))
+	if (!cart || (cart.items?.length === 1 && isPromotionItem(cart.items[0].product)))
 		return null;
 
 	if (isError) {

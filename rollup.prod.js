@@ -16,14 +16,16 @@ export default {
 		nodeResolve({
 			extensions: ['.ts', '.tsx', '.mjs', '.js', '.json', '.node', '.css'],
 		}),
-		commonjs(),
 		typescript({
 			tsconfig: './tsconfig.json',
+			include: ["src/**/*"],
 			exclude: ['./src/dev/**.*']
 		}),
+		commonjs(),
 		babel({
 			babelHelpers: 'bundled',
 			exclude: 'node_modules/**',
+			extensions: ['.js', '.jsx', '.ts', '.tsx']
 		}),
 		scss({fileName: 'index.css'}),
 		css(),

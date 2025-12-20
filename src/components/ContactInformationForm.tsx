@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Form, Formik, FormikHelpers, FormikProps } from "formik";
 import { useAppDispatch, useAppSelector } from "../hooks/redux";
 import {
@@ -15,9 +15,8 @@ import ExtraErrors from "./ExtraErrors";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import PaymentIcon from "@mui/icons-material/Payment";
 import { addFilledStep, setOrdersCustomer } from "../redux/reducers/app";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router';
 import Typography from "@mui/material/Typography";
-import { LoginFormView } from "./LoginForm";
 import clsx from "clsx";
 import { useTranslation } from "react-i18next";
 import { v4 } from "uuid";
@@ -95,11 +94,7 @@ const validateContactForm = (values: IContactInformationFormValues) => {
 	return errors;
 };
 
-export function ContactFormView({
-	setViewMode,
-}: {
-	setViewMode: (mode: TViewMode) => void;
-}) {
+export function ContactFormView() {
 	const { order, stepper } = useAppSelector((state) => state.app);
 	const { loggedInCustomer } = useAppSelector((state) => state.user);
 	const { t } = useTranslation();
@@ -427,11 +422,5 @@ const getInitialValues = (
 };
 
 export default function ContactInformationForm() {
-	const [viewMode, setViewMode] = useState<TViewMode>(TViewMode.contact);
-
-	if (viewMode === TViewMode.login) {
-		return <LoginFormView setViewMode={setViewMode} />;
-	} else {
-		return <ContactFormView setViewMode={setViewMode} />;
-	}
+	return <ContactFormView />;
 }
