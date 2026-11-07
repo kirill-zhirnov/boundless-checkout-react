@@ -1,5 +1,5 @@
 {
-  "ignoreDependencies": ["@emotion/react", "@emotion/styled"],
+  "ignoreDependencies": ["@emotion/react", "@emotion/styled", "@oxlint/plugins"],
   "ignorePatterns": ["tools/oxlint/anti-slop/**"],
   "audit": {
     "gate": "new-only"

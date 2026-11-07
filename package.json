@@ -35,6 +35,9 @@
     "fallow:health": "fallow health --score --hotspots --targets",
     "fallow:dead-code": "fallow dead-code",
     "fallow:dupes": "fallow dupes",
+    "fallow:health:baseline": "fallow health --score --hotspots --targets --save-baseline .github/fallow/baselines/health-baseline.json",
+    "fallow:dead-code:baseline": "fallow dead-code --save-baseline .github/fallow/baselines/dead-code-baseline.json",
+    "fallow:dupes:baseline": "fallow dupes --save-baseline .github/fallow/baselines/dupes-baseline.json",
     "fallow:fix:dry-run": "fallow fix --dry-run"
   },
   "private": false,

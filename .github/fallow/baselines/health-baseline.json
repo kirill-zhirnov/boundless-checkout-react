@@ -1,0 +1,48 @@
+{
+  "kind": "health",
+  "finding_counts": {
+    "src/components/ContactInformationForm.tsx": {
+      "crap_high": {
+        "count": 1
+      }
+    },
+    "src/components/cart/CartFooter.tsx": {
+      "crap_critical": {
+        "count": 1
+      }
+    },
+    "src/pages/deliveryDetailsPage/DeliveryDetailsForm.tsx": {
+      "crap_high": {
+        "count": 1
+      }
+    },
+    "src/pages/paymentPage/PayHQ/PayHQ.tsx": {
+      "complexity_critical": {
+        "count": 1
+      },
+      "crap_critical": {
+        "count": 1
+      }
+    },
+    "src/pages/paymentPage/PaymentMethodForm.tsx": {
+      "crap_high": {
+        "count": 3
+      }
+    },
+    "src/pages/shippingPage/ShippingForm.tsx": {
+      "crap_high": {
+        "count": 2
+      }
+    }
+  },
+  "runtime_coverage_findings": [],
+  "target_keys": [
+    "src/lib/deliveryQuote.ts:high impact",
+    "src/lib/checkoutGuards.ts:high impact",
+    "src/pages/PaymentPage.tsx:hidden coupling",
+    "src/pages/ShippingPage.tsx:hidden coupling",
+    "src/components/ContactInformationForm.tsx:hidden coupling",
+    "src/hooks/checkoutData.ts:high impact",
+    "src/pages/paymentPage/PayHQ/PayHQ.tsx:complexity"
+  ]
+}
