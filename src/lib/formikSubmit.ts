@@ -12,9 +12,9 @@ interface IApiErrorResponse {
 
 export function dispatchFormikSubmitPromise<TValues>(
 	dispatch: AppDispatch,
-	promise: Promise<unknown>,
+	promise: Promise<void>,
 	{setErrors, setSubmitting}: FormikHelpers<TValues>,
-): Promise<unknown | void> {
+): Promise<void> {
 	const handledPromise = promise
 		.catch(({response: {data}}: IApiErrorResponse) => {
 			setErrors(apiErrors2Formik(data) as FormikErrors<TValues>);
