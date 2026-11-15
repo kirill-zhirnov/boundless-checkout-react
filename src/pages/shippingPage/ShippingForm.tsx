@@ -408,6 +408,7 @@ const useSaveShippingForm = ({
 				});
 
 				const selectedService = service(delivery_id, shippingCalculation.shippingRate);
+
 				if (!selectedService) throw new Error("Unsupported delivery option");
 
 				const updatedOrder: IOrderWithCustmAttr = {
