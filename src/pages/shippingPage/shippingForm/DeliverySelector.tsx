@@ -9,8 +9,7 @@ import {
 	RadioGroup,
 	Typography,
 } from "@mui/material";
-import {ICheckoutShippingPageData, IDelivery} from "boundless-api-client";
-import {IShippingFormValues} from "../../../types/shippingForm";
+import {ICheckoutShippingPageData, IDelivery, IShippingFormValues} from "../../../types/shippingForm";
 import StoreMallDirectoryIcon from "@mui/icons-material/StoreMallDirectory";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";

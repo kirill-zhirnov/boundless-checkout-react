@@ -1,4 +1,4 @@
-import {ITotal} from "boundless-api-client";
+import {ITotal} from "../types/Order";
 import {
 	DELIVERY_ID,
 	SHIPPING_COST,

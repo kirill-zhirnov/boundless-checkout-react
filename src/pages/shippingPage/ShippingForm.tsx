@@ -1,12 +1,14 @@
 import React, {useEffect, useRef} from "react";
-import {IAddress, ICheckoutShippingPageData} from "boundless-api-client";
 import {Form, Formik, FormikHelpers, useFormikContext} from "formik";
 import ExtraErrors from "../../components/ExtraErrors";
 import {Alert, Box, Button, Typography} from "@mui/material";
 import PaymentIcon from "@mui/icons-material/Payment";
 import {
+	IAddress,
 	IAddressFormFields,
+	ICheckoutShippingPageData,
 	IShippingFormValues,
+	TAddressType,
 } from "../../types/shippingForm";
 import DeliverySelector from "./shippingForm/DeliverySelector";
 import {useAppDispatch, useAppSelector} from "../../hooks/redux";
@@ -140,7 +142,7 @@ const makeValidateShippingForm = (hasRegularItems: boolean) =>
 		const errors: any = {};
 
 		// Validate BC postal code for Delivery method
-		if (values.delivery_id === DELIVERY_ID && values.shipping_address?.zip) {
+		if (values.delivery_id === DELIVERY_ID && values.shipping_address.zip) {
 			if (!isBCPostalCode(values.shipping_address.zip)) {
 				errors["shipping_address.zip"] =
 					"Delivery is only available within British Columbia. Please enter a valid BC postal code.";
@@ -150,7 +152,7 @@ const makeValidateShippingForm = (hasRegularItems: boolean) =>
 		// Validate BC postal code for Shipping method
 		if (
 			values.delivery_id === SHIPPING_DELIVERY_ID &&
-			values.shipping_address?.zip
+			values.shipping_address.zip
 		) {
 			if (!isBCPostalCode(values.shipping_address.zip)) {
 				errors["shipping_address.zip"] =
@@ -339,22 +341,22 @@ const useSaveShippingForm = ({
 
 		const promise = Promise.resolve()
 			.then(() => {
-				const addresses = [];
+				const addresses: IAddress[] = [];
 
 				if (!isPickUpDelivery(delivery_id, shippingPage.options.delivery)) {
 					addresses.push({
 						id: v4(),
-						type: "shipping",
+						type: TAddressType.shipping,
 						is_default: true,
-						first_name: shipping_address?.first_name,
-						last_name: shipping_address?.last_name,
+						first_name: shipping_address.first_name,
+						last_name: shipping_address.last_name,
 						company: null,
-						address_line_1: shipping_address?.address_line_1,
-						address_line_2: shipping_address?.address_line_2,
-						city: shipping_address?.city,
-						state: shipping_address?.state,
+						address_line_1: shipping_address.address_line_1,
+						address_line_2: shipping_address.address_line_2,
+						city: shipping_address.city,
+						state: shipping_address.state,
 						country_id: 0, // Canada
-						zip: shipping_address?.zip,
+						zip: shipping_address.zip,
 						created_at: new Date().toISOString(),
 						vwCountry: null,
 					});
@@ -362,17 +364,17 @@ const useSaveShippingForm = ({
 					if (!billing_address_the_same) {
 						addresses.push({
 							id: v4(),
-							type: "billing",
+							type: TAddressType.billing,
 							is_default: false,
-							first_name: billing_address?.first_name,
-							last_name: billing_address?.last_name,
+							first_name: billing_address.first_name,
+							last_name: billing_address.last_name,
 							company: null,
-							address_line_1: billing_address?.address_line_1,
-							address_line_2: billing_address?.address_line_2,
-							city: billing_address?.city,
-							state: billing_address?.state,
+							address_line_1: billing_address.address_line_1,
+							address_line_2: billing_address.address_line_2,
+							city: billing_address.city,
+							state: billing_address.state,
 							country_id: 0, // Canada
-							zip: billing_address?.zip,
+							zip: billing_address.zip,
 							created_at: new Date().toISOString(),
 							vwCountry: null,
 						});
@@ -405,7 +407,10 @@ const useSaveShippingForm = ({
 					regularOptions: regularDeliveryOptions,
 				});
 
-				const updatedOrder = {
+				const selectedService = service(delivery_id, shippingCalculation.shippingRate);
+				if (!selectedService) throw new Error("Unsupported delivery option");
+
+				const updatedOrder: IOrderWithCustmAttr = {
 					...order,
 					...(delivery_id === DELIVERY_ID && hasRegularItems
 						? {delivery_time: values.delivery_time}
@@ -417,11 +422,11 @@ const useSaveShippingForm = ({
 						qty: 1,
 						price: shippingCalculation.shippingRate,
 					},
-					customer: {
+					customer: order.customer && {
 						...order.customer,
-						email: order.customer?.email ?? null,
+						email: order.customer.email ?? null,
 					},
-					services: [service(delivery_id, shippingCalculation.shippingRate)],
+					services: [selectedService],
 					custom_attrs: {
 						...order.custom_attrs,
 						shippingRate: shippingCalculation.shippingRate,
@@ -430,7 +435,7 @@ const useSaveShippingForm = ({
 						freeShippingApplied: shippingCalculation.freeShippingApplied,
 						deliveryInstructions: values.deliveryInstructions || "",
 					},
-				} as unknown as IOrderWithCustmAttr;
+				};
 
 				const checkoutOrder = {
 					...clearPaymentAndDeliveryProgress(updatedOrder),

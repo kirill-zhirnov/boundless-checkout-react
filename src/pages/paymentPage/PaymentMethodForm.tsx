@@ -388,7 +388,7 @@ const PaymentMethods = ({
 	setIsPaymentApproved: (isApproved: boolean) => void;
 	order: IOrderWithCustmAttr | undefined;
 }) => {
-	const orderHasShipping = order ? hasShipping(order as IOrderWithCustmAttr) : false;
+	const orderHasShipping = order ? hasShipping(order) : false;
 	const orderPaid = Boolean(order?.paid_at);
 
 	return (

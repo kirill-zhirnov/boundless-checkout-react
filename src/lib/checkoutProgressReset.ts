@@ -1,5 +1,4 @@
-import {ITotal} from "boundless-api-client";
-import {IOrderWithCustmAttr} from "../types/Order";
+import {IOrderWithCustmAttr, ITotal} from "../types/Order";
 
 const laterProgressCustomAttrKeys = ["checkoutCompleted"];
 
@@ -101,13 +100,13 @@ export const clearProgressAfterContact = (
 	};
 
 	const nextTotal = total
-		? ({
+		? {
 			...total,
 			price: totalPrice,
 			tax: {
 				...total.tax,
 				shipping: {
-					...(total.tax as any)?.shipping,
+					...total.tax.shipping,
 					shippingTaxes: "0",
 				},
 				totalTaxAmount: taxAmount,
@@ -117,7 +116,7 @@ export const clearProgressAfterContact = (
 				price: "0.00",
 				qty: 0,
 			},
-		} as ITotal)
+		}
 		: total;
 
 	return {order: nextOrder, total: nextTotal};

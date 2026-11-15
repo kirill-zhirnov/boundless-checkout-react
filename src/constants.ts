@@ -1,3 +1,5 @@
+import type {IDelivery} from "./types/shippingForm";
+
 export const DELIVERY_ID = 2;
 
 export const SHIPPING_DELIVERY_ID = 3;
@@ -18,7 +20,7 @@ export const DELIVERY_INFO = {
 	created_at: "",
 	shipping: null,
 	img: null,
-};
+} satisfies IDelivery;
 
 export const SHIPPING_DELIVERY_INFO = {
 	delivery_id: SHIPPING_DELIVERY_ID,
@@ -32,7 +34,7 @@ export const SHIPPING_DELIVERY_INFO = {
 	created_at: "",
 	shipping: null,
 	img: null,
-};
+} satisfies IDelivery;
 
 export const SELF_PICKUP_INFO = {
 	delivery_id: SELF_PICKUP_ID,
@@ -46,7 +48,7 @@ export const SELF_PICKUP_INFO = {
 	created_at: "",
 	shipping: null,
 	img: null,
-};
+} satisfies IDelivery;
 
 export const PAY_IN_STORE_PAYMENT_METHOD = "4";
 

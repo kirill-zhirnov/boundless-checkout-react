@@ -6,10 +6,9 @@ import {
 	TOnCheckoutInited,
 } from "../reducers/app";
 import {getCartOrRetrieve} from "../../hooks/getCartOrRetrieve";
-import {ICartTotal, IOrderService, ITotal, TPublishingStatus} from "boundless-api-client";
 import {ICheckoutStepper, TCheckoutStep} from "../../types/common";
-import type {Cart, CovaCartItem, CovaCheckoutInitData} from "../../types/cart";
-import type {IOrderWithCustmAttr} from "../../types/Order";
+import type {Cart, CovaCartItem, CovaCheckoutInitData, ICartTotal} from "../../types/cart";
+import {IOrderService, IOrderWithCustmAttr, ITotal, TPublishingStatus} from "../../types/Order";
 import {getCheckoutData} from "../../hooks/checkoutData";
 import {getOrderTaxes} from "../../lib/taxes";
 import {ordersDropShippingItems} from "../../lib/products";
@@ -65,13 +64,7 @@ type CheckoutDispatch = (
 		| ReturnType<typeof setGlobalError>,
 ) => void;
 
-type TaxSummary = {
-	totalTaxAmount: string | null;
-	itemsWithTax: CovaCartItem[];
-	shipping: {
-		shippingTaxes: unknown;
-	};
-};
+type TaxSummary = ITotal["tax"];
 
 type BuildCheckoutTotalParams = {
 	price: string | null;
@@ -155,7 +148,7 @@ const buildCheckoutTotal = ({
 		price: checkoutDataOrderService ? checkoutDataOrderService.total_price : 0,
 		qty: checkoutDataOrderService ? checkoutDataOrderService.qty : 0,
 	},
-} as unknown as ITotal);
+});
 
 const resolveInitialOrderTotal = (
 	checkoutDataOrder: CheckoutDataOrder,

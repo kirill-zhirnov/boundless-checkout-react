@@ -1,10 +1,10 @@
-import {IOrderService, TShippingAlias} from "boundless-api-client";
 import {
 	DELIVERY_ID,
 	SELF_PICKUP_ID,
 	SHIPPING_DELIVERY_ID,
 } from "../constants";
-import {IOrderWithCustmAttr} from "../types/Order";
+import {IOrderService, IOrderWithCustmAttr} from "../types/Order";
+import {TShippingAlias} from "../types/shippingForm";
 import {ICheckoutStepper, TCheckoutStep} from "../types/common";
 import {isDeliveryQuoteFresh} from "./deliveryQuote";
 

@@ -1,10 +1,5 @@
-import {
-	IDelivery,
-	TShippingAlias,
-	IOrder,
-	ITotal,
-} from "boundless-api-client";
-import {IOrderWithCustmAttr} from "../types/Order";
+import {IDelivery, TShippingAlias} from "../types/shippingForm";
+import {IOrderWithCustmAttr, ITotal} from "../types/Order";
 
 export const isPickUpDelivery = (
 	deliveryId: number,
@@ -43,7 +38,7 @@ export const hasDeliveryId = (
 	return !!order?.services?.some((service) => service.service_id === deliveryId);
 };
 
-export const hasShipping = (order: IOrderWithCustmAttr | IOrder) => {
+export const hasShipping = (order: IOrderWithCustmAttr) => {
 	if (!order.services || order.services.length < 1) return false;
 
 	const serviceTitle = order.services[0].serviceDelivery?.delivery?.title;

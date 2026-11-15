@@ -128,7 +128,7 @@ const useSaveDeliveryDetails = () => {
 				: service,
 		);
 
-		const updatedOrder = {
+		const updatedOrder: IOrderWithCustmAttr = {
 			...updatedOrderBase,
 			total_price: calculation.totalOrderPrice,
 			tax_amount: calculation.totalOrderTaxes,
@@ -142,7 +142,7 @@ const useSaveDeliveryDetails = () => {
 				shippingTax: calculation.shippingTax,
 				freeShippingApplied: calculation.freeShippingApplied,
 			},
-		} as unknown as IOrderWithCustmAttr;
+		};
 
 		const updatedTotal = {
 			...total,
@@ -152,7 +152,7 @@ const useSaveDeliveryDetails = () => {
 				shipping: {
 					...total.tax?.shipping,
 					shippingTaxes: calculation.shippingTax.toString(),
-				} as any,
+				},
 				totalTaxAmount: calculation.totalOrderTaxes,
 			},
 			servicesSubTotal: {

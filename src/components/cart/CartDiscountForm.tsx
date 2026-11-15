@@ -25,7 +25,6 @@ import {getOrderTaxes} from "../../lib/taxes";
 import {isPromotionItem} from "../../lib/products";
 import {getCartOrRetrieve, setCart} from "../../hooks/getCartOrRetrieve";
 import {allocateCouponDiscount} from "../../lib/couponDiscount";
-import {ITotal} from "boundless-api-client";
 import {useQuery} from "@tanstack/react-query";
 import {useCustomer} from "../../hooks/useCustomer";
 
@@ -205,7 +204,7 @@ export default function CartDiscountForm() {
 				Number(newSubTotal) + Number(totalOrderTaxes)
 			).toFixed(2);
 
-			const updatedOrder = {
+			const updatedOrder: IOrderWithCustmAttr = {
 				...order,
 				discounts: [
 					{
@@ -218,26 +217,28 @@ export default function CartDiscountForm() {
 				discount_for_order: discountAmount,
 				total_price: totalOrderPrice,
 				tax_amount: totalOrderTaxes,
-				tax_calculations: {
-					...order.tax_calculations,
-					price: totalOrderTaxes,
-					itemsSubTotal: {
-						...order.tax_calculations?.itemsSubTotal,
-						price: newSubTotal,
-					},
-					discount: discountAmount,
-					tax: {
-						...order.tax_calculations?.tax,
-						totalTaxAmount: totalOrderTaxes,
-					},
-				} as unknown as ITotal,
+				tax_calculations: order.tax_calculations
+					? {
+						...order.tax_calculations,
+						price: totalOrderTaxes,
+						itemsSubTotal: {
+							...order.tax_calculations.itemsSubTotal,
+							price: newSubTotal,
+						},
+						discount: discountAmount,
+						tax: {
+							...order.tax_calculations.tax,
+							totalTaxAmount: totalOrderTaxes,
+						},
+					}
+					: null,
 				custom_attrs: {
 					...order.custom_attrs,
 					originalCart,
 					originalSubTotalPrice:
 						order.custom_attrs.originalSubTotalPrice ?? total.itemsSubTotal.price,
 				},
-			} as unknown as IOrderWithCustmAttr;
+			};
 
 			if (total) {
 				const updatedTotal = {

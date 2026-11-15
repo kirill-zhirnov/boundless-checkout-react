@@ -1,7 +1,6 @@
 import React from "react";
 import {useFormikContext} from "formik";
-import {IShippingFormValues} from "../../../types/shippingForm";
-import {ICheckoutShippingPageData} from "boundless-api-client";
+import {ICheckoutShippingPageData, IShippingFormValues} from "../../../types/shippingForm";
 import {Box, Typography} from "@mui/material";
 import AddressFieldset from "./AddressFieldset";
 import FormControlLabel from "@mui/material/FormControlLabel";
