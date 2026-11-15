@@ -1,14 +1,8 @@
-import {ITotal} from "boundless-api-client";
-import {IOrderWithCustmAttr} from "../types/Order";
+import {IOrderWithCustmAttr, IPaymentMethod, ITotal} from "../types/Order";
 
 export type CheckoutSessionPaymentState = {
 	order: IOrderWithCustmAttr;
 	total: ITotal;
-};
-
-export type PaymentMethodOption = {
-	payment_method_id: string;
-	title: string;
 };
 
 export type CreditCardPaymentOutcome = {
@@ -18,7 +12,7 @@ export type CreditCardPaymentOutcome = {
 
 export type CompleteCreditCardPaymentOutcomeInput = {
 	paymentMethodId: string;
-	paymentMethod?: PaymentMethodOption;
+	paymentMethod?: IPaymentMethod;
 	tip?: string;
 	deliveryTime?: string;
 };
@@ -135,7 +129,7 @@ export const completeCreditCardPaymentOutcome = (
 	return {
 		order: {
 			...tippedSession.order,
-			...(input.paymentMethod !== undefined ? {paymentMethod: input.paymentMethod as unknown as IOrderWithCustmAttr["paymentMethod"]} : {}),
+			...(input.paymentMethod !== undefined ? {paymentMethod: input.paymentMethod} : {}),
 			payment_method_id: input.paymentMethodId,
 			...(input.deliveryTime ? {delivery_time: input.deliveryTime} : {}),
 			custom_attrs: {

@@ -25,7 +25,8 @@ import DoneIcon from "@mui/icons-material/Done";
 import {useAppDispatch, useAppSelector} from "../../hooks/redux";
 import ExtraErrors from "../../components/ExtraErrors";
 import {useTranslation} from "react-i18next";
-import type {IPaymentMethod, IPaymentPageData} from "./types";
+import type {IPaymentPageData} from "./types";
+import type {IPaymentMethod} from "../../types/Order";
 import {
 	getCheckoutData,
 	setLocalStorageCheckoutData,

@@ -44,7 +44,7 @@ export default function Cart() {
 					)}
 				</a>
 				<h4 className="bdl-cart__total">
-					{total && formatCurrency(total.price)}
+					{total && formatCurrency(total.price ?? 0)}
 				</h4>
 			</div>
 			<div className={clsx("bdl-cart__full", {open: fullOpened})}>

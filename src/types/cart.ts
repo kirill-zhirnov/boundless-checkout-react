@@ -1,11 +1,26 @@
-import {
-	ICurrency,
-	ILocaleSettings,
-	ITotal,
-	ICartTotal,
-} from "boundless-api-client";
-import type {IOrderWithCustmAttr} from "./Order";
-import {ICheckoutStepper} from "./common";
+import type {IOrderWithCustmAttr, ITotal} from "./Order";
+import type {ICheckoutStepper} from "./common";
+
+export interface ICartTotal {
+	qty: number;
+	total: string;
+}
+
+export interface ICurrency {
+	currency_id: number;
+	alias: string;
+	code: number;
+}
+
+export interface ILocaleSettings {
+	money: {
+		decimal: string;
+		thousand: string;
+		precision: number;
+		format: string;
+		symbol: string;
+	};
+}
 
 export interface CovaProduct {
 	ProductId: string;

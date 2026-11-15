@@ -1,12 +1,6 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {
-	ICurrency,
-	ILocaleSettings,
-	ISystemTax,
-	ITotal,
-} from "boundless-api-client";
-import {CovaCartItem, CovaCheckoutInitData} from "../../types/cart";
-import {ICustomCustomer, IOrderWithCustmAttr} from "../../types/Order";
+import {CovaCartItem, CovaCheckoutInitData, ICurrency, ILocaleSettings} from "../../types/cart";
+import {ICustomCustomer, IOrderWithCustmAttr, ITotal} from "../../types/Order";
 import {setLocalStorageCheckoutData} from "../../hooks/checkoutData";
 import {ICheckoutStepper, TCheckoutStep} from "../../types/common";
 import {ICheckoutStepWarning} from "../../lib/checkoutGuards";
@@ -190,7 +184,6 @@ export interface IAppState {
 	order?: IOrderWithCustmAttr;
 	currency?: ICurrency;
 	localeSettings?: ILocaleSettings;
-	taxSettings?: ISystemTax;
 	stepper?: ICheckoutStepper | null;
 	stepWarning: ICheckoutStepWarning | null;
 	total?: ITotal;

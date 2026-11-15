@@ -1,7 +1,4 @@
-export interface IPaymentMethod {
-	payment_method_id: string;
-	title: string;
-}
+import type {IPaymentMethod} from "../../types/Order";
 
 export interface IPaymentPageData {
 	paymentMethods: IPaymentMethod[];

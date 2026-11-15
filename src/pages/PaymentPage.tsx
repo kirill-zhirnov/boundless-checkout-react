@@ -4,7 +4,8 @@ import {useAppDispatch, useAppSelector} from "../hooks/redux";
 import useInitCheckoutByCart from "../hooks/initCheckout";
 import Loading from "../components/Loading";
 import PaymentMethodForm from "./paymentPage/PaymentMethodForm";
-import type {IPaymentMethod, IPaymentPageData} from "./paymentPage/types";
+import type {IPaymentPageData} from "./paymentPage/types";
+import type {IPaymentMethod} from "../types/Order";
 import {useTranslation} from "react-i18next";
 import {
 	CREDIT_CARD_PAYMENT_METHOD,
