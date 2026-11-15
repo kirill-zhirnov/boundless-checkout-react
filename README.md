@@ -2,11 +2,11 @@
 
 ## Installation
 
-`yarn add boundless-api-client boundless-checkout-react-cp` 
+`yarn add boundless-checkout-react-cp` 
 
 Or via NPM:
 
-`npm install boundless-api-client boundless-checkout-react-cp --save`
+`npm install boundless-checkout-react-cp --save`
 
 ## Getting Started
 

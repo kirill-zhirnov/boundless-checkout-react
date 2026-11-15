@@ -9,7 +9,7 @@ import terser from '@rollup/plugin-terser';
 import json from '@rollup/plugin-json';
 
 export default {
-	external: ['@emotion/react', '@emotion/styled', /^@tanstack\/react-query(?:\/|$)/, 'boundless-api-client', 'react', 'react-dom', 'react/jsx-runtime', 'react-dom/client'],
+	external: ['@emotion/react', '@emotion/styled', /^@tanstack\/react-query(?:\/|$)/, 'react', 'react-dom', 'react/jsx-runtime', 'react-dom/client'],
 	input: 'src/index.ts',
 	plugins: [
 		json(),

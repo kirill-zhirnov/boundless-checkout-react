@@ -1,6 +1,6 @@
 {
   "name": "boundless-checkout-react-cp",
-  "version": "9.2.5",
+  "version": "9.2.6",
   "description": "The official checkout React component for CC.",
   "keywords": [
     "cms",
@@ -43,7 +43,7 @@
   "private": false,
   "main": "./dist/index.js",
   "module": "./dist/index.esm.js",
-  "types": "./dist/src/index.d.ts",
+  "types": "./dist/index.d.ts",
   "files": [
     "dist"
   ],
@@ -73,7 +73,6 @@
     "@types/react-redux": "^7.1.34",
     "@typescript-eslint/eslint-plugin": "^8.48.1",
     "@typescript-eslint/parser": "^8.48.1",
-    "boundless-api-client": "^1.0.2",
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",
     "fallow": "3.38.1",
@@ -128,7 +127,6 @@
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@tanstack/react-query": "^5.66.9",
-    "boundless-api-client": ">=1.0.2",
     "react": ">=19.0.0",
     "react-dom": ">=19.0.0"
   }
