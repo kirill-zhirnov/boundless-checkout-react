@@ -5,8 +5,7 @@ import {
 	recordCreditCardPaymentOutcome,
 	parseLenientAmount,
 } from "../lib/paymentOutcome";
-import {IOrderWithCustmAttr} from "../types/Order";
-import {ITotal, TPublishingStatus} from "boundless-api-client";
+import {IOrderWithCustmAttr, ITotal, TPublishingStatus} from "../types/Order";
 
 const makeOrder = (overrides: Partial<IOrderWithCustmAttr> = {}): IOrderWithCustmAttr => ({
 	id: "order-1",
@@ -30,10 +29,10 @@ const makeTotal = (overrides: Partial<ITotal> = {}): ITotal => ({
 	price: "100.00",
 	itemsSubTotal: {price: "100.00", qty: 1},
 	discount: "0",
-	tax: {} as any,
+	tax: {totalTaxAmount: null, itemsWithTax: [], shipping: {}},
 	servicesSubTotal: {price: 0, qty: 0},
 	...overrides,
-} as unknown as ITotal);
+});
 
 describe("PaymentOutcome", () => {
 	it("applies a new credit-card tip to order and total exactly once", () => {
@@ -184,7 +183,7 @@ describe("PaymentOutcome", () => {
 
 	describe("completeCreditCardPaymentOutcome paymentMethod preservation", () => {
 		it("preserves an existing order.paymentMethod when input.paymentMethod is omitted", () => {
-			const existingPaymentMethod = {payment_method_id: "6", title: "Existing Method"} as any;
+			const existingPaymentMethod = {payment_method_id: "6", title: "Existing Method"};
 
 			const result = completeCreditCardPaymentOutcome(
 				{

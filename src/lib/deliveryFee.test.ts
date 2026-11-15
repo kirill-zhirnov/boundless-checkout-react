@@ -1,4 +1,4 @@
-import type {ITotal} from "boundless-api-client";
+import type {ITotal} from "../types/Order";
 import {
 	DELIVERY_ID,
 	SELF_PICKUP_ID,

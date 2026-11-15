@@ -1,9 +1,8 @@
 import {vi, type Mock} from "vitest";
 import React from "react";
 import {render, screen} from "@testing-library/react";
-import {ITotal, TPublishingStatus} from "boundless-api-client";
 import CartFooter from "../components/cart/CartFooter";
-import {IOrderWithCustmAttr} from "../types/Order";
+import {IOrderWithCustmAttr, ITotal, TPublishingStatus} from "../types/Order";
 import {getCheckoutData} from "../hooks/checkoutData";
 import {getCartOrRetrieve} from "../hooks/getCartOrRetrieve";
 
@@ -45,10 +44,10 @@ const makeTotal = (overrides: Partial<ITotal> = {}): ITotal => ({
 	price: "100.00",
 	itemsSubTotal: {price: "90.00", qty: 1},
 	discount: "0",
-	tax: {totalTaxAmount: "10.00"} as any,
+	tax: {totalTaxAmount: "10.00", itemsWithTax: [], shipping: {}},
 	servicesSubTotal: {price: "0.00", qty: 0},
 	...overrides,
-} as unknown as ITotal);
+});
 
 const setReduxCheckoutState = (
 	overrides: {
@@ -122,7 +121,7 @@ describe("CartFooter", () => {
 				price: undefined,
 				itemsSubTotal: {price: "90.00", qty: 1},
 				servicesSubTotal: {price: "0.00", qty: 0},
-				tax: {totalTaxAmount: "10.00"} as any,
+				tax: {totalTaxAmount: "10.00", itemsWithTax: [], shipping: {}},
 			},
 		});
 

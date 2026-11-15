@@ -1,10 +1,11 @@
-import {IAddress, IOrderService, ITotal, TAddressType, TPublishingStatus} from "boundless-api-client";
 import {
 	clearCheckoutProgressAfterContactSave,
 	clearPaymentAndDeliveryProgress,
 	clearProgressAfterContact,
 } from "./checkoutProgressReset";
-import {IOrderWithCustmAttr} from "../types/Order";
+import {IOrderService, IOrderWithCustmAttr, ITotal, TPublishingStatus} from "../types/Order";
+import {IAddress, TAddressType} from "../types/shippingForm";
+import {SHIPPING_DELIVERY_INFO} from "../constants";
 
 const savedContact = {
 	id: "saved-customer-1",
@@ -31,14 +32,13 @@ const staleShippingAddress = (overrides: Partial<IAddress> = {}): IAddress => ({
 	state: "BC",
 	country_id: 40,
 	zip: "V2A 1A1",
-	phone: "2505551111",
 	created_at: "2026-06-01T00:00:00.000Z",
 	vwCountry: null,
 	...overrides,
 });
 
 const selectedShippingService = (overrides: Partial<IOrderService> = {}): IOrderService => ({
-	order_service_id: "service-1" as unknown as number,
+	order_service_id: "service-1",
 	service_id: 456,
 	qty: 1,
 	total_price: "12.00",
@@ -49,7 +49,7 @@ const selectedShippingService = (overrides: Partial<IOrderService> = {}): IOrder
 		title: "Shipping",
 		text_info: null,
 		data: null,
-		delivery: {delivery_id: 456, title: "Shipping"} as any,
+		delivery: SHIPPING_DELIVERY_INFO,
 	},
 	...overrides,
 });
@@ -58,19 +58,14 @@ const makeTotal = (overrides: Partial<ITotal> = {}): ITotal => ({
 	itemsSubTotal: {price: "100.00", qty: 2},
 	price: "119.20",
 	discount: "0.00",
-	paymentMarkUp: "0.00",
 	tax: {
 		totalTaxAmount: "1.20",
 		itemsWithTax: [],
-		shipping: {
-			shippingTaxes: "1.20",
-			appliedTaxes: [],
-		},
+		shipping: {shippingTaxes: "1.20"},
 	},
-	taxSettings: {} as any,
 	servicesSubTotal: {price: "12.00", qty: 1},
 	...overrides,
-} as unknown as ITotal);
+});
 
 const makeOrder = (overrides: Partial<IOrderWithCustmAttr> = {}): IOrderWithCustmAttr => ({
 	id: "order-1",
@@ -89,7 +84,7 @@ const makeOrder = (overrides: Partial<IOrderWithCustmAttr> = {}): IOrderWithCust
 		addresses: [staleShippingAddress()],
 	},
 	services: [selectedShippingService()],
-	paymentMethod: {payment_method_id: "credit-card", title: "Credit Card"} as any,
+	paymentMethod: {payment_method_id: "credit-card", title: "Credit Card"},
 	tax_calculations: null,
 	custom_attrs: {
 		checkoutCompleted: true,
@@ -112,7 +107,7 @@ describe("checkout progress reset", () => {
 			makeOrder({
 				tip: "6.00",
 				servicesSubTotal: {price: "12.00", qty: 1},
-			} as any),
+			}),
 		);
 
 		expect(result.customer).toMatchObject({
@@ -126,7 +121,7 @@ describe("checkout progress reset", () => {
 		expect(result.customer?.addresses).toEqual([]);
 		expect(result.services).toEqual([]);
 		expect(result.tip).toBeUndefined();
-		expect((result as any).servicesSubTotal).toBeUndefined();
+		expect(result.servicesSubTotal).toBeUndefined();
 
 		expect(result.delivery_time).toBeUndefined();
 		expect(result.drop_ship_delivery_time).toBeUndefined();
@@ -150,7 +145,7 @@ describe("checkout progress reset", () => {
 		});
 
 		const submittedService = selectedShippingService({
-			order_service_id: "submitted-service-1" as unknown as number,
+			order_service_id: "submitted-service-1",
 			total_price: "0.00",
 		});
 
@@ -186,13 +181,13 @@ describe("checkout progress reset", () => {
 				tax_amount: "1.20",
 				tip: "6.00",
 				servicesSubTotal: {price: "12.00", qty: 1},
-			} as any),
+			}),
 			makeTotal(),
 		);
 
 		expect(order.services).toEqual([]);
 		expect(order.tip).toBeUndefined();
-		expect((order as any).servicesSubTotal).toBeUndefined();
+		expect(order.servicesSubTotal).toBeUndefined();
 		expect(total?.servicesSubTotal).toEqual({price: "0.00", qty: 0});
 	});
 

@@ -220,10 +220,8 @@ const shippingPage = () => ({
 		city: "Penticton",
 		state: "BC",
 		zip: "V2A 1A1",
-		phone: "2505550000",
 	},
 	options: {
-		country: [],
 		delivery: [
 			{
 				delivery_id: SELF_PICKUP_ID,

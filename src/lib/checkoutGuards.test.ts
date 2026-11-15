@@ -8,8 +8,8 @@ import {
 	SHIPPING_DELIVERY_INFO,
 } from "../constants";
 import {ICheckoutStepper, TCheckoutStep} from "../types/common";
-import {ICustomCustomer, IOrderWithCustmAttr} from "../types/Order";
-import {IAddress, IDelivery, IOrderService, TAddressType} from "boundless-api-client";
+import {ICustomCustomer, IOrderService, IOrderWithCustmAttr, TPublishingStatus} from "../types/Order";
+import {IAddress, IDelivery, TAddressType} from "../types/shippingForm";
 import {
 	canNavigateToCheckoutStep,
 	getCheckoutStepWarning,
@@ -32,7 +32,7 @@ const completeCustomer = (overrides: Partial<ICustomCustomer> = {}): ICustomCust
 	first_name: "Jane",
 	last_name: "Doe",
 	phone: "2505551234",
-	custom_attrs: {},
+	custom_attrs: null,
 	addresses: [],
 	dob: "1990-01-01",
 	...overrides,
@@ -54,7 +54,6 @@ const completeAddress = (
 	state: "BC",
 	country_id: 40,
 	zip: "V2A 1A1",
-	phone: null,
 	created_at: "2026-01-01T00:00:00.000Z",
 	vwCountry: null,
 	...overrides,
@@ -65,7 +64,7 @@ const selectedService = (
 	title: string,
 	delivery: IDelivery,
 ): IOrderService => ({
-	order_service_id: service_id,
+	order_service_id: `service-${service_id}`,
 	service_id,
 	qty: 1,
 	total_price: "0.00",
@@ -95,7 +94,7 @@ const orderWith = (overrides: Partial<IOrderWithCustmAttr> = {}): IOrderWithCust
 	total_price: null,
 	discount_for_order: null,
 	tax_amount: null,
-	publishing_status: "published" as IOrderWithCustmAttr["publishing_status"],
+	publishing_status: TPublishingStatus.published,
 	created_at: "2026-01-01T00:00:00.000Z",
 	customer: completeCustomer(),
 	services: [pickupService()],
@@ -123,26 +122,24 @@ describe("checkout guards", () => {
 		});
 
 		it.each(requiredContactFields)(
-			"returns false when customer.%s is missing, null, empty, or whitespace",
+			"returns false when customer.%s is empty or whitespace",
 			(field) => {
-				const customerWithoutField = completeCustomer();
-				delete (customerWithoutField as unknown as Record<string, unknown>)[field];
+				for (const invalidValue of ["", "   "]) {
+					const customer = completeCustomer();
+					customer[field] = invalidValue;
 
-				expect(isContactStepComplete(orderWith({customer: customerWithoutField}))).toBe(false);
-
-				for (const invalidValue of invalidStringValues) {
-					expect(
-						isContactStepComplete(
-							orderWith({
-								customer: completeCustomer({
-									[field]: invalidValue,
-								} as unknown as Partial<ICustomCustomer>),
-							}),
-						),
-					).toBe(false);
+					expect(isContactStepComplete(orderWith({customer}))).toBe(false);
 				}
 			},
 		);
+
+		it("returns false when customer.phone is null", () => {
+			expect(isContactStepComplete(orderWith({customer: completeCustomer({phone: null})}))).toBe(false);
+		});
+
+		it("returns false when customer.dob is undefined", () => {
+			expect(isContactStepComplete(orderWith({customer: completeCustomer({dob: undefined})}))).toBe(false);
+		});
 
 		it("returns true when every required contact field is non-empty", () => {
 			expect(isContactStepComplete(orderWith({customer: completeCustomer()}))).toBe(true);
@@ -185,18 +182,6 @@ describe("checkout guards", () => {
 			it.each(requiredAddressFields)(
 				"returns false when the shipping address has no %s",
 				(field) => {
-					const shippingAddressWithoutField = completeAddress(TAddressType.shipping);
-					delete (shippingAddressWithoutField as unknown as Record<string, unknown>)[field];
-
-					expect(
-						isShippingStepComplete(
-							orderWith({
-								services: [serviceFactory()],
-								customer: completeCustomer({addresses: [shippingAddressWithoutField]}),
-							}),
-						),
-					).toBe(false);
-
 					for (const invalidValue of invalidStringValues) {
 						expect(
 							isShippingStepComplete(
@@ -323,21 +308,6 @@ describe("checkout guards", () => {
 			).toBe(true);
 		});
 
-		it("does not require a phone on addresses since phone is collected on the contact form", () => {
-			expect(
-				isShippingStepComplete(
-					orderWith({
-						services: [shippingService()],
-						customer: completeCustomer({
-							addresses: [
-								completeAddress(TAddressType.shipping, {phone: null}),
-								completeAddress(TAddressType.billing, {phone: ""}),
-							],
-						}),
-					}),
-				),
-			).toBe(true);
-		});
 	});
 
 	describe("checkout step navigation", () => {

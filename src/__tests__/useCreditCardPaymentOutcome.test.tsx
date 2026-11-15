@@ -1,8 +1,7 @@
 import {vi, type Mock} from "vitest";
 import {act, renderHook} from "@testing-library/react";
-import {ITotal, TPublishingStatus} from "boundless-api-client";
 import {useCreditCardPaymentOutcome} from "../hooks/useCreditCardPaymentOutcome";
-import {IOrderWithCustmAttr} from "../types/Order";
+import {IOrderWithCustmAttr, ITotal, TPublishingStatus} from "../types/Order";
 import {getCheckoutData, setLocalStorageCheckoutData} from "../hooks/checkoutData";
 import {CovaCartItem} from "../types/cart";
 
@@ -39,10 +38,10 @@ const makeTotal = (overrides: Partial<ITotal> = {}): ITotal => ({
 	price: "100.00",
 	itemsSubTotal: {price: "100.00", qty: 1},
 	discount: "0",
-	tax: {} as any,
+	tax: {totalTaxAmount: null, itemsWithTax: [], shipping: {}},
 	servicesSubTotal: {price: 0, qty: 0},
 	...overrides,
-} as unknown as ITotal);
+});
 
 describe("useCreditCardPaymentOutcome", () => {
 	beforeEach(() => {

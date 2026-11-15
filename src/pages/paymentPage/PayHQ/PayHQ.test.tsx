@@ -2,7 +2,7 @@ import {vi, type Mock} from "vitest";
 import React from "react";
 import {render, screen, waitFor, act} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import {TPublishingStatus} from "boundless-api-client";
+import {TPublishingStatus} from "../../../types/Order";
 import {getCheckoutData} from "../../../hooks/checkoutData";
 import PayHQ, {CreatePaymentInstance, PayHQHandle} from "./PayHQ";
 

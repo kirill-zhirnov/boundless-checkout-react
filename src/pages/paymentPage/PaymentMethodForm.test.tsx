@@ -3,7 +3,7 @@ import React from "react";
 
 import {act, render, screen, waitFor} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import {TPublishingStatus} from "boundless-api-client";
+import {TPublishingStatus} from "../../types/Order";
 import PaymentMethodForm from "./PaymentMethodForm";
 import {CREDIT_CARD_PAYMENT_METHOD, DELIVERY_ID, PAY_IN_STORE_PAYMENT_METHOD, SELF_PICKUP_ID} from "../../constants";
 import {PaymentValidationError, PaymentOutcomeError, completeCreditCardPaymentOutcome} from "../../lib/paymentOutcome";
