@@ -34,7 +34,7 @@ jobs:
         run: npm run verify
 
       - name: Run Fallow quality gate
-        uses: fallow-rs/fallow@v2.104.0
+        uses: fallow-rs/fallow@v3
         with:
           command: audit
           changed-since: origin/master
